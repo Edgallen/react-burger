@@ -1,0 +1,22 @@
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 900px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.li {
+    display: flex;
+    list-style-type: none;
+  }
+
+  .button {
+     display: flex; 
+     align-items: center;
+     border-radius: 5rem;
+     background-color: transparent;
+     border: solid 0px;
+     cursor: pointer;
+  }

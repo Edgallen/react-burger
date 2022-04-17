@@ -1,0 +1,48 @@
+.price {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.price__value {
+    display: flex;
+    align-items: center;
+}
+
+.constructor {
+    max-height: calc(100vh - 88px - 40px - 130px - 50px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    overflow: auto;
+    gap: 16px;
+}
+
+.contructor__drag {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.constructor__card {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 536px;
+}
+
+.constructor::-webkit-scrollbar {
+    width: 8px;
+    height: 400px;
+}
+
+.constructor::-webkit-scrollbar-thumb {
+    width: 8px;
+    background-color: #8585AD;
+}
+
+.constructor::-webkit-scrollbar-track {
+    background: #2F2F37;
+    margin-top: calc(80px + 16px);
+    margin-bottom: calc(80px + 16px);
+}
