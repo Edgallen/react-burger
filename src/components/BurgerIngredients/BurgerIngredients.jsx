@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 
 import styles from "./BurgerIngredients.module.css"
 import { Tab, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { getByTitle } from "@testing-library/react";
+import {dataPropTypes} from '../../utils/dataPropTypes';
 
 function FilterTab() {
     const [current, setCurrent] = React.useState('one')
     return (
-        <div style={{ display: 'flex' }}>
+        <div className={styles.menu__filter} >
             <Tab value="one" active={current === 'one'} onClick={setCurrent}>
                 Булки
             </Tab>
@@ -23,13 +23,13 @@ function FilterTab() {
 };
 
 
-const Ingredients = ({name, price, image, key}) => {
+const Ingredients = ({name, price, image}) => {
     return (
-        <div className={styles.card + ' mt-6 ml-4 mr-2'} key={key}>
-            <img src={image} alt="" />
+        <div className={styles.card + ' mt-6 ml-4 mr-2'}>
+            <img src={image} alt={name}/>
             <div className={styles.card__price + ' mt-1'}>
                 <h3 className='mr-2'>{price}</h3>
-                <CurrencyIcon type="primary" />
+                <CurrencyIcon type="primary"/>
             </div>
             <p className={styles.card__name + " text text_type_main-default mt-1"}>{name}</p>
         </div>
@@ -37,10 +37,9 @@ const Ingredients = ({name, price, image, key}) => {
 }
 
 Ingredients.propTypes = {
-    name: PropTypes.string,
-    price: PropTypes.number,
-    image: PropTypes.string,
-    key: PropTypes.string
+    name: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    image: PropTypes.string.isRequired
 }
 
 const Menu = ({menu, type}) => {
@@ -50,12 +49,13 @@ const Menu = ({menu, type}) => {
 
             <div className={styles.menu__type}>
                 {menu.map((ingredient, index) =>(
-                    <Ingredients
+                    <div key={ingredient._id}>
+                        <Ingredients
                         name={ingredient.name}
                         price={ingredient.price}
                         image={ingredient.image}
-                        key={ingredient._id}
-                    />
+                        />
+                    </div>
                 ))}
             </div>
         </>
@@ -63,8 +63,8 @@ const Menu = ({menu, type}) => {
 };
 
 Menu.propTypes = {
-    menu: PropTypes.array,
-    type: PropTypes.string
+    menu: PropTypes.arrayOf(dataPropTypes).isRequired,
+    type: PropTypes.string.isRequired
 }
 
 class BurgerIngredients extends React.Component {
@@ -88,7 +88,7 @@ class BurgerIngredients extends React.Component {
 
     render() {
         return (
-            <div className={styles.menu}>
+            <section className={styles.menu}>
                 <h1 className='text text_type_main-large mt-10 mb-5'>Соберите бургер</h1>
                 
                 <FilterTab />
@@ -106,9 +106,13 @@ class BurgerIngredients extends React.Component {
                         type='Начинка'
                     />
                 </div>   
-            </div>
+            </section>
         );
     }  
 };
+
+BurgerIngredients.propTypes = {
+    data: PropTypes.arrayOf(dataPropTypes).isRequired
+}
 
 export default BurgerIngredients;

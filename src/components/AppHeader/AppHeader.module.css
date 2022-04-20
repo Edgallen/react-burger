@@ -1,3 +1,7 @@
+.header {
+    background-color: #1C1C21;
+}
+
 .nav {
     display: flex;
     justify-content: space-between;

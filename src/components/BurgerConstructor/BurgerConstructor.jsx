@@ -3,86 +3,100 @@ import PropTypes from 'prop-types';
 
 import styles from './BurgerConstructor.module.css';
 import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import {dataPropTypes} from '../../utils/dataPropTypes';
 
-function ConstructorElements({text, price, thumbnail, type, isLocked, isDrag, key}) {
-    function checkDrag() {
-        let value;
-        if (isDrag === true) {
-            value = <DragIcon type="primary" />;
-            return value
-        }
-        value = <p className="ml-8"> </p>
-        return value;
-    }
+function ConstructorElements({text, price, thumbnail}) {
     return (
-        <div className={styles.constructor__card + " ml-8"} key={key}>
-            {checkDrag()}
+        <li className={styles.constructor__card}>
+            <DragIcon type="primary" />
             <ConstructorElement
-                type={type}
-                isLocked={isLocked}
                 text={text}
                 price={price}
                 thumbnail={thumbnail}
             />
-        </div>
+        </li>
     );
 };
 
 ConstructorElements.propTypes = {
-    text: PropTypes.string,
-    price: PropTypes.number,
-    thumbnail: PropTypes.string,
-    type: PropTypes.string,
-    isLocked: PropTypes.bool,
-    isDrag: PropTypes.bool,
-    key: PropTypes.string
+    text: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    thumbnail: PropTypes.string.isRequired
 };
 
-const IngredientsConstructor = ({orderList}) => {
-    function getLastIndex() {
-        return orderList.length - 1
-    }
+const IngredientsConstructor = ({orderList, buns}) => {
+    let id = 1;
 
     return (
         <div className={styles.constructor + ' pr-2'}>
-            {orderList.map((ingredient, index) => (
-                <ConstructorElements
-                    type={
-                        orderList[0] === ingredient ? 'top' : '' || orderList[getLastIndex()] === ingredient ? 'bottom' : ''
-                    }
-                    isLocked={
-                        orderList[0] === ingredient || orderList[getLastIndex()] === ingredient ? true : false
-                    }
-                    isDrag={
-                        orderList[0] === ingredient || orderList[getLastIndex()] === ingredient ? false : true
-                    }
-                    text={ingredient.name}
-                    price={ingredient.price}
-                    thumbnail={ingredient.image}
-                    key={ingredient.index}
-                 />
-            ))}
+            <div className={styles.constructor__card + ' ml-8'}>
+                <ConstructorElement
+                    type="top"
+                    isLocked={true}
+                    text={buns.name + ' (верх)'}
+                    price={buns.price}
+                    thumbnail={buns.image}
+                />
+            </div>
+            
+            <div className={styles.constructor__ingredients}>
+                <div className={styles.constructor__list + ' pr-2'}>
+                    {orderList.map((ingredient, index) => (
+                        <div key={id++}>
+                            <ConstructorElements
+                                text={ingredient.name}
+                                price={ingredient.price}
+                                thumbnail={ingredient.image}
+                            />
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <div className={styles.constructor__card + ' ml-8'}>
+                <ConstructorElement
+                    type="bottom"
+                    isLocked={true}
+                    text={buns.name + ' (низ)'}
+                    price={buns.price}
+                    thumbnail={buns.image}
+                />
+            </div>
         </div>
+        
     );
 };
 
 IngredientsConstructor.propTypes = {
-    orderList: PropTypes.array,
+    orderList: PropTypes.arrayOf(dataPropTypes).isRequired,
+    buns: PropTypes.object.isRequired,
 };
 
 class BurgerConstructor extends React.Component {
     state = {
-        orderList: this.props.orderList
+        orderList: '',
+        buns: ''
     }
+
+    componentWillMount() {
+        const list = this.props.orderList;
+        this.setState({
+            orderList: list.filter(element => element.type !== 'bun'),
+            buns: list.find(element => element.type === 'bun')
+        })
+    };
 
     render() {
         return (
-            <div className="mt-25 ml-10">
+            <section className="mt-25 ml-10">
                 <div>
-                    <IngredientsConstructor orderList={this.state.orderList} />
+                    <IngredientsConstructor
+                     orderList={this.state.orderList}
+                     buns={this.state.buns}
+                    />
                 </div>
 
-                <div className={styles.price + ' mt-10'}>
+                <div className={styles.price + ' mt-10 mr-4'}>
                     <div className={styles.price__value + ' mr-10'}>
                         <h1 className='text text_type_main-large mr-2'>1600</h1>
                         <CurrencyIcon type="primary" />
@@ -91,9 +105,13 @@ class BurgerConstructor extends React.Component {
                         Оформить заказ
                     </Button>
                 </div>
-            </div>
+            </section>
         );
     };
 };
+
+BurgerConstructor.propTypes = {
+    orderList: PropTypes.arrayOf(dataPropTypes).isRequired
+}
 
 export default BurgerConstructor

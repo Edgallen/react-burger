@@ -1,6 +1,7 @@
 .price {
     display: flex;
     align-items: center;
+    width: 570px;
     justify-content: flex-end;
 }
 
@@ -10,11 +11,30 @@
 }
 
 .constructor {
-    max-height: calc(100vh - 88px - 40px - 130px - 50px);
+    max-height: 660px;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.constructor__ingredients {
+    position: static;
+    max-height: 465px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
     overflow: auto;
+    overflow-x: visible;
+}
+
+.constructor__list {
+    position: static;
+    max-height: 465px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 16px;
 }
 
@@ -28,21 +48,21 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    width: 536px;
+    min-width: 570px;
 }
 
-.constructor::-webkit-scrollbar {
+.constructor__ingredients::-webkit-scrollbar {
     width: 8px;
     height: 400px;
+    background: #2F2F37;
+    margin-left: 10px;
 }
 
-.constructor::-webkit-scrollbar-thumb {
+.constructor__ingredients::-webkit-scrollbar-track {
+    padding: 10px;
+}
+
+.constructor__ingredients::-webkit-scrollbar-thumb {
     width: 8px;
     background-color: #8585AD;
-}
-
-.constructor::-webkit-scrollbar-track {
-    background: #2F2F37;
-    margin-top: calc(80px + 16px);
-    margin-bottom: calc(80px + 16px);
 }

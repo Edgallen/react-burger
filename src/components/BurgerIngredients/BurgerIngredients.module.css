@@ -1,3 +1,7 @@
+.menu__filter {
+    display: flex;
+}
+
 .menu__ingredients {
     height: calc(100vh - 85px - 40px - 165px);
     width: 600px;
