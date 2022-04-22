@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import PropTypes from 'prop-types';
 
 import styles from './BurgerConstructor.module.css';
@@ -72,46 +72,45 @@ IngredientsConstructor.propTypes = {
     buns: PropTypes.object.isRequired,
 };
 
-class BurgerConstructor extends React.Component {
-    state = {
-        orderList: '',
-        buns: ''
-    }
+const BurgerConstructor = ({orderList, openClick}) => {
+    const [state, setState] = useState({
+        cart: [],
+        buns: {}
+    });
 
-    componentWillMount() {
-        const list = this.props.orderList;
-        this.setState({
-            orderList: list.filter(element => element.type !== 'bun'),
-            buns: list.find(element => element.type === 'bun')
-        })
-    };
+    useEffect(() => {
+        setState(({
+            ...state,
+            cart: orderList.filter(element => element.type !== 'bun'),
+            buns: orderList.find(element => element.type === 'bun'),
+        }))
+    }, []);
 
-    render() {
-        return (
-            <section className="mt-25 ml-10">
-                <div>
-                    <IngredientsConstructor
-                     orderList={this.state.orderList}
-                     buns={this.state.buns}
-                    />
+    return (
+        <section className="mt-25 ml-10">
+            <div>
+                <IngredientsConstructor
+                    orderList={state.cart}
+                    buns={state.buns}
+                />
+            </div>
+
+            <div className={styles.price + ' mt-10 mr-4'}>
+                <div className={styles.price__value + ' mr-10'}>
+                    <h1 className='text text_type_main-large mr-2'>1600</h1>
+                    <CurrencyIcon type="primary" />
                 </div>
-
-                <div className={styles.price + ' mt-10 mr-4'}>
-                    <div className={styles.price__value + ' mr-10'}>
-                        <h1 className='text text_type_main-large mr-2'>1600</h1>
-                        <CurrencyIcon type="primary" />
-                    </div>
-                    <Button type="primary" size="large">
-                        Оформить заказ
-                    </Button>
-                </div>
-            </section>
-        );
-    };
+                <Button type="primary" size="large" onClick={openClick}>
+                    Оформить заказ
+                </Button>
+            </div>
+        </section>
+    );
 };
 
 BurgerConstructor.propTypes = {
-    orderList: PropTypes.arrayOf(dataPropTypes).isRequired
+    orderList: PropTypes.arrayOf(dataPropTypes).isRequired,
+    openClick: PropTypes.func.isRequired
 }
 
 export default BurgerConstructor

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import PropTypes from 'prop-types';
 
 import styles from "./BurgerIngredients.module.css"
@@ -23,9 +23,9 @@ function FilterTab() {
 };
 
 
-const Ingredients = ({name, price, image}) => {
+const Ingredients = ({name, price, image, openClick}) => { // сюда!!!
     return (
-        <div className={styles.card + ' mt-6 ml-4 mr-2'}>
+        <div className={styles.card + ' mt-6 ml-4 mr-2'} onClick={openClick}>
             <img src={image} alt={name}/>
             <div className={styles.card__price + ' mt-1'}>
                 <h3 className='mr-2'>{price}</h3>
@@ -42,7 +42,7 @@ Ingredients.propTypes = {
     image: PropTypes.string.isRequired
 }
 
-const Menu = ({menu, type}) => {
+const Menu = ({menu, type, openClick}) => {
     return (
         <>
             <h1 className="text text_type_main-medium mt-10">{type}</h1>
@@ -51,9 +51,10 @@ const Menu = ({menu, type}) => {
                 {menu.map((ingredient, index) =>(
                     <div key={ingredient._id}>
                         <Ingredients
-                        name={ingredient.name}
-                        price={ingredient.price}
-                        image={ingredient.image}
+                            name={ingredient.name}
+                            price={ingredient.price}
+                            image={ingredient.image}
+                            openClick={openClick}
                         />
                     </div>
                 ))}
@@ -67,52 +68,42 @@ Menu.propTypes = {
     type: PropTypes.string.isRequired
 }
 
-class BurgerIngredients extends React.Component {
-    state = {
-        buns: [],
-        sauces: [],
-        mains: []
-    }
+const BurgerIngredients = ({data, openClick}) => {
+    const [state, setState] = useState({
+        buns: data.filter(element => element.type === 'bun'),
+        sauces: data.filter(element => element.type === 'sauce'),
+        mains: data.filter(element => element.type === 'main') 
+    });
 
-    componentWillMount() {
-        this.props.data.forEach(ingredient => {
-            if (ingredient.type === 'bun') {
-                this.state.buns.push(ingredient);
-            } else if (ingredient.type === 'sauce') {
-                this.state.sauces.push(ingredient);
-            } else if (ingredient.type === 'main') {
-                this.state.mains.push(ingredient);
-            }
-        });
-    };
-
-    render() {
-        return (
-            <section className={styles.menu}>
-                <h1 className='text text_type_main-large mt-10 mb-5'>Соберите бургер</h1>
-                
-                <FilterTab />
-                <div className={styles.menu__ingredients}>  
-                    <Menu
-                        menu={this.state.buns}
-                        type='Булки'
-                    />
-                    <Menu
-                        menu={this.state.sauces}
-                        type='Соусы'
-                    />
-                    <Menu
-                        menu={this.state.mains}
-                        type='Начинка'
-                    />
-                </div>   
-            </section>
-        );
-    }  
+    return (
+        <section className={styles.menu}>
+            <h1 className='text text_type_main-large mt-10 mb-5'>Соберите бургер</h1>
+            
+            <FilterTab />
+            <div className={styles.menu__ingredients}>  
+                <Menu
+                    menu={state.buns}
+                    type='Булки'
+                    openClick={openClick}
+                />
+                <Menu
+                    menu={state.sauces}
+                    type='Соусы'
+                    openClick={openClick}
+                />
+                <Menu
+                    menu={state.mains}
+                    type='Начинка'
+                    openClick={openClick}
+                />
+            </div>   
+        </section>
+    );
 };
 
 BurgerIngredients.propTypes = {
-    data: PropTypes.arrayOf(dataPropTypes).isRequired
+    data: PropTypes.arrayOf(dataPropTypes).isRequired,
+    openClick: PropTypes.func.isRequired
 }
 
 export default BurgerIngredients;
