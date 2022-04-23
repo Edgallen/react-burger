@@ -23,26 +23,30 @@ function FilterTab() {
 };
 
 
-const Ingredients = ({name, price, image, openClick}) => { // сюда!!!
+const Ingredient = ({ingredient, openModal}) => {
+    const handleIngredientClick = (e) => {
+        e.preventDefault();
+        openModal(ingredient);
+    };
+
     return (
-        <div className={styles.card + ' mt-6 ml-4 mr-2'} onClick={openClick}>
-            <img src={image} alt={name}/>
+        <div className={styles.card + ' mt-6 ml-4 mr-2'} onClick={handleIngredientClick}>
+            <img src={ingredient.image} alt={ingredient.name}/>
             <div className={styles.card__price + ' mt-1'}>
-                <h3 className='mr-2'>{price}</h3>
+                <h3 className='mr-2'>{ingredient.price}</h3>
                 <CurrencyIcon type="primary"/>
             </div>
-            <p className={styles.card__name + " text text_type_main-default mt-1"}>{name}</p>
+            <p className={styles.card__name + " text text_type_main-default mt-1"}>{ingredient.name}</p>
         </div>
-    )
-}
+    );
+};
 
-Ingredients.propTypes = {
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired
-}
+Ingredient.propTypes = {
+    ingredient: PropTypes.object.isRequired,
+    openModal: PropTypes.func.isRequired
+};
 
-const Menu = ({menu, type, openClick}) => {
+const Menu = ({menu, type, openModal}) => {
     return (
         <>
             <h1 className="text text_type_main-medium mt-10">{type}</h1>
@@ -50,11 +54,9 @@ const Menu = ({menu, type, openClick}) => {
             <div className={styles.menu__type}>
                 {menu.map((ingredient, index) =>(
                     <div key={ingredient._id}>
-                        <Ingredients
-                            name={ingredient.name}
-                            price={ingredient.price}
-                            image={ingredient.image}
-                            openClick={openClick}
+                        <Ingredient
+                            ingredient={ingredient}
+                            openModal={openModal}
                         />
                     </div>
                 ))}
@@ -65,10 +67,11 @@ const Menu = ({menu, type, openClick}) => {
 
 Menu.propTypes = {
     menu: PropTypes.arrayOf(dataPropTypes).isRequired,
-    type: PropTypes.string.isRequired
-}
+    type: PropTypes.string.isRequired,
+    openModal: PropTypes.func.isRequired
+};
 
-const BurgerIngredients = ({data, openClick}) => {
+const BurgerIngredients = ({data, openModal}) => {
     const [state, setState] = useState({
         buns: data.filter(element => element.type === 'bun'),
         sauces: data.filter(element => element.type === 'sauce'),
@@ -84,17 +87,17 @@ const BurgerIngredients = ({data, openClick}) => {
                 <Menu
                     menu={state.buns}
                     type='Булки'
-                    openClick={openClick}
+                    openModal={openModal}
                 />
                 <Menu
                     menu={state.sauces}
                     type='Соусы'
-                    openClick={openClick}
+                    openModal={openModal}
                 />
                 <Menu
                     menu={state.mains}
                     type='Начинка'
-                    openClick={openClick}
+                    openModal={openModal}
                 />
             </div>   
         </section>
@@ -103,7 +106,7 @@ const BurgerIngredients = ({data, openClick}) => {
 
 BurgerIngredients.propTypes = {
     data: PropTypes.arrayOf(dataPropTypes).isRequired,
-    openClick: PropTypes.func.isRequired
-}
+    openModal: PropTypes.func.isRequired
+};
 
 export default BurgerIngredients;

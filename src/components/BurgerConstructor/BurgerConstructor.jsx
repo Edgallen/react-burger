@@ -72,7 +72,7 @@ IngredientsConstructor.propTypes = {
     buns: PropTypes.object.isRequired,
 };
 
-const BurgerConstructor = ({orderList, openClick}) => {
+const BurgerConstructor = ({orderList, openModal}) => {
     const [state, setState] = useState({
         cart: [],
         buns: {}
@@ -100,7 +100,7 @@ const BurgerConstructor = ({orderList, openClick}) => {
                     <h1 className='text text_type_main-large mr-2'>1600</h1>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button type="primary" size="large" onClick={openClick}>
+                <Button type="primary" size="large" onClick={openModal}>
                     Оформить заказ
                 </Button>
             </div>
@@ -110,7 +110,7 @@ const BurgerConstructor = ({orderList, openClick}) => {
 
 BurgerConstructor.propTypes = {
     orderList: PropTypes.arrayOf(dataPropTypes).isRequired,
-    openClick: PropTypes.func.isRequired
-}
+    openModal: PropTypes.func.isRequired
+};
 
 export default BurgerConstructor

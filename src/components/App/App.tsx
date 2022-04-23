@@ -13,6 +13,7 @@ import IngredientDetails from '../IngredientDetails/IngredientDetails';
 const App = () => {
   const [state, setState] = useState({
     ingredients: [] as any,
+    selectedIngredient: {},
     isLoading: false,
     hasError: false
   });
@@ -26,7 +27,12 @@ const App = () => {
   useEffect(() => {
     setState({...state, isLoading: true, hasError: false})
     fetch('https://norma.nomoreparties.space/api/ingredients')
-      .then(res => res.json())
+      .then((res) =>{
+        if (res.ok) {
+          return res.json()
+        }
+        return Promise.reject(`Что-то пошло не так, статус ответа: ${res.status}`);
+      })
       .then(data => setState({ ...state, isLoading: false, ingredients: data.data }))
       .catch(e => {
         setState({ ...state, hasError: true, isLoading: false});
@@ -36,19 +42,20 @@ const App = () => {
 
 
   const orderOpenHandler = () => {
-    setOrderModal({...state, isVisible: true})
+    setOrderModal({...state, isVisible: true});
   };
 
   const orderCloseHandler = () => {
-    setOrderModal({...state, isVisible: false})
+    setOrderModal({...state, isVisible: false});
   };
 
-  const ingredientsOpenHandler = () => {
-    setIngredientsModal({...state, isVisible: true})
+  const ingredientsOpenHandler = (e: any) => {
+    setIngredientsModal({...state, isVisible: true});
+    setState({...state, selectedIngredient: e})
   };
 
   const ingredientsCloseHandler = () => {
-    setIngredientsModal({...state, isVisible: false})
+    setIngredientsModal({...state, isVisible: false});
   };
 
   return (
@@ -59,25 +66,25 @@ const App = () => {
         {!state.isLoading && !state.hasError && (
           <BurgerIngredients
             data={state.ingredients}
-            openClick={ingredientsOpenHandler}
+            openModal={ingredientsOpenHandler}
           />
         )}
 
         {!state.isLoading && !state.hasError && (
         <BurgerConstructor
           orderList={state.ingredients}
-          openClick={orderOpenHandler}
+          openModal={orderOpenHandler}
         />)}
 
         {orderModal.isVisible && (
-          <Modal closeClick={orderCloseHandler} headerTitle={false}>
+          <Modal closeModal={orderCloseHandler} headerTitle={false}>
             <OrderDetails />
           </Modal>
         )}
 
         {ingredientsModal.isVisible && (
-          <Modal closeClick={ingredientsCloseHandler} headerTitle='Детали ингредиента'>
-            <IngredientDetails ingredient={state.ingredients[4]} />
+          <Modal closeModal={ingredientsCloseHandler} headerTitle='Детали ингредиента'>
+            <IngredientDetails ingredient={state.selectedIngredient} />
           </Modal>
         )}
       </main>

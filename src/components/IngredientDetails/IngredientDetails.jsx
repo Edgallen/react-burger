@@ -38,6 +38,6 @@ const IngredientDetails = ({ingredient}) => {
 
 IngredientDetails.prototypes = {
     ingredient: PropTypes.arrayOf(dataPropTypes).isRequired
-}
+};
 
 export default IngredientDetails;
