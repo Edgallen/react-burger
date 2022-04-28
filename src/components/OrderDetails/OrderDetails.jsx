@@ -2,11 +2,12 @@ import React from "react"
 
 import DoneTick from '../../images/graphics.svg'
 import styles from './OrderDetails.module.css'
+import PropTypes from "prop-types";
 
-const OrderDetails = () => {
+const OrderDetails = ({orderModal}) => {
     return (
         <div className={styles.module__container}>
-            <h1 className={styles.module__id +" text text_type_digits-large mt-6"}>12323</h1>
+            {!orderModal.isLoading && !orderModal.hasError && <h1 className={styles.module__id + " text text_type_digits-large mt-6"}>{orderModal.responseId}</h1>}
             <p className="text text_type_main-medium mt-8" >идентификатор заказа</p>
 
             <div className={styles.module__img + ' mt-15 mb-15'}>
@@ -18,5 +19,9 @@ const OrderDetails = () => {
         </div>
     );
 };
+
+OrderDetails.propTypes = {
+    orderModal: PropTypes.object.isRequired
+}
 
 export default OrderDetails;

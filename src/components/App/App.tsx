@@ -1,14 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import styles from './App.module.css'
 
-import {data} from '../../utils/data'
-
 import AppHeader from '../AppHeader/AppHeader';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import { ConstructorContext } from "../services/constructorContext";
 
 const App = () => {
   const [state, setState] = useState({
@@ -18,18 +17,26 @@ const App = () => {
     hasError: false
   });
   const [orderModal, setOrderModal] = useState({
-    isVisible: false
-  })
+    isVisible: false,
+    responseId: 0,
+    idHasError: false,
+    idIsLoading: true
+
+  });
   const [ingredientsModal, setIngredientsModal] = useState({
     isVisible: false
-  })
+  });
+  const [cart, setCart] = useState({
+    total: 0,
+    orderId: null,
+  });
 
   useEffect(() => {
     setState({...state, isLoading: true, hasError: false})
     fetch('https://norma.nomoreparties.space/api/ingredients')
       .then((res) =>{
         if (res.ok) {
-          return res.json()
+          return res.json();
         }
         return Promise.reject(`Что-то пошло не так, статус ответа: ${res.status}`);
       })
@@ -41,21 +48,46 @@ const App = () => {
   }, []);
 
 
-  const orderOpenHandler = () => {
-    setOrderModal({...state, isVisible: true});
-  };
+  const handleOrderSubmit = (e: any) => {
+    e.preventDefault();
+
+    const body = {
+      'ingredients': cart.orderId
+    }
+
+    fetch('https://norma.nomoreparties.space/api/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    })
+        .then(res => {
+          if (res.ok) {
+            return res.json();
+          }
+          return Promise.reject(`Что-то пошло не так, статус ответа: ${res}`);
+        })
+        .then(data => {
+          setOrderModal({...orderModal, isVisible: true, responseId: data.order.number, idIsLoading: false})
+        })
+        .catch(e => {
+          setOrderModal({ ...orderModal, idHasError: true, idIsLoading: false});
+          console.log(`Что-то пошло не так ${e}`);
+        });
+  }
 
   const orderCloseHandler = () => {
-    setOrderModal({...state, isVisible: false});
+    setOrderModal({...orderModal, isVisible: false});
   };
 
   const ingredientsOpenHandler = (e: any) => {
-    setIngredientsModal({...state, isVisible: true});
+    setIngredientsModal({...ingredientsModal, isVisible: true});
     setState({...state, selectedIngredient: e})
   };
 
   const ingredientsCloseHandler = () => {
-    setIngredientsModal({...state, isVisible: false});
+    setIngredientsModal({...ingredientsModal, isVisible: false});
   };
 
   return (
@@ -63,30 +95,33 @@ const App = () => {
       <AppHeader />
       
       <main className={styles.body}>
-        {!state.isLoading && !state.hasError && (
-          <BurgerIngredients
-            data={state.ingredients}
-            openModal={ingredientsOpenHandler}
-          />
-        )}
+          {!state.isLoading && !state.hasError && (
+            <>
+              <ConstructorContext.Provider value={{ cart, setCart}}>
+                  <BurgerIngredients
+                      data={state.ingredients}
+                      openModal={ingredientsOpenHandler}
+                  />
 
-        {!state.isLoading && !state.hasError && (
-        <BurgerConstructor
-          orderList={state.ingredients}
-          openModal={orderOpenHandler}
-        />)}
+                  <BurgerConstructor
+                      orderList={state.ingredients}
+                      handleSubmit={handleOrderSubmit}
+                  />
+              </ConstructorContext.Provider>
+            </>
+          )}
 
-        {orderModal.isVisible && (
-          <Modal closeModal={orderCloseHandler} headerTitle={false}>
-            <OrderDetails />
-          </Modal>
-        )}
+          {orderModal.isVisible && (
+            <Modal closeModal={orderCloseHandler} headerTitle={false}>
+              <OrderDetails orderModal={orderModal} />
+            </Modal>
+          )}
 
-        {ingredientsModal.isVisible && (
-          <Modal closeModal={ingredientsCloseHandler} headerTitle='Детали ингредиента'>
-            <IngredientDetails ingredient={state.selectedIngredient} />
-          </Modal>
-        )}
+          {ingredientsModal.isVisible && (
+            <Modal closeModal={ingredientsCloseHandler} headerTitle='Детали ингредиента'>
+              <IngredientDetails ingredient={state.selectedIngredient} />
+            </Modal>
+          )}
       </main>
     </>
   );
