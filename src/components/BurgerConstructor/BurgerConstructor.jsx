@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from "react";
+import React, {useState, useEffect, useContext, useMemo} from "react";
 import PropTypes from 'prop-types';
 
 import styles from './BurgerConstructor.module.css';
@@ -73,60 +73,65 @@ const IngredientsConstructor = ({state}) => {
 IngredientsConstructor.propTypes = {
     state: PropTypes.shape({
         cart: PropTypes.array.isRequired,
-        bun: PropTypes.object.isRequired
+        bun: dataPropTypes.isRequired
     }).isRequired
 };
 
-const BurgerConstructor = ({orderList, handleSubmit}) => {
+const BurgerConstructor = ({ handleSubmit }) => {
+    const { data } = useContext(ConstructorContext);
     const [state, setState] = useState({
         cart: [],
-        bun: {}
+        bun: {},
+        isLoading: true
     });
-    const {cart, setCart} = useContext(ConstructorContext);
+    const [order, setOrder] = useState({
+        orderId: null
+    });
+
+    const totalPrice = useMemo(() => {
+        let cartPrice = 0;
+        const bunPrice = state.bun.price * 2;
+        
+        state.cart.forEach(ingredient => {
+            cartPrice += ingredient.price;
+        });
+
+        return `${cartPrice + bunPrice}`
+    }, [state.bun.price, state.cart]);
 
     useEffect(() => {
         setState({
             ...state,
-            cart: orderList.filter(element => element.type !== 'bun'),
-            bun: orderList.find(element => element.type === 'bun'),
+            cart: data.ingredients.filter(element => element.type !== 'bun'),
+            bun: data.ingredients.find(element => element.type === 'bun'),
+            isLoading: false
         });
-    }, []);
+    }, [data]);
 
     useEffect(() => {
-        const bunPrice = state.bun.price * 2;
-
-        let cartPrice = 0;
         let cartId = [state.bun._id, state.bun._id];
         state.cart.forEach(ingredient => {
-            cartPrice += ingredient.price;
             cartId.push(ingredient._id)
         });
 
-        setCart({
-            ...cart,
-            total: `${bunPrice + cartPrice}`,
+        setOrder({
+            ...order,
             orderId: cartId
         });
-    }, [cart]);
+    }, [handleSubmit]);
 
     return (
         <section className="mt-25 ml-10">
             <div>
-                <IngredientsConstructor
-                    state={state}
-                    orderList={state.cart}
-                    buns={state.bun}
-                    cart={cart}
-                    setCart={setCart}
-                />
+                {!state.isLoading && <IngredientsConstructor state={state}/>}
             </div>
 
             <div className={styles.price + ' mt-10 mr-4'}>
                 <div className={styles.price__value + ' mr-10'}>
-                    <h1 className='text text_type_main-large mr-2'>{cart.total}</h1>
+                    <h1 className='text text_type_digits-medium mr-2'>{totalPrice}</h1>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button type="primary" size="large" onClick={handleSubmit}>
+                <Button type="primary" size="large" onClick={(e) => handleSubmit(e, order.orderId)}>
                     Оформить заказ
                 </Button>
             </div>
@@ -135,7 +140,6 @@ const BurgerConstructor = ({orderList, handleSubmit}) => {
 };
 
 BurgerConstructor.propTypes = {
-    orderList: PropTypes.arrayOf(dataPropTypes).isRequired,
     handleSubmit: PropTypes.func.isRequired
 };
 

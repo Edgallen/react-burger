@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import styles from './App.module.css'
 
 import AppHeader from '../AppHeader/AppHeader';
@@ -10,12 +10,17 @@ import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import { ConstructorContext } from "../services/constructorContext";
 
 const App = () => {
-  const [state, setState] = useState({
+  const [data, setData] = useState({
     ingredients: [] as any,
     selectedIngredient: {},
     isLoading: false,
-    hasError: false
+    hasError: false,
   });
+  const contextValue = useMemo(
+    () => ({ data, setData }), 
+    [data]
+  );
+
   const [orderModal, setOrderModal] = useState({
     isVisible: false,
     responseId: 0,
@@ -26,13 +31,9 @@ const App = () => {
   const [ingredientsModal, setIngredientsModal] = useState({
     isVisible: false
   });
-  const [cart, setCart] = useState({
-    total: 0,
-    orderId: null,
-  });
 
   useEffect(() => {
-    setState({...state, isLoading: true, hasError: false})
+    setData({...data, isLoading: true, hasError: false})
     fetch('https://norma.nomoreparties.space/api/ingredients')
       .then((res) =>{
         if (res.ok) {
@@ -40,19 +41,19 @@ const App = () => {
         }
         return Promise.reject(`Что-то пошло не так, статус ответа: ${res.status}`);
       })
-      .then(data => setState({ ...state, isLoading: false, ingredients: data.data }))
+      .then(data => setData({ ...data, isLoading: false, ingredients: data.data }))
       .catch(e => {
-        setState({ ...state, hasError: true, isLoading: false});
+        setData({ ...data, hasError: true, isLoading: false});
         console.log(`Что-то пошло не так ${e}`);
       });
   }, []);
 
 
-  const handleOrderSubmit = (e: any) => {
+  const handleOrderSubmit = (e: any, orderId: any) => {
     e.preventDefault();
 
     const body = {
-      'ingredients': cart.orderId
+      'ingredients': orderId
     }
 
     fetch('https://norma.nomoreparties.space/api/orders', {
@@ -83,7 +84,7 @@ const App = () => {
 
   const ingredientsOpenHandler = (e: any) => {
     setIngredientsModal({...ingredientsModal, isVisible: true});
-    setState({...state, selectedIngredient: e})
+    setData({...data, selectedIngredient: e})
   };
 
   const ingredientsCloseHandler = () => {
@@ -95,18 +96,16 @@ const App = () => {
       <AppHeader />
       
       <main className={styles.body}>
-          {!state.isLoading && !state.hasError && (
+          {!data.isLoading && !data.hasError && (
             <>
-              <ConstructorContext.Provider value={{ cart, setCart}}>
+              <ConstructorContext.Provider value={contextValue}>
                   <BurgerIngredients
-                      data={state.ingredients}
                       openModal={ingredientsOpenHandler}
                   />
 
                   <BurgerConstructor
-                      orderList={state.ingredients}
-                      handleSubmit={handleOrderSubmit}
-                  />
+                       handleSubmit={handleOrderSubmit}
+                   />
               </ConstructorContext.Provider>
             </>
           )}
@@ -119,7 +118,7 @@ const App = () => {
 
           {ingredientsModal.isVisible && (
             <Modal closeModal={ingredientsCloseHandler} headerTitle='Детали ингредиента'>
-              <IngredientDetails ingredient={state.selectedIngredient} />
+              <IngredientDetails ingredient={data.selectedIngredient} />
             </Modal>
           )}
       </main>

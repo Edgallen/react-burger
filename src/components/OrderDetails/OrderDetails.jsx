@@ -4,7 +4,7 @@ import DoneTick from '../../images/graphics.svg'
 import styles from './OrderDetails.module.css'
 import PropTypes from "prop-types";
 
-const OrderDetails = ({orderModal}) => {
+const OrderDetails = ({ orderModal }) => {
     return (
         <div className={styles.module__container}>
             {!orderModal.isLoading && !orderModal.hasError && <h1 className={styles.module__id + " text text_type_digits-large mt-6"}>{orderModal.responseId}</h1>}
@@ -21,7 +21,12 @@ const OrderDetails = ({orderModal}) => {
 };
 
 OrderDetails.propTypes = {
-    orderModal: PropTypes.object.isRequired
+    orderModal: PropTypes.shape({
+        isVisible: PropTypes.bool.isRequired,
+        responseId: PropTypes.number.isRequired,
+        idHasError: PropTypes.bool.isRequired,
+        idIsLoading: PropTypes.bool.isRequired
+    }).isRequired
 }
 
 export default OrderDetails;
