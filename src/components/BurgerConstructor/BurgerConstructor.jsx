@@ -89,14 +89,13 @@ const BurgerConstructor = ({ handleSubmit }) => {
     });
 
     const totalPrice = useMemo(() => {
-        let cartPrice = 0;
-        const bunPrice = state.bun.price * 2;
+        let cartPrice = state.bun.price * 2;
         
         state.cart.forEach(ingredient => {
             cartPrice += ingredient.price;
         });
 
-        return `${cartPrice + bunPrice}`
+        return cartPrice
     }, [state.bun.price, state.cart]);
 
     useEffect(() => {
@@ -118,7 +117,7 @@ const BurgerConstructor = ({ handleSubmit }) => {
             ...order,
             orderId: cartId
         });
-    }, [handleSubmit]);
+    }, [state.bun, state.cart]);
 
     return (
         <section className="mt-25 ml-10">
@@ -128,7 +127,7 @@ const BurgerConstructor = ({ handleSubmit }) => {
 
             <div className={styles.price + ' mt-10 mr-4'}>
                 <div className={styles.price__value + ' mr-10'}>
-                    <h1 className='text text_type_digits-medium mr-2'>{totalPrice}</h1>
+                    <h1 className='text text_type_digits-medium mr-2'>{`${totalPrice}`}</h1>
                     <CurrencyIcon type="primary" />
                 </div>
                 <Button type="primary" size="large" onClick={(e) => handleSubmit(e, order.orderId)}>
