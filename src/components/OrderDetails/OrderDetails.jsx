@@ -2,12 +2,14 @@ import React from "react"
 
 import DoneTick from '../../images/graphics.svg'
 import styles from './OrderDetails.module.css'
-import PropTypes from "prop-types";
+import {useSelector} from "react-redux";
 
-const OrderDetails = ({ orderModal }) => {
+const OrderDetails = () => {
+    const orderModal = useSelector(store => store.modal.orderModal)
+
     return (
         <div className={styles.module__container}>
-            {!orderModal.isLoading && !orderModal.hasError && <h1 className={styles.module__id + " text text_type_digits-large mt-6"}>{orderModal.responseId}</h1>}
+            {orderModal.isLoading && orderModal.isFailed && <h1 className={styles.module__id + " text text_type_digits-large mt-6"}>{orderModal.responseId}</h1>}
             <p className="text text_type_main-medium mt-8" >идентификатор заказа</p>
 
             <div className={styles.module__img + ' mt-15 mb-15'}>
@@ -19,14 +21,5 @@ const OrderDetails = ({ orderModal }) => {
         </div>
     );
 };
-
-OrderDetails.propTypes = {
-    orderModal: PropTypes.shape({
-        isVisible: PropTypes.bool.isRequired,
-        responseId: PropTypes.number.isRequired,
-        idHasError: PropTypes.bool.isRequired,
-        idIsLoading: PropTypes.bool.isRequired
-    }).isRequired
-}
 
 export default OrderDetails;

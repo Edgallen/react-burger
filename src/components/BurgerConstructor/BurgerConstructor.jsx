@@ -1,10 +1,13 @@
-import React, {useState, useEffect, useContext, useMemo} from "react";
+import React, {useMemo} from "react";
 import PropTypes from 'prop-types';
 
 import styles from './BurgerConstructor.module.css';
 import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import {dataPropTypes} from '../../utils/dataPropTypes';
-import {ConstructorContext} from "../services/constructorContext";
+import { dataPropTypes } from '../../utils/dataPropTypes';
+import {useDispatch, useSelector} from "react-redux";
+import {CLOSE_MODAL, getOrderId} from "../../services/actions/modal";
+import OrderDetails from "../OrderDetails/OrderDetails";
+import Modal from "../Modal/Modal";
 
 const ConstructorElements = ({text, price, thumbnail}) => {
     return (
@@ -77,69 +80,60 @@ IngredientsConstructor.propTypes = {
     }).isRequired
 };
 
-const BurgerConstructor = ({ handleSubmit }) => {
-    const { data } = useContext(ConstructorContext);
-    const [state, setState] = useState({
-        cart: [],
-        bun: {},
-        isLoading: true
-    });
-    const [order, setOrder] = useState({
-        orderId: null
-    });
+const BurgerConstructor = () => {
+    const dispatch = useDispatch();
+    const data = useSelector(store => store.burgerConstructor);
+    const orderModal = useSelector(store => store.modal.orderModal)
 
     const totalPrice = useMemo(() => {
-        let cartPrice = state.bun.price * 2;
-        
-        state.cart.forEach(ingredient => {
+        let cartPrice = data.bun.price * 2;
+
+        data.cart.forEach(ingredient => {
             cartPrice += ingredient.price;
         });
 
         return cartPrice
-    }, [state.bun.price, state.cart]);
+    }, [data.bun, data.cart]);
 
-    useEffect(() => {
-        setState({
-            ...state,
-            cart: data.ingredients.filter(element => element.type !== 'bun'),
-            bun: data.ingredients.find(element => element.type === 'bun'),
-            isLoading: false
-        });
-    }, [data]);
 
-    useEffect(() => {
-        let cartId = [state.bun._id, state.bun._id];
-        state.cart.forEach(ingredient => {
-            cartId.push(ingredient._id)
-        });
+    const handleSubmit = (e, orderId) => {
+        e.preventDefault();
 
-        setOrder({
-            ...order,
-            orderId: cartId
-        });
-    }, [state.bun, state.cart]);
+        const body = {
+            'ingredients': orderId
+        };
+
+        dispatch(getOrderId(body));
+    };
+
+    const closeModal = () => {
+        dispatch({type: CLOSE_MODAL})
+    };
+
 
     return (
-        <section className="mt-25 ml-10">
-            <div>
-                {!state.isLoading && <IngredientsConstructor state={state}/>}
-            </div>
-
-            <div className={styles.price + ' mt-10 mr-4'}>
-                <div className={styles.price__value + ' mr-10'}>
-                    <h1 className='text text_type_digits-medium mr-2'>{`${totalPrice}`}</h1>
-                    <CurrencyIcon type="primary" />
+        <>
+            <section className="mt-25 ml-10">
+                <div>
+                    {!data.isLoading && <IngredientsConstructor state={data}/>}
                 </div>
-                <Button type="primary" size="large" onClick={(e) => handleSubmit(e, order.orderId)}>
-                    Оформить заказ
-                </Button>
-            </div>
-        </section>
-    );
-};
 
-BurgerConstructor.propTypes = {
-    handleSubmit: PropTypes.func.isRequired
+                <div className={styles.price + ' mt-10 mr-4'}>
+                    <div className={styles.price__value + ' mr-10'}>
+                        <h1 className='text text_type_digits-medium mr-2'>{`${data.totalPrice}`}</h1>
+                        <CurrencyIcon type="primary" />
+                    </div>
+                    <Button type="primary" size="large" onClick={(e) => handleSubmit(e, orderModal.orderId)}>
+                        Оформить заказ
+                    </Button>
+                </div>
+            </section>
+
+            {orderModal.isVisible && (<Modal closeModal={closeModal} headerTitle={false}>
+                <OrderDetails />
+            </Modal>)}
+        </>
+    );
 };
 
 export default BurgerConstructor

@@ -7,6 +7,7 @@ import ModalOverlay from '../ModalOverlay/ModalOverlay'
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 const Modal = ({closeModal, children, headerTitle}) => {
+
     const handleEscape = React.useCallback((evt) => {
         if (evt.key === 'Escape') {
             closeModal();
@@ -22,7 +23,7 @@ const Modal = ({closeModal, children, headerTitle}) => {
 
     return ReactDOM.createPortal(
         <section className={styles.modal}>
-            <ModalOverlay closeModal={closeModal} /> 
+            <ModalOverlay closeModal={closeModal} />
             <div className={styles.modal__card}>
 
                 <div className={styles.modal__content + ' mr-10 ml-10 mt-10'}>
