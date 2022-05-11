@@ -1,71 +1,11 @@
 import React, {useState, useEffect, useMemo, createRef} from "react";
-import PropTypes from 'prop-types';
-
 import styles from "./BurgerIngredients.module.css"
-import { Tab, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import {dataPropTypes} from '../../utils/dataPropTypes';
+import { Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import {useDispatch, useSelector} from "react-redux";
 import {CLOSE_MODAL, OPEN_INGREDIENT_MODAL} from "../../services/actions/modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
-import { useDrag } from "react-dnd";
-
-const Ingredient = ({ingredient, openModal}) => {
-    const [, ingrRef] = useDrag({
-        type: 'ingredient',
-        item: ingredient,
-    });
-
-    const handleIngredientClick = (e) => {
-        e.preventDefault();
-        openModal(ingredient);
-    };
-
-    return (
-        <div
-         className={styles.card + ' mt-6 ml-4 mr-2'}
-         onClick={handleIngredientClick}
-         ref={ingrRef}
-        >
-            <img src={ingredient.image} alt={ingredient.name}/>
-            <div className={styles.card__price + ' mt-1'}>
-                <h3 className='text text_type_digits-default mr-2'>{ingredient.price}</h3>
-                <CurrencyIcon type="primary"/>
-            </div>
-            <p className={styles.card__name + " text text_type_main-default mt-1"}>{ingredient.name}</p>
-        </div>
-    );
-};
-
-Ingredient.propTypes = {
-    ingredient: dataPropTypes.isRequired,
-    openModal: PropTypes.func.isRequired
-};
-
-const Menu = ({menu, type, openModal}) => {
-    return (
-        <>
-            <h1 className="text text_type_main-medium mt-10">{type}</h1>
-
-            <div className={styles.menu__type}>
-                {menu.map((ingredient) =>(
-                    <div key={ingredient._id}>
-                        <Ingredient
-                            ingredient={ingredient}
-                            openModal={openModal}
-                        />
-                    </div>
-                ))}
-            </div>
-        </>
-    );
-};
-
-Menu.propTypes = {
-    menu: PropTypes.arrayOf(dataPropTypes).isRequired,
-    type: PropTypes.string.isRequired,
-    openModal: PropTypes.func.isRequired
-};
+import { Menu } from '../Menu/Menu';
 
 const BurgerIngredients = () => {
     const dispatch = useDispatch();

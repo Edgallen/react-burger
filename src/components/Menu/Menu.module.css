@@ -1,0 +1,22 @@
+.menu__type {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 600px;
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 272px;
+    cursor: pointer;
+}
+.card__name {
+    text-align: center;
+}
+
+.card__price {
+    display: flex;
+    align-items: center;
+}

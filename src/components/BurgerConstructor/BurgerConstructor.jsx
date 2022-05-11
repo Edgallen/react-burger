@@ -95,19 +95,22 @@ const BurgerConstructor = () => {
     });
 
     const totalPrice = useMemo(() => {
-        let cartPrice = data.bun.price * 2;
+        let cartPrice = 0;
 
         data.cart.forEach(ingredient => {
             cartPrice += ingredient.price;
         });
 
-        return isNaN(cartPrice) ? 0 : cartPrice
+        if (data.bun.price) {
+            cartPrice += data.bun.price * 2;
+        }
+
+        return cartPrice
     }, [data.bun, data.cart]);
 
     useEffect(() => {
         let cartId = [];
         data.cart.forEach(ingredient => {
-            console.log(ingredient)
             cartId.push(ingredient._id)
         });
 
@@ -147,9 +150,17 @@ const BurgerConstructor = () => {
     return (
         <>
             <section className={styles.section + ` mt-25 ml-10`} ref={dropContainer}>
-                <div>
-                    {!data.isLoading && <IngredientsConstructor state={data} handleDelete={deleteIngredient}/>}
-                </div>
+                {!data.isLoading && (
+                    <div>
+                        <IngredientsConstructor state={data} handleDelete={deleteIngredient}/>
+                    </div>
+                )}
+
+                {data.isLoading && (
+                    <div className={styles.constructor__isLoading} >
+                        <h1 className="text text_type_main-medium text_color_inactive" >Перетащите сюда ингредиенты</h1>
+                    </div>
+                )}
 
                 <div className={styles.price + ' mt-10 mr-4'}>
                     <div className={styles.price__value + ' mr-10'}>

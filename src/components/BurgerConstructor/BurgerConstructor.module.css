@@ -22,6 +22,15 @@
     gap: 16px;
 }
 
+.constructor__isLoading {
+    display: flex;
+    height: 500px;
+    justify-content: center;
+    align-items: center;
+    background-color: #1C1C21;
+    border-radius: 1rem;
+}
+
 .constructor__list {
     position: static;
     max-height: 465px;
