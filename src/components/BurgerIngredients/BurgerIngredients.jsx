@@ -8,15 +8,25 @@ import {useDispatch, useSelector} from "react-redux";
 import {CLOSE_MODAL, OPEN_INGREDIENT_MODAL} from "../../services/actions/modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
+import { useDrag } from "react-dnd";
 
 const Ingredient = ({ingredient, openModal}) => {
+    const [, ingrRef] = useDrag({
+        type: 'ingredient',
+        item: ingredient,
+    });
+
     const handleIngredientClick = (e) => {
         e.preventDefault();
         openModal(ingredient);
     };
 
     return (
-        <div className={styles.card + ' mt-6 ml-4 mr-2'} onClick={handleIngredientClick}>
+        <div
+         className={styles.card + ' mt-6 ml-4 mr-2'}
+         onClick={handleIngredientClick}
+         ref={ingrRef}
+        >
             <img src={ingredient.image} alt={ingredient.name}/>
             <div className={styles.card__price + ' mt-1'}>
                 <h3 className='text text_type_digits-default mr-2'>{ingredient.price}</h3>

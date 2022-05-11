@@ -1,5 +1,7 @@
 import {
-    CLOSE_MODAL, GET_ORDER_MODAL_FAILED,
+    CLOSE_MODAL,
+    UPDATE_ORDER_MODAL,
+    GET_ORDER_MODAL_FAILED,
     GET_ORDER_MODAL_REQUEST,
     GET_ORDER_MODAL_SUCCESS,
     OPEN_INGREDIENT_MODAL
@@ -13,6 +15,7 @@ const initialState = {
 
     orderModal: {
         orderId: 0,
+        cartId: 0,
         isLoading: false,
         isFailed: false,
         isVisible: false
@@ -27,6 +30,12 @@ export const modalReducer = (state = initialState, action: any) => {
                 ingredientModal: {...state.ingredientModal, isVisible: false},
                 orderModal: {...state.orderModal, isVisible: false}
             };
+        }
+        case UPDATE_ORDER_MODAL: {
+            return {
+                ...state,
+                orderModal: {...state.orderModal, cartId: [action.payload]}
+            }
         }
         case OPEN_INGREDIENT_MODAL: {
             return {

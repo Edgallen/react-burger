@@ -1,3 +1,7 @@
+.section {
+    width: 610px;
+}
+
 .price {
     display: flex;
     align-items: center;

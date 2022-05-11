@@ -17,16 +17,21 @@ export const constructorReducer = (state = initialState, action: any) => {
             if (action.payload.type === 'bun') {
                 return {
                     ...state,
-                    bun: action.payload
+                    bun: action.payload,
+                    isLoading: false
                 }
             }
             return {
                 ...state,
-                cart: [...state.cart, action.payload]
+                cart: [...state.cart, action.payload],
+                isLoading: false
             }
         }
         case REMOVE_FROM_CART: {
-            return {...state} // ДОДЕЛАТЬ!!!!!
+            return {
+                ...state,
+                cart: state.cart.filter((item, index) => index !== action.payload)
+            } 
         }
         case RESET_CART: {
             return {

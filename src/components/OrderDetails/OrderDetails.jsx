@@ -9,7 +9,7 @@ const OrderDetails = () => {
 
     return (
         <div className={styles.module__container}>
-            {orderModal.isLoading && orderModal.isFailed && <h1 className={styles.module__id + " text text_type_digits-large mt-6"}>{orderModal.responseId}</h1>}
+            {!orderModal.isLoading && !orderModal.isFailed && <h1 className={styles.module__id + " text text_type_digits-large mt-6"}>{orderModal.orderId}</h1>}
             <p className="text text_type_main-medium mt-8" >идентификатор заказа</p>
 
             <div className={styles.module__img + ' mt-15 mb-15'}>
