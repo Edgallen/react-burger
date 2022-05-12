@@ -1,7 +1,8 @@
+import React, {useEffect, useState} from "react";
+
 import styles from "./Menu.module.css";
 import PropTypes from "prop-types";
 import {dataPropTypes} from "../../utils/dataPropTypes";
-import React, {useEffect, useState} from "react";
 import {useDrag} from "react-dnd";
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useSelector} from "react-redux";
@@ -20,13 +21,12 @@ const Ingredient = ({ingredient, openModal}) => {
         if (burgerConstructor.bun._id === ingredient._id) {
             setCounter({...counter, count: 2})
             return
-        }
+        };
 
         setCounter({
             count: burgerConstructor.cart.filter(item => item._id === ingredient._id).length
-        })
+        });
     }, [burgerConstructor.cart, burgerConstructor.bun])
-
 
     const handleIngredientClick = (e) => {
         e.preventDefault();

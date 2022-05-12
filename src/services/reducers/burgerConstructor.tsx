@@ -1,5 +1,6 @@
 import {
     ADD_TO_CART,
+    SET_CART,
     REMOVE_FROM_CART,
     RESET_CART
 } from "../actions/burgerConstructor";
@@ -25,6 +26,12 @@ export const constructorReducer = (state = initialState, action: any) => {
                 cart: [...state.cart, action.payload],
                 isLoading: false
             }
+        }
+        case SET_CART: {
+            return {
+                ...state,
+                cart: action.payload
+            } 
         }
         case REMOVE_FROM_CART: {
             return {
