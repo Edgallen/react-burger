@@ -5,6 +5,8 @@ import styles from './IngredientsConstructor.module.css';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { dataPropTypes } from '../../utils/dataPropTypes';
 import { useDrag, useDrop } from "react-dnd";
+import { useDispatch } from "react-redux";
+import { removeFromCart } from '../../services/actions/burgerConstructor';
 
 const BunConstructor = ({position, positionText, bun}) => {
     return (
@@ -26,17 +28,16 @@ BunConstructor.propTypes = {
     bun: dataPropTypes.isRequired
 };
 
-const ConstructorElements = ({ingredient, index, handleDelete, moveCard}) => {
+const ConstructorElements = ({ingredient, index, moveCard}) => {
+    const dispatch = useDispatch();
+
     const id = ingredient._id;
     const ref = useRef(null);
-    const [{ isDragging }, drag] = useDrag({
+    const [, drag] = useDrag({
         type: 'card',
         item: () => {
             return { id, index }
-        },
-        collect: (monitor) => ({
-            isDragging: monitor.isDragging()
-        })
+        }
     });
 
     const [, drop] = useDrop({
@@ -65,11 +66,14 @@ const ConstructorElements = ({ingredient, index, handleDelete, moveCard}) => {
         },
     });
 
-    const opacity = isDragging ? 0 : 1;
+    const handleDelete = (index) => {
+        dispatch(removeFromCart(index));
+    };
+
     drag(drop(ref));
     return (
         <>
-            <li className={styles.constructor__card} style={{...styles, opacity}} ref={ref}>
+            <li className={styles.constructor__card} ref={ref}>
                 <DragIcon type="primary" />
                 <ConstructorElement
                     text={ingredient.name}
@@ -85,27 +89,22 @@ const ConstructorElements = ({ingredient, index, handleDelete, moveCard}) => {
 ConstructorElements.propTypes = {
     ingredient: dataPropTypes.isRequired,
     index: PropTypes.number.isRequired,
-    handleDelete: PropTypes.func.isRequired,
     moveCard: PropTypes.func.isRequired
 };
 
-const IngredientsConstructor = ({state, handleDelete, moveCard}) => {
-    let id = 1;
-
+const IngredientsConstructor = ({state, moveCard}) => {
     return (
         <div className={styles.constructor + ' pr-2'}>
             {state.bun.type && <BunConstructor position='top' positionText='(верх)' bun={state.bun} />}
 
             <div className={styles.constructor__list + ' pr-2'}>
                 {state.cart.map((ingredient, index) => (
-                    <div key={id++}>
-                        <ConstructorElements
-                            ingredient={ingredient}
-                            index={index}
-                            handleDelete={handleDelete}
-                            moveCard={moveCard}
-                        />
-                    </div>
+                    <ConstructorElements
+                        ingredient={ingredient}
+                        index={index}
+                        moveCard={moveCard}
+                        key={state.cartIds[index]}
+                    />
                 ))}
             </div>
 
@@ -117,10 +116,9 @@ const IngredientsConstructor = ({state, handleDelete, moveCard}) => {
 
 IngredientsConstructor.propTypes = {
     state: PropTypes.shape({
-        cart: PropTypes.array.isRequired,
-        bun: PropTypes.object.isRequired
+        cart: PropTypes.arrayOf(dataPropTypes).isRequired,
+        bun: dataPropTypes.isRequired
     }).isRequired,
-    handleDelete: PropTypes.func.isRequired,
     moveCard: PropTypes.func.isRequired
 };
 

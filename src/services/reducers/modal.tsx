@@ -42,7 +42,7 @@ export const modalReducer = (state = initialState, action: any) => {
                 ...state,
                 ingredientModal: {
                     ...state.ingredientModal,
-                    selectedIngredient: action.ingredient,
+                    selectedIngredient: action.payload,
                     isVisible: true
                 }
             };
@@ -53,7 +53,7 @@ export const modalReducer = (state = initialState, action: any) => {
                 orderModal: {
                     ...state.orderModal,
                     isLoading: true,
-                    isVisible: false
+                    isVisible: true
                 }
             };
         }
@@ -75,7 +75,7 @@ export const modalReducer = (state = initialState, action: any) => {
                 orderModal: {
                     ...state.orderModal,
                     isFailed: true,
-                    isVisible: false
+                    isVisible: true
                 }
             };
         }

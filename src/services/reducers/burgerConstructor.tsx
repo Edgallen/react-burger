@@ -7,6 +7,7 @@ import {
 
 const initialState = {
     cart: [],
+    cartIds: [],
     bun: {},
     isLoading: true
 };
@@ -24,6 +25,7 @@ export const constructorReducer = (state = initialState, action: any) => {
             return {
                 ...state,
                 cart: [...state.cart, action.payload],
+                cartIds: [...state.cartIds, action.id],
                 isLoading: false
             }
         }
@@ -43,6 +45,7 @@ export const constructorReducer = (state = initialState, action: any) => {
             return {
                 ...state,
                     cart: [],
+                    cartIds: [],
                     bun: {},
                     isLoading: true
             }

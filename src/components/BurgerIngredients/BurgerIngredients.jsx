@@ -1,14 +1,12 @@
 import React, {useState, useEffect, useMemo, createRef} from "react";
 import styles from "./BurgerIngredients.module.css"
 import { Tab} from '@ya.praktikum/react-developer-burger-ui-components';
-import {useDispatch, useSelector} from "react-redux";
-import {CLOSE_MODAL, OPEN_INGREDIENT_MODAL} from "../../services/actions/modal";
+import {useSelector} from "react-redux";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
 import { Menu } from '../Menu/Menu';
 
 const BurgerIngredients = () => {
-    const dispatch = useDispatch();
     const data = useSelector(store => store.burgerIngredients.ingredients)
     const ingredientModal = useSelector(store => store.modal.ingredientModal)
     const [state, setState] = useState({
@@ -54,16 +52,6 @@ const BurgerIngredients = () => {
             }
         })
     }, [data]);
-
-    const openModal = (e) => {
-        dispatch({
-            type: OPEN_INGREDIENT_MODAL,
-            ingredient: e
-        });
-    };
-    const closeModal = () => {
-        dispatch({type: CLOSE_MODAL})
-    };
 
     const selectTab = (tab) => {
         tabsRef[tab].current.scrollIntoView({ behavior: "smooth" });
@@ -129,7 +117,6 @@ const BurgerIngredients = () => {
                                 <Menu
                                     menu={state[type].ingredients}
                                     type={state[type].title}
-                                    openModal={openModal}
                                 />
                             </div>
                         ))}
@@ -138,7 +125,7 @@ const BurgerIngredients = () => {
 
             </section>
 
-            {ingredientModal.isVisible && (<Modal closeModal={closeModal} headerTitle='Детали ингредиента'>
+            {ingredientModal.isVisible && (<Modal headerTitle='Детали ингредиента'>
                 <IngredientDetails/>
             </Modal>)}
         </>

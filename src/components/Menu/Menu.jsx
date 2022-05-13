@@ -6,8 +6,11 @@ import {dataPropTypes} from "../../utils/dataPropTypes";
 import {useDrag} from "react-dnd";
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useSelector} from "react-redux";
+import { useDispatch } from "react-redux";
+import { openModal } from '../../services/actions/modal'
 
-const Ingredient = ({ingredient, openModal}) => {
+const Ingredient = ({ingredient}) => {
+    const dispatch = useDispatch();
     const burgerConstructor = useSelector(store => store.burgerConstructor)
     const [counter, setCounter] = useState({
         count: 0
@@ -30,7 +33,7 @@ const Ingredient = ({ingredient, openModal}) => {
 
     const handleIngredientClick = (e) => {
         e.preventDefault();
-        openModal(ingredient);
+        dispatch(openModal(ingredient));
     };
 
     return (
@@ -51,11 +54,10 @@ const Ingredient = ({ingredient, openModal}) => {
 };
 
 Ingredient.propTypes = {
-    ingredient: dataPropTypes.isRequired,
-    openModal: PropTypes.func.isRequired
+    ingredient: dataPropTypes.isRequired
 };
 
-export const Menu = ({menu, type, openModal}) => {
+export const Menu = ({menu, type}) => {
     return (
         <>
             <h1 className="text text_type_main-medium mt-10">{type}</h1>
@@ -65,7 +67,6 @@ export const Menu = ({menu, type, openModal}) => {
                     <div key={ingredient._id}>
                         <Ingredient
                             ingredient={ingredient}
-                            openModal={openModal}
                         />
                     </div>
                 ))}
@@ -76,6 +77,5 @@ export const Menu = ({menu, type, openModal}) => {
 
 Menu.propTypes = {
     menu: PropTypes.arrayOf(dataPropTypes).isRequired,
-    type: PropTypes.string.isRequired,
-    openModal: PropTypes.func.isRequired
+    type: PropTypes.string.isRequired
 };

@@ -3,26 +3,23 @@ import React, {useMemo, useEffect} from "react";
 import styles from './BurgerConstructor.module.css';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import {useDispatch, useSelector} from "react-redux";
-import {CLOSE_MODAL, UPDATE_ORDER_MODAL, getOrderId} from "../../services/actions/modal";
-import {ADD_TO_CART, SET_CART, REMOVE_FROM_CART} from "../../services/actions/burgerConstructor";
+import {getOrderId, updateOrderModal} from "../../services/actions/modal";
+import {addToCart, setCart} from "../../services/actions/burgerConstructor";
 import IngredientsConstructor from '../IngredientsConstructor/IngredientsConstructor'
 import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
 import { useDrop } from "react-dnd";
+import { v4 as uuid } from 'uuid';
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
     const data = useSelector(store => store.burgerConstructor);
     const orderModal = useSelector(store => store.modal.orderModal);
 
-
     const [, dropContainer] = useDrop({
         accept: 'ingredient',
         drop(item) {
-            dispatch({
-                type: ADD_TO_CART,
-                payload: item
-            })
+            dispatch(addToCart(item, uuid()));
         }
     });
 
@@ -50,32 +47,22 @@ const BurgerConstructor = () => {
             cartId.push(data.bun._id, data.bun._id)
         }
 
-        dispatch({
-            type: UPDATE_ORDER_MODAL,
-            payload: cartId
-        })
+        dispatch(updateOrderModal(cartId));
     }, [data.bun, data.cart]);
 
 
     const handleSubmit = (e, cartId) => {
         e.preventDefault();
 
+        if (!data.bun.type || data.cart.length === 0) {
+            return
+        }
+
         const body = {
             'ingredients': cartId
         };
 
         dispatch(getOrderId(body));
-    };
-
-    const closeModal = () => {
-        dispatch({type: CLOSE_MODAL})
-    };
-
-    const deleteIngredient = (index) => {
-        dispatch({
-            type: REMOVE_FROM_CART,
-            payload: index
-        })
     };
     
     const moveCard = (dragIndex, hoverIndex) => {
@@ -84,10 +71,7 @@ const BurgerConstructor = () => {
         newCart.splice(dragIndex, 1);
         newCart.splice(hoverIndex, 0, dragCard);
 
-        dispatch({
-            type: SET_CART,
-            payload: newCart
-        });
+        dispatch(setCart(newCart));
     };
 
     return (
@@ -97,7 +81,6 @@ const BurgerConstructor = () => {
                     <div>
                         <IngredientsConstructor
                         state={data}
-                        handleDelete={deleteIngredient}
                         moveCard={moveCard}
                         />
                     </div>
@@ -120,7 +103,7 @@ const BurgerConstructor = () => {
                 </div>
             </section>
 
-            {orderModal.isVisible && (<Modal closeModal={closeModal} headerTitle={false}>
+            {orderModal.isVisible && (<Modal headerTitle={false}>
                 <OrderDetails />
             </Modal>)}
         </>
