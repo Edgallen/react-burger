@@ -103,7 +103,7 @@ const IngredientsConstructor = ({state, moveCard}) => {
                         ingredient={ingredient}
                         index={index}
                         moveCard={moveCard}
-                        key={state.cartIds[index]}
+                        key={ingredient.id}
                     />
                 ))}
             </div>

@@ -4,7 +4,7 @@ import styles from './BurgerConstructor.module.css';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import {useDispatch, useSelector} from "react-redux";
 import {getOrderId, updateOrderModal} from "../../services/actions/modal";
-import {addToCart, setCart} from "../../services/actions/burgerConstructor";
+import {addToCart, addBun, setCart} from "../../services/actions/burgerConstructor";
 import IngredientsConstructor from '../IngredientsConstructor/IngredientsConstructor'
 import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
@@ -19,7 +19,12 @@ const BurgerConstructor = () => {
     const [, dropContainer] = useDrop({
         accept: 'ingredient',
         drop(item) {
-            dispatch(addToCart(item, uuid()));
+            if (item.type === 'bun') {
+                dispatch(addBun(item));
+                return
+            }
+            const id = uuid();
+            dispatch(addToCart(item, id));
         }
     });
 

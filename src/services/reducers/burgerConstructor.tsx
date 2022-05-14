@@ -1,5 +1,6 @@
 import {
     ADD_TO_CART,
+    ADD_BUN,
     SET_CART,
     REMOVE_FROM_CART,
     RESET_CART
@@ -7,7 +8,6 @@ import {
 
 const initialState = {
     cart: [],
-    cartIds: [],
     bun: {},
     isLoading: true
 };
@@ -15,25 +15,24 @@ const initialState = {
 export const constructorReducer = (state = initialState, action: any) => {
     switch (action.type) {
         case ADD_TO_CART: {
-            if (action.payload.type === 'bun') {
-                return {
-                    ...state,
-                    bun: action.payload,
-                    isLoading: false
-                }
-            }
             return {
                 ...state,
                 cart: [...state.cart, action.payload],
-                cartIds: [...state.cartIds, action.id],
                 isLoading: false
             }
+        }
+        case ADD_BUN: {
+            return {
+                ...state,
+                bun: action.payload,
+                isLoading: false
+            } 
         }
         case SET_CART: {
             return {
                 ...state,
                 cart: action.payload
-            } 
+            }
         }
         case REMOVE_FROM_CART: {
             return {
