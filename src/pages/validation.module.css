@@ -1,0 +1,59 @@
+.login {
+    display: flex;
+    flex-direction: column;
+    margin-top: 180px;
+}
+
+.login__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    width: 480px;
+}
+
+.login__input {
+    width: 480px;
+}
+
+.login__service {
+    display: flex;
+    flex-direction: column;
+   align-items: center;
+}
+
+.login__link {
+    color: #4C4CFF;
+    text-decoration: none;
+    transition: .4s;
+}
+
+.login__link:hover {
+    color: #ffffff;
+}
+
+.profile {
+    display: flex;
+    margin-top: 180px;
+}
+
+.profile__selector {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile__tabs {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile__tab {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 64px;
+}
+
+.profile__description {
+    max-width: 320px;
+}

@@ -53,4 +53,4 @@ export const updateOrderModal = (id: any) => {
             console.log(`Что-то пошло не так ${e}`);
         })
     };
-};
+}

@@ -8,6 +8,18 @@ import {useDispatch} from "react-redux";
 import {getIngredients} from "../../services/actions/burgerIngredients";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from 'react-dnd-html5-backend';
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+} from "react-router-dom";
+import {
+    LoginPage,
+    RegisterPage,
+    ForgotPasswordPage,
+    ResetPasswordPage,
+    ProfilePage
+} from '../../pages'
 
 const App = () => {
   const dispatch = useDispatch();
@@ -22,10 +34,36 @@ const App = () => {
       <AppHeader />
       
       <main className={styles.body}>
-          <DndProvider backend={HTML5Backend}>
-              <BurgerIngredients />
-              <BurgerConstructor />
-          </DndProvider>
+          <BrowserRouter>
+              <Routes>
+                  <Route path='/' element={
+                      <DndProvider backend={HTML5Backend}>
+                          <BurgerIngredients />
+                          <BurgerConstructor />
+                      </DndProvider>
+                  }/>
+
+                  <Route path='/login' element={
+                      <LoginPage />
+                  }/>
+
+                  <Route path='/register' element={
+                      <RegisterPage />
+                  }/>
+
+                  <Route path='/forgot-password' element={
+                      <ForgotPasswordPage />
+                  }/>
+
+                  <Route path='/reset-password' element={
+                      <ResetPasswordPage />
+                  }/>
+
+                  <Route path='/profile' element={
+                      <ProfilePage />
+                  }/>
+              </Routes>
+          </BrowserRouter>
       </main>
     </>
   );
