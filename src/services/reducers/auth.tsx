@@ -1,32 +1,42 @@
 import {
-    RESET_PASSWORD_FAILED,
-    RESET_PASSWORD_REQUEST,
-    RESET_PASSWORD_SUCCESS
+    REGISTER_USER_SUCCESS,
+    REGISTER_USER_FAILED,
+    RECOVERY_FAILED,
+    RECOVERY_SUCCESS
 } from "../actions/auth";
 
 const initialState = {
-    recoveryEmail: '',
-    recoverIsLoading: true,
-    recoverIsFailed: false,
+    isAuth: false,
+    authFailed: false,
 
+    recoveryRequest: false,
+    recoverIsFailed: false,
+    
 };
 
 export const authReducer = (state = initialState, action: any) => {
     switch (action.type) {
-        case RESET_PASSWORD_REQUEST: {
+        case REGISTER_USER_SUCCESS: {
             return {
                 ...state,
-                recoverIsLoading: true
+                isAuth: true,
+                authFailed: false
             };
         }
-        case RESET_PASSWORD_SUCCESS: {
+        case REGISTER_USER_FAILED: {
             return {
                 ...state,
-                recoverIsLoading: false,
+                authFailed: true
+            };
+        }
+        case RECOVERY_SUCCESS: {
+            return {
+                ...state,
+                recoveryRequest: true,
                 recoverIsFailed: false
             };
         }
-        case RESET_PASSWORD_FAILED: {
+        case RECOVERY_FAILED: {
             return {
                 ...state,
                 recoverIsFailed: true

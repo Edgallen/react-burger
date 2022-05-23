@@ -12,6 +12,7 @@ import {
     BrowserRouter,
     Routes,
     Route,
+    Router,
 } from "react-router-dom";
 import {
     LoginPage,
@@ -20,6 +21,7 @@ import {
     ResetPasswordPage,
     ProfilePage
 } from '../../pages'
+import Switcher from '../Switcher/Switcher'
 
 const App = () => {
   const dispatch = useDispatch();
@@ -31,40 +33,9 @@ const App = () => {
 
   return (
     <>
-      <AppHeader />
-      
-      <main className={styles.body}>
-          <BrowserRouter>
-              <Routes>
-                  <Route path='/' element={
-                      <DndProvider backend={HTML5Backend}>
-                          <BurgerIngredients />
-                          <BurgerConstructor />
-                      </DndProvider>
-                  }/>
-
-                  <Route path='/login' element={
-                      <LoginPage />
-                  }/>
-
-                  <Route path='/register' element={
-                      <RegisterPage />
-                  }/>
-
-                  <Route path='/forgot-password' element={
-                      <ForgotPasswordPage />
-                  }/>
-
-                  <Route path='/reset-password' element={
-                      <ResetPasswordPage />
-                  }/>
-
-                  <Route path='/profile' element={
-                      <ProfilePage />
-                  }/>
-              </Routes>
-          </BrowserRouter>
-      </main>
+        <BrowserRouter>
+            <Switcher />
+        </BrowserRouter>
     </>
   );
 };
