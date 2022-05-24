@@ -1,11 +1,15 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styles from './validation.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "./layout";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../services/actions/auth";
 
 export const LoginPage = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const data = useSelector(store => store.auth)
     
     const [inputs, setInputs] = useState({
         email: '',
@@ -15,10 +19,24 @@ export const LoginPage = () => {
     })
     const inputRef = React.useRef(null)
 
+    useEffect(() => {
+        if (data.isAuth) {
+            navigate('/profile');
+        }
+    }, [data.isAuth]);
+
     const onIconClick = () => {
         inputs.passwordType === 'password'
         ? setInputs({...inputs, passwordType: 'text', passwordIcon: 'HideIcon'}) 
         : setInputs({...inputs, passwordType: 'password', passwordIcon: 'ShowIcon'});
+    };
+
+    const onLogInClick = () => {
+        const data = {
+            'email': inputs.email,
+            'password': inputs.password
+        }
+        dispatch(loginUser(data));
     }
 
     return (
@@ -60,6 +78,7 @@ export const LoginPage = () => {
                     <Button
                         type="primary"
                         size="big"
+                        onClick={onLogInClick}
                     >
                         Войти
                     </Button>
