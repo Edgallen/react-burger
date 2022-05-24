@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Layout from "./layout";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../services/actions/auth";
+import {useCallback} from "react";
 
 export const LoginPage = () => {
     const dispatch = useDispatch();
@@ -31,7 +32,8 @@ export const LoginPage = () => {
         : setInputs({...inputs, passwordType: 'password', passwordIcon: 'ShowIcon'});
     };
 
-    const onLogInClick = () => {
+    const onLogInClick = (e) => {
+        e.preventDefault();
         const data = {
             'email': inputs.email,
             'password': inputs.password

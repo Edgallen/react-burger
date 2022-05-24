@@ -3,7 +3,8 @@ import {
     REGISTER_USER_FAILED,
     RECOVERY_FAILED,
     RECOVERY_SUCCESS,
-    SIGNIN_USER
+    SIGN_IN_USER,
+    SIGN_OUT_USER
 } from "../actions/auth";
 
 const initialState = {
@@ -16,10 +17,17 @@ const initialState = {
 
 export const authReducer = (state = initialState, action: any) => {
     switch (action.type) {
-        case SIGNIN_USER: {
+        case SIGN_IN_USER: {
             return {
                 ...state,
                 isAuth: true,
+                authFailed: false,
+            };
+        }
+        case SIGN_OUT_USER: {
+            return {
+                ...state,
+                isAuth: false,
                 authFailed: false,
             };
         }

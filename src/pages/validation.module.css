@@ -52,6 +52,7 @@
     align-items: center;
     justify-content: flex-start;
     min-height: 64px;
+    cursor: pointer;
 }
 
 .profile__description {

@@ -1,7 +1,8 @@
 import {baseUrl, checkResponse} from "../../utils/fetchData";
 import { setCookie } from "../../utils/cookies";
 
-export const SIGNIN_USER = 'SIGNIN_USER';
+export const SIGN_IN_USER = 'SIGN_IN_USER';
+export const SIGN_OUT_USER = 'SIGN_OUT_USER';
 
 export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
 export const REGISTER_USER_FAILED = 'REGISTER_USER_FAILED';
@@ -15,7 +16,7 @@ export const RESET_FAILED = 'RESET_FAILED';
 
 const signIn = (data: any) => {
     return{
-        type: SIGNIN_USER,
+        type: SIGN_IN_USER,
         payload: data
     };
 };
@@ -41,7 +42,7 @@ export function loginUser(body: any) {
                     setCookie('token', accessToken);
                 }
                 if (refreshToken) {
-                    setCookie('rtoken', refreshToken);
+                    setCookie('refreshToken', refreshToken);
                 }
                 dispatch(signIn({
                     ...data.user
@@ -54,6 +55,31 @@ export function loginUser(body: any) {
     };
 };
 
+export function logoutUser(body: any) {
+    return (dispatch: any) => {
+        fetch(`${baseUrl}/auth/logout`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+            .then(checkResponse)
+            .then(data => {
+                if (!data.success) {
+                    console.log(data)
+                } else {
+                    dispatch({
+                        type: SIGN_OUT_USER
+                    });
+                }
+            })
+            .catch(e => {
+                console.log(`Что-то пошло не так ${e}`);
+            })
+    }
+}
+
 export function registerUser(body: any) {
     return (dispatch: any) => {
         fetch(`${baseUrl}/auth/register`, {
@@ -65,8 +91,12 @@ export function registerUser(body: any) {
         })
         .then(checkResponse)
         .then(data => {
-            dispatch({ type: REGISTER_USER_SUCCESS });
-            console.log(data);
+            if (!data.success) {
+                console.log(data)
+            } else {
+                dispatch({ type: REGISTER_USER_SUCCESS });
+                console.log(data);
+            }
         })
         .catch(e => {
             dispatch({ type: REGISTER_USER_FAILED })

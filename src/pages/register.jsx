@@ -32,7 +32,8 @@ export const RegisterPage = () => {
         : setInputs({...inputs, passwordType: 'password', passwordIcon: 'ShowIcon'});
     }
 
-    const onRegisterClick = () => {
+    const onRegisterClick = (e) => {
+        e.preventDefault();
         const body = {
             'email': inputs.email,
             'password': inputs.password,
