@@ -1,5 +1,5 @@
 import {baseUrl, checkResponse} from "../../utils/fetchData";
-import { setCookie } from "../../utils/cookies";
+import { deleteCookie, setCookie } from "../../utils/cookies";
 
 export const SIGN_IN_USER = 'SIGN_IN_USER';
 export const SIGN_OUT_USER = 'SIGN_OUT_USER';
@@ -69,6 +69,8 @@ export function logoutUser(body: any) {
                 if (!data.success) {
                     console.log(data)
                 } else {
+                    deleteCookie('token');
+                    deleteCookie('refreshToken');
                     dispatch({
                         type: SIGN_OUT_USER
                     });

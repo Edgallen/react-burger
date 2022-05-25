@@ -29,7 +29,7 @@ export const ResetPasswordPage = () => {
             'token': inputs.token
         }
 
-        dispatch(resetPassword(body))
+        dispatch(resetPassword(body));
     };
 
     return (
