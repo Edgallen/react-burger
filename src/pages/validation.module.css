@@ -37,6 +37,12 @@
     margin-top: 180px;
 }
 
+.profile__buttons {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
 .profile__selector {
     display: flex;
     flex-direction: column;

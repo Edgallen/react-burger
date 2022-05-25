@@ -4,7 +4,7 @@ import {
     RECOVERY_FAILED,
     RECOVERY_SUCCESS,
     SIGN_IN_USER,
-    SIGN_OUT_USER
+    SIGN_OUT_USER, SET_USER
 } from "../actions/auth";
 
 const initialState = {
@@ -13,6 +13,8 @@ const initialState = {
 
     recoveryRequest: false,
     recoverIsFailed: false,
+
+    user: { }
 };
 
 export const authReducer = (state = initialState, action: any) => {
@@ -56,6 +58,14 @@ export const authReducer = (state = initialState, action: any) => {
                 ...state,
                 recoverIsFailed: true
             };
+        }
+        case SET_USER: {
+            return {
+                ...state,
+                user: {
+                    ...action.payload.user
+                }
+            }
         }
         default: {
             return state;

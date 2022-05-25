@@ -1,24 +1,36 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import styles from './validation.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import Layout from "./layout";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {getCookie} from "../utils/cookies";
-import {logoutUser} from "../services/actions/auth";
+import {getUser, logoutUser, updateUser} from "../services/actions/auth";
 
 export const ProfilePage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const data = useSelector(store => store.auth)
+    const [nameEdit, setNameEdit] = useState(true)
+    const [loginEdit, setLoginEdit] = useState(true)
+    const [passwordEdit, setPasswordEdit] = useState(true)
     const [inputs, setInputs] = useState({
         name: '',
         login: '',
         password: '',
-        icon: 'EditIcon'
-    })
-    const inputRef = React.useRef(null)
+        icon: 'EditIcon',
+    });
+
+    useEffect(() => {
+        dispatch(getUser());
+
+        setInputs({
+            ...inputs,
+            name: data.user.name,
+            login: data.user.email
+        })
+    }, []);
 
     useEffect(() => {
         if (!data.isAuth) {
@@ -26,12 +38,7 @@ export const ProfilePage = () => {
         }
     }, [data.isAuth])
 
-    const onIconClick = () => {
-        setTimeout(() => inputRef.current.focus(), 0)
-        alert('Icon Click Callback')
-    };
-
-    const onLogoutClick = (e) => {
+    const onLogoutHandler = (e) => {
         e.preventDefault();
         // @ts-ignore
         const refreshToken = getCookie('refreshToken');
@@ -39,6 +46,34 @@ export const ProfilePage = () => {
             "token": refreshToken
         };
         dispatch(logoutUser(body));
+    };
+
+    const defaultEdits = () => {
+        setNameEdit(true);
+        setLoginEdit(true);
+        setPasswordEdit(true);
+    };
+
+    const cancelButtonHandler = (e) => {
+        e.preventDefault();
+
+        setInputs({
+            ...inputs,
+            name: data.user.name,
+            login: data.user.email
+        });
+        defaultEdits();
+    };
+
+    const saveButtonHandler = (e) => {
+        e.preventDefault();
+
+        const body = {
+          'name':  inputs.name,
+          'login':  inputs.email,
+        };
+        dispatch(updateUser(body));
+        defaultEdits();
     };
 
     return (
@@ -50,7 +85,7 @@ export const ProfilePage = () => {
                         <h1 className={`${styles.profile__tab} text text_type_main-medium text_color_inactive`}>История заказов</h1>
                         <h1
                             className={`${styles.profile__tab} text text_type_main-medium text_color_inactive`}
-                            onClick={onLogoutClick}
+                            onClick={onLogoutHandler}
                         >
                             Выход
                         </h1>
@@ -66,6 +101,7 @@ export const ProfilePage = () => {
                 <div className={styles.login__form}>
                     <Input
                         type={'text'}
+                        name={'name'}
                         placeholder={'Имя'}
                         onChange={e => setInputs({
                             ...inputs,
@@ -73,15 +109,16 @@ export const ProfilePage = () => {
                         })}
                         error={false}
                         value={inputs.name}
-                        ref={inputRef}
-                        onIconClick={onIconClick}
+                        onIconClick={() => setNameEdit(!nameEdit)}
                         icon={inputs.icon}
                         errorText={'Ошибка'}
                         size={'default'}
+                        disabled={nameEdit}
                     />
 
                     <Input
                         type={'text'}
+                        name={'login'}
                         placeholder={'Логин'}
                         onChange={e => setInputs({
                             ...inputs,
@@ -89,13 +126,15 @@ export const ProfilePage = () => {
                         })}
                         error={false}
                         value={inputs.login}
-                        ref={inputRef}
+                        onIconClick={() => setLoginEdit(!loginEdit)}
                         icon={inputs.icon}
                         errorText={'Ошибка'}
+                        disabled={loginEdit}
                     />
 
                     <Input
                         type={'password'}
+                        name={'password'}
                         placeholder={'Пароль'}
                         onChange={e => setInputs({
                             ...inputs,
@@ -103,12 +142,30 @@ export const ProfilePage = () => {
                         })}
                         error={false}
                         value={inputs.password}
-                        ref={inputRef}
+                        onIconClick={() => setPasswordEdit(!passwordEdit)}
                         icon={inputs.icon}
                         errorText={'Ошибка'}
+                        disabled={passwordEdit}
                     />
 
+                    <div className={`${styles.profile__buttons} mt-6`}>
+                        <Button
+                            type="primary"
+                            size="big"
+                            onClick={saveButtonHandler}
+                        >
+                            Сохранить
+                        </Button>
+                        <Button
+                            type="primary"
+                            size="big"
+                            onClick={cancelButtonHandler}
+                        >
+                            Отмена
+                        </Button>
+                    </div>
                 </div>
+
             </section>
         </Layout>
     );
