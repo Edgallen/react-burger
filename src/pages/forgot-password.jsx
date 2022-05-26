@@ -24,6 +24,12 @@ export const ForgotPasswordPage = () => {
     };
 
     useEffect(() => {
+        if (!data.isForgot) {
+            data.isAuth === true ? navigate('/profile') : navigate('/login')
+        }
+    }, [data.isForgot, data.isAuth]);
+
+    useEffect(() => {
         if (data.recoveryRequest) {
             navigate(`/reset-password`);
         }

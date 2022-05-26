@@ -7,6 +7,7 @@ export const SIGN_OUT_USER = 'SIGN_OUT_USER';
 export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
 export const REGISTER_USER_FAILED = 'REGISTER_USER_FAILED';
 
+export const RECOVERY_REQUEST = 'RECOVERY_REQUEST';
 export const RECOVERY_SUCCESS = 'RECOVERY_SUCCESS';
 export const RECOVERY_FAILED = 'RECOVERY_FAILED';
 
@@ -29,6 +30,12 @@ const setUser = (data: any) => {
     };
 };
 
+export const recoveryRequest = () => {
+    return {
+        type: RECOVERY_REQUEST
+    };
+};
+
 
 export function loginUser(body: any) {
     return (dispatch: any) => {
@@ -41,22 +48,16 @@ export function loginUser(body: any) {
         })
         .then(checkResponse)
         .then(data => {
-            if (!data.success) {
-                console.log(data)
-            } else {
-                const accessToken = data.accessToken.split('Bearer ')[1];
-                console.log(accessToken)
-                const refreshToken = data.refreshToken;
-                if (accessToken) {
-                    setCookie('token', accessToken);
-                }
-                if (refreshToken) {
-                    setCookie('refreshToken', refreshToken);
-                }
-                dispatch(signIn({
-                    ...data.user
-                }))
-            }
+            const accessToken = data.accessToken.split('Bearer ')[1];
+            const refreshToken = data.refreshToken;
+            if (accessToken) {
+                setCookie('token', accessToken);
+            };
+            if (refreshToken) {
+                setCookie('refreshToken', refreshToken);
+            };
+
+            dispatch(signIn({ ...data.user }));
         })
         .catch(e => {
             console.log(`Что-то пошло не так ${e}`);
@@ -75,15 +76,11 @@ export function logoutUser(body: any) {
         })
         .then(checkResponse)
         .then(data => {
-            if (!data.success) {
-                console.log(data)
-            } else {
-                deleteCookie('token');
-                deleteCookie('refreshToken');
-                dispatch({
-                    type: SIGN_OUT_USER
-                });
-            }
+            deleteCookie('token');
+            deleteCookie('refreshToken');
+            dispatch({
+                type: SIGN_OUT_USER
+            });
         })
         .catch(e => {
             console.log(`Что-то пошло не так ${e}`);
@@ -102,19 +99,15 @@ export function registerUser(body: any) {
         })
         .then(checkResponse)
         .then(data => {
-            if (!data.success) {
-                console.log(data)
-            } else {
-                const accessToken = data.accessToken.split('Bearer ')[1];
-                const refreshToken = data.refreshToken;
-                if (accessToken) {
-                    setCookie('token', accessToken);
-                }
-                if (refreshToken) {
-                    setCookie('refreshToken', refreshToken);
-                }
-                dispatch({ type: REGISTER_USER_SUCCESS });
+            const accessToken = data.accessToken.split('Bearer ')[1];
+            const refreshToken = data.refreshToken;
+            if (accessToken) {
+                setCookie('token', accessToken);
             }
+            if (refreshToken) {
+                setCookie('refreshToken', refreshToken);
+            };
+            dispatch({ type: REGISTER_USER_SUCCESS });
         })
         .catch(e => {
             dispatch({ type: REGISTER_USER_FAILED })
@@ -193,13 +186,13 @@ export function updateUser(body: any) {
             },
             body: JSON.stringify(body)
         })
-            .then(checkResponse)
-            .then(data => {
-                dispatch(setUser(data));
-            })
-            .catch(e => {
-                dispatch({ type: RESET_FAILED });
-                console.log(`Что-то пошло не так ${e}`);
-            })
+        .then(checkResponse)
+        .then(data => {
+            dispatch(setUser(data));
+        })
+        .catch(e => {
+            dispatch({ type: RESET_FAILED });
+            console.log(`Что-то пошло не так ${e}`);
+        })
     };
 }

@@ -23,7 +23,7 @@ export const RegisterPage = () => {
     useEffect(() => {
         if (data.isAuth) {
             navigate(`/profile`);
-        }
+        };
     }, [data.isAuth]);
 
     const onIconClick = () => {

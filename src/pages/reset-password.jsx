@@ -1,21 +1,28 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import styles from './validation.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {resetPassword} from "../services/actions/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Layout from "./layout";
 
 export const ResetPasswordPage = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const data = useSelector(store => store.auth);
     const [inputs, setInputs] = useState({
         token: '',
         password: '',
         passwordType: 'password',
         passwordIcon: 'ShowIcon'
-    })
-    const inputRef = React.useRef(null)
+    });
+
+    useEffect(() => {
+        if (!data.recoveryRequest) {
+            data.isAuth === true ? navigate('/profile') : navigate('/login')
+        }
+    }, [data.recoveryRequest, data.isAuth]);
 
     const onIconClick = () => {
         inputs.passwordType === 'password'
@@ -47,7 +54,6 @@ export const ResetPasswordPage = () => {
                         })}
                         error={false}
                         value={inputs.password}
-                        ref={inputRef}
                         onIconClick={onIconClick}
                         icon={inputs.passwordIcon}
                         errorText={'Ошибка'}
@@ -63,7 +69,6 @@ export const ResetPasswordPage = () => {
                         })}
                         error={false}
                         value={inputs.token}
-                        ref={inputRef}
                         errorText={'Ошибка'}
                     />
 

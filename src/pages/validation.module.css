@@ -22,8 +22,16 @@
     align-items: center;
 }
 
+.login__redirectors {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+}
+
 .login__link {
     color: #4C4CFF;
+    cursor: pointer;
+    margin: 0;
     text-decoration: none;
     transition: .4s;
 }

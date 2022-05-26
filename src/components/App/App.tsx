@@ -1,34 +1,23 @@
 import React, {useEffect} from 'react';
 import styles from './App.module.css'
 
-import AppHeader from '../AppHeader/AppHeader';
-import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
-import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {getIngredients} from "../../services/actions/burgerIngredients";
-import {DndProvider} from "react-dnd";
-import {HTML5Backend} from 'react-dnd-html5-backend';
-import {
-    BrowserRouter,
-    Routes,
-    Route,
-    Router,
-} from "react-router-dom";
-import {
-    LoginPage,
-    RegisterPage,
-    ForgotPasswordPage,
-    ResetPasswordPage,
-    ProfilePage
-} from '../../pages'
+import { BrowserRouter } from "react-router-dom";
 import Switcher from '../Switcher/Switcher'
+import { getUser } from '../../services/actions/auth';
 
 const App = () => {
   const dispatch = useDispatch();
   // @ts-ignore
+  const userData = useSelector(store => store.auth)
+
+  // @ts-ignore
   useEffect(() => {
     // @ts-ignore
-    dispatch(getIngredients())
+    dispatch(getIngredients());
+    // @ts-ignore
+    dispatch(getUser());
   }, []);
 
   return (

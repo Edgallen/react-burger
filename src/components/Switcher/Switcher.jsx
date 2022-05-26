@@ -14,15 +14,17 @@ import {
   RegisterPage,
   ForgotPasswordPage,
   ResetPasswordPage,
-  ProfilePage
+  ProfilePage,
+  IngredientPage
 } from '../../pages'
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
 
 const Switcher = () => {
   return (
     <>
       <Routes>
         <Route path='/' element={
-            <HomePage />
+          <HomePage />
         }/>
 
         <Route path='/login' element={
@@ -44,6 +46,10 @@ const Switcher = () => {
         <Route path='/profile' element={
             <ProfilePage />
         }/>
+
+        <Route path='/ingredients/:id' element={
+          <IngredientPage />
+        } />
       </Routes>
     </>
   )

@@ -4,22 +4,21 @@ import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components"
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "./layout";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../services/actions/auth";
+import { getUser, loginUser, recoveryRequest } from "../services/actions/auth";
 import {useCallback} from "react";
 import {getCookie} from "../utils/cookies";
 
 export const LoginPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const data = useSelector(store => store.auth)
+    const data = useSelector(store => store.auth);
     
     const [inputs, setInputs] = useState({
         email: '',
         password: '',
         passwordType: 'password',
         passwordIcon: 'ShowIcon'
-    })
-    const inputRef = React.useRef(null)
+    });
 
     useEffect(() => {
         if (data.isAuth) {
@@ -29,22 +28,28 @@ export const LoginPage = () => {
 
     const onIconClick = () => {
         inputs.passwordType === 'password'
-        ? setInputs({...inputs, passwordType: 'text', passwordIcon: 'HideIcon'}) 
+        ? setInputs({...inputs, passwordType: 'text', passwordIcon: 'HideIcon'})
         : setInputs({...inputs, passwordType: 'password', passwordIcon: 'ShowIcon'});
     };
 
-    const onLogInClick = (e) => {
+    const onLogInHandler = (e) => {
         e.preventDefault();
         const data = {
             'email': inputs.email,
             'password': inputs.password
-        }
+        };
         dispatch(loginUser(data));
-    }
+    };
+
+    const onForgotClick = (e) => {
+        e.preventDefault();
+        dispatch(recoveryRequest());
+        navigate('/forgot-password')
+    };
 
     return (
         <Layout>
-            <section className={styles.login}>
+            {!data.isAuth && (<section className={styles.login}>
                 <div className={styles.login__form}>
                     <h1 className="text text_type_main-medium">Вход</h1>
 
@@ -57,7 +62,6 @@ export const LoginPage = () => {
                         })}
                         error={false}
                         value={inputs.email}
-                        ref={inputRef}
                         errorText={'Ошибка'}
                         size={'default'}
                     />
@@ -71,7 +75,6 @@ export const LoginPage = () => {
                         })}
                         error={false}
                         value={inputs.password}
-                        ref={inputRef}
                         onIconClick={onIconClick}
                         icon={inputs.passwordIcon}
                         errorText={'Ошибка'}
@@ -81,30 +84,34 @@ export const LoginPage = () => {
                     <Button
                         type="primary"
                         size="big"
-                        onClick={onLogInClick}
+                        onClick={onLogInHandler}
                     >
                         Войти
                     </Button>
                 </div>
 
                 <div className={`${styles.login__service} mt-20`}>
-                    <p className="text text_type_main-default text_color_inactive mb-4">
+                    <p className={`${styles.login__redirectors} text text_type_main-default text_color_inactive mb-4`}>
                         Вы - новый пользователь?
                         <Link
                             className={styles.login__link}
                             to='/register'
-                        > Зарегестрироваться</Link>
+                        > 
+                            Зарегестрироваться
+                        </Link>
                     </p>
 
-                    <p className="text text_type_main-default text_color_inactive mb-4">
+                    <p className={`${styles.login__redirectors} text text_type_main-default text_color_inactive mb-4`}>
                         Забыли пароль?
-                        <Link
+                        <span
                             className={styles.login__link}
-                            to='/forgot-password'
-                        > Восстановить пароль</Link>
+                            onClick={onForgotClick}
+                        >
+                            Восстановить пароль
+                        </span>
                     </p>
                 </div>
-            </section>
+            </section>)}
         </Layout>
     );
 };
