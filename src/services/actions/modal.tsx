@@ -8,11 +8,19 @@ export const GET_ORDER_MODAL_REQUEST = 'GET_ORDER_MODAL_REQUEST';
 export const GET_ORDER_MODAL_SUCCESS = 'GET_ORDER_MODAL_SUCCESS';
 export const GET_ORDER_MODAL_FAILED = 'GET_ORDER_MODAL_FAILED';
 
-export const OPEN_INGREDIENT_MODAL = 'SELECT_INGREDIENT';
+export const OPEN_INGREDIENT_MODAL = 'OPEN_INGREDIENT_MODAL';
+export const SELECT_INGREDIENT = 'SELECT_INGREDIENT';
 
 export const openModal = (ingredient: any) => {
     return {
         type: OPEN_INGREDIENT_MODAL,
+        payload: ingredient
+    };
+};
+
+export const selectIngredient = (ingredient: any) => {
+    return {
+        type: SELECT_INGREDIENT,
         payload: ingredient
     };
 };

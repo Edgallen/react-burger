@@ -116,6 +116,34 @@ export function registerUser(body: any) {
     };
 }
 
+export function updateToken() {
+    return (dispatch: any) => {
+        fetch(`${baseUrl}/auth/token`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'token': getCookie('refreshToken') })
+        })
+        .then(checkResponse)
+        .then(data => {
+            const accessToken = data.accessToken.split('Bearer ')[1];
+            const refreshToken = data.refreshToken;
+            if (accessToken) {
+                setCookie('token', accessToken);
+            }
+            if (refreshToken) {
+                setCookie('refreshToken', refreshToken);
+            };
+            console.log('Токены обновились');
+        })
+        .catch(e => {
+            dispatch({ type: REGISTER_USER_FAILED })
+            console.log(`Что-то пошло не так ${e}`);
+        })
+    }
+}
+
 export function requestRecovery(body: any) {
     return (dispatch: any) => {
         fetch(`${baseUrl}/password-reset`, {
@@ -167,7 +195,12 @@ export function getUser() {
         })
         .then(checkResponse)
         .then(data => {
-            dispatch(setUser(data));
+            if (data.success) {
+                dispatch(setUser(data));
+            } else {
+                dispatch(updateToken())
+            }
+            console.log(data);
         })
         .catch(e => {
             dispatch({ type: RESET_FAILED });
@@ -189,6 +222,7 @@ export function updateUser(body: any) {
         .then(checkResponse)
         .then(data => {
             dispatch(setUser(data));
+            console.log(data);
         })
         .catch(e => {
             dispatch({ type: RESET_FAILED });

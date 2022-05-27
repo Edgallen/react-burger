@@ -4,7 +4,6 @@ import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components"
 import {useDispatch, useSelector} from "react-redux";
 import {registerUser} from "../services/actions/auth";
 import { Link, useNavigate } from "react-router-dom";
-import Layout from "./layout";
 
 export const RegisterPage = () => {
     const dispatch = useDispatch();
@@ -44,7 +43,7 @@ export const RegisterPage = () => {
     };
 
     return (
-        <Layout>
+        <>
             <section className={styles.login}>
                 <div className={styles.login__form}>
                     <h1 className="text text_type_main-medium">Регистрация</h1>
@@ -108,10 +107,12 @@ export const RegisterPage = () => {
                         <Link
                             className={styles.login__link}
                             to='/login'
-                        > Войти</Link>
+                        > 
+                            Войти
+                        </Link>
                     </p>
                 </div>
             </section>
-        </Layout> 
+        </> 
     );
 };

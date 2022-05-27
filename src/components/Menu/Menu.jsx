@@ -8,13 +8,17 @@ import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-com
 import {useSelector} from "react-redux";
 import { useDispatch } from "react-redux";
 import { openModal } from '../../services/actions/modal'
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Ingredient = ({ingredient}) => {
+    const location = useLocation();
+    const navigate = useNavigate();
+
     const dispatch = useDispatch();
     const burgerConstructor = useSelector(store => store.burgerConstructor)
     const [counter, setCounter] = useState({
         count: 0
-    })
+    });
     const [, ingrRef] = useDrag({
         type: 'ingredient',
         item: ingredient,
@@ -33,6 +37,7 @@ const Ingredient = ({ingredient}) => {
 
     const handleIngredientClick = (e) => {
         e.preventDefault();
+        navigate(`/ingredient/${ingredient._id}`, {state: { backgroundLocation: location }})
         dispatch(openModal(ingredient));
     };
 
@@ -48,7 +53,11 @@ const Ingredient = ({ingredient}) => {
                 <h3 className='text text_type_digits-default mr-2'>{ingredient.price}</h3>
                 <CurrencyIcon type="primary"/>
             </div>
-            <p className={styles.card__name + " text text_type_main-default mt-1"}>{ingredient.name}</p>
+            <p 
+                className={styles.card__name + " text text_type_main-default mt-1"}
+            >
+                {ingredient.name}
+            </p>
         </div>
     );
 };

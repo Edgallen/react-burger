@@ -1,11 +1,10 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import styles from './validation.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
-import Layout from "./layout";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {getCookie} from "../utils/cookies";
-import {getUser, logoutUser, updateUser} from "../services/actions/auth";
+import {logoutUser, updateUser} from "../services/actions/auth";
 
 export const ProfilePage = () => {
     const dispatch = useDispatch();
@@ -47,11 +46,6 @@ export const ProfilePage = () => {
         dispatch(logoutUser(body));
     };
 
-    const onIconClick = (type) => {
-        setNameEdit(!nameEdit);
-        setInputs({...inputs, editing: true});
-    }
-
     const defaultEdits = () => {
         setNameEdit(true);
         setLoginEdit(true);
@@ -90,13 +84,21 @@ export const ProfilePage = () => {
     };
 
     return (
-        <Layout>
+        <>
             {data.isAuth && (
                 <section className={styles.profile}>
                     <div className={`${styles.profile__selector} mr-15`}>
                         <div className={`${styles.profile__tabs} mb-20`}>
-                            <h1 className={`${styles.profile__tab} text text_type_main-medium`}>Профиль</h1>
-                            <h1 className={`${styles.profile__tab} text text_type_main-medium text_color_inactive`}>История заказов</h1>
+                            <h1 
+                                className={`${styles.profile__tab} text text_type_main-medium`}
+                            >
+                                Профиль
+                            </h1>
+                            <h1 
+                                className={`${styles.profile__tab} text text_type_main-medium text_color_inactive`}
+                            >
+                                История заказов
+                            </h1>
                             <h1
                                 className={`${styles.profile__tab} text text_type_main-medium text_color_inactive`}
                                 onClick={onLogoutHandler}
@@ -193,6 +195,6 @@ export const ProfilePage = () => {
 
                 </section>
             )}
-        </Layout>
+        </>
     );
 };

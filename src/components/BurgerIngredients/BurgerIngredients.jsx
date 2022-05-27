@@ -5,6 +5,8 @@ import {useSelector} from "react-redux";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
 import { Menu } from '../Menu/Menu';
+import { Outlet } from "react-router-dom";
+import { IngredientPage } from "../../pages";
 
 const BurgerIngredients = () => {
     const data = useSelector(store => store.burgerIngredients.ingredients)
@@ -126,7 +128,7 @@ const BurgerIngredients = () => {
             </section>
 
             {ingredientModal.isVisible && (<Modal headerTitle='Детали ингредиента'>
-                <IngredientDetails/>
+                <Outlet />
             </Modal>)}
         </>
     );

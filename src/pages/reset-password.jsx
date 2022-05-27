@@ -40,7 +40,7 @@ export const ResetPasswordPage = () => {
     };
 
     return (
-        <Layout>
+        <>
             <section className={styles.login}>
                 <div className={styles.login__form}>
                     <h1 className="text text_type_main-medium">Восстановление пароля</h1>
@@ -91,6 +91,6 @@ export const ResetPasswordPage = () => {
                     </p>
                 </div>
             </section>
-        </Layout>
+        </>
     );
 };

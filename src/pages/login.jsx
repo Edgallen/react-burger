@@ -2,11 +2,8 @@ import React, {useEffect, useState} from "react";
 import styles from './validation.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useNavigate } from "react-router-dom";
-import Layout from "./layout";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser, loginUser, recoveryRequest } from "../services/actions/auth";
-import {useCallback} from "react";
-import {getCookie} from "../utils/cookies";
+import { loginUser, recoveryRequest } from "../services/actions/auth";
 
 export const LoginPage = () => {
     const dispatch = useDispatch();
@@ -48,7 +45,7 @@ export const LoginPage = () => {
     };
 
     return (
-        <Layout>
+        <>
             {!data.isAuth && (<section className={styles.login}>
                 <div className={styles.login__form}>
                     <h1 className="text text_type_main-medium">Вход</h1>
@@ -112,6 +109,6 @@ export const LoginPage = () => {
                     </p>
                 </div>
             </section>)}
-        </Layout>
+        </>
     );
 };

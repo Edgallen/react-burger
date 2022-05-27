@@ -4,7 +4,8 @@ import {
     GET_ORDER_MODAL_FAILED,
     GET_ORDER_MODAL_REQUEST,
     GET_ORDER_MODAL_SUCCESS,
-    OPEN_INGREDIENT_MODAL
+    OPEN_INGREDIENT_MODAL,
+    SELECT_INGREDIENT
 } from "../actions/modal";
 
 const initialState = {
@@ -76,6 +77,15 @@ export const modalReducer = (state = initialState, action: any) => {
                     ...state.orderModal,
                     isFailed: true,
                     isVisible: true
+                }
+            };
+        }
+        case SELECT_INGREDIENT: {
+            return {
+                ...state,
+                ingredientModal: {
+                    ...state.ingredientModal,
+                    selectedIngredient: action.payload,
                 }
             };
         }

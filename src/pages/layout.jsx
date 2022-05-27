@@ -1,15 +1,15 @@
-import styles from '../components/App/App.module.css'
-
 import React from "react";
+import styles from '../components/App/App.module.css'
 import AppHeader from "../components/AppHeader/AppHeader";
+import { Outlet } from 'react-router-dom';
 
-const Layout = (props) => {
+const Layout = () => {
   return (
     <>
       <AppHeader />
 
       <main className={styles.body}>
-        {props.children}
+        <Outlet />
       </main>
     </>
   )

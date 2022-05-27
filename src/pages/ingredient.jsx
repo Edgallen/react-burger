@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
+import styles from './validation.module.css';
 import { useParams } from "react-router-dom";
 import IngredientDetails from "../components/IngredientDetails/IngredientDetails";
-import Layout from "./layout";
-import Modal from '../components/Modal/Modal';
 import { useDispatch, useSelector } from "react-redux";
-import { openModal } from "../services/actions/modal";
+import { selectIngredient } from "../services/actions/modal";
 
 export const IngredientPage = () => {
   const dispatch = useDispatch();
@@ -13,15 +12,16 @@ export const IngredientPage = () => {
 
   useEffect(() => {
     if (item) {
-      dispatch(openModal(item))
+      dispatch(selectIngredient(item))
     }
   }, [item]);
 
   return (
-    <Layout>
-      <Modal headerTitle='Детали ингредиента'>
+    <>
+      <div className={styles.ingredient}>
+          <h1 className='text text_type_main-large' >Детали ингредиента</h1>
           <IngredientDetails/>
-      </Modal>
-    </Layout>
+      </div>
+    </>
   );
 };

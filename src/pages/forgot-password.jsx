@@ -4,7 +4,6 @@ import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components"
 import { Link, useNavigate } from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {requestRecovery} from "../services/actions/auth";
-import Layout from "./layout";
 
 export const ForgotPasswordPage = () => {
     const dispatch = useDispatch();
@@ -36,7 +35,7 @@ export const ForgotPasswordPage = () => {
     }, [data.recoveryRequest])
 
     return (
-        <Layout>
+        <>
             <section className={styles.login}>
                 <div className={styles.login__form}>
                     <h1 className="text text_type_main-medium">Восстановление пароля</h1>
@@ -73,6 +72,6 @@ export const ForgotPasswordPage = () => {
                     </p>
                 </div>
             </section>
-        </Layout>
+        </>
     );
 };

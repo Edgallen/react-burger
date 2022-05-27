@@ -7,11 +7,14 @@ import ModalOverlay from '../ModalOverlay/ModalOverlay'
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch } from "react-redux";
 import { closeModal } from '../../services/actions/modal'
+import { useNavigate } from "react-router-dom";
 
 const Modal = ({children, headerTitle}) => {
+    const navigate = useNavigate()
     const dispatch = useDispatch();
     const handleClose = () => {
-        dispatch(closeModal())
+        dispatch(closeModal());
+        navigate('/');
     };
     
 
