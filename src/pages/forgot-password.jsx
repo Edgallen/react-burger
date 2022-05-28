@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import styles from './validation.module.css';
+import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useNavigate } from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";

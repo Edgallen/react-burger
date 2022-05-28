@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import styles from './validation.module.css';
+import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,7 +19,7 @@ export const LoginPage = () => {
 
     useEffect(() => {
         if (data.isAuth) {
-            navigate('/profile');
+            navigate('/');
         }
     }, [data.isAuth]);
 
@@ -88,7 +88,7 @@ export const LoginPage = () => {
                 </div>
 
                 <div className={`${styles.login__service} mt-20`}>
-                    <p className={`${styles.login__redirectors} text text_type_main-default text_color_inactive mb-4`}>
+                    <p className={`${styles.login__redirections} text text_type_main-default text_color_inactive mb-4`}>
                         Вы - новый пользователь?
                         <Link
                             className={styles.login__link}
@@ -98,7 +98,7 @@ export const LoginPage = () => {
                         </Link>
                     </p>
 
-                    <p className={`${styles.login__redirectors} text text_type_main-default text_color_inactive mb-4`}>
+                    <p className={`${styles.login__redirections} text text_type_main-default text_color_inactive mb-4`}>
                         Забыли пароль?
                         <span
                             className={styles.login__link}

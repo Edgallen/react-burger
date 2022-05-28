@@ -10,10 +10,14 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
 import { useDrop } from "react-dnd";
 import { v4 as uuid } from 'uuid';
+import {useNavigate} from "react-router-dom";
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const data = useSelector(store => store.burgerConstructor);
+    const isAuth = useSelector(store => store.auth.isAuth);
     const orderModal = useSelector(store => store.modal.orderModal);
 
     const [, dropContainer] = useDrop({
@@ -60,6 +64,11 @@ const BurgerConstructor = () => {
         e.preventDefault();
 
         if (!data.bun.type || data.cart.length === 0) {
+            return
+        }
+
+        if (!isAuth) {
+            navigate('/login');
             return
         }
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import styles from './validation.module.css';
+import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
@@ -77,7 +77,7 @@ export const ProfilePage = () => {
                 ...body,
                 'password': inputs.password
             };
-        };
+        }
 
         dispatch(updateUser(body));
         defaultEdits();

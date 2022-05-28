@@ -8,7 +8,7 @@ import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-com
 import {useSelector} from "react-redux";
 import { useDispatch } from "react-redux";
 import { openModal } from '../../services/actions/modal'
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Ingredient = ({ingredient}) => {
     const location = useLocation();
@@ -28,7 +28,7 @@ const Ingredient = ({ingredient}) => {
         if (burgerConstructor.bun._id === ingredient._id) {
             setCounter({...counter, count: 2})
             return
-        };
+        }
 
         setCounter({
             count: burgerConstructor.cart.filter(item => item._id === ingredient._id).length

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import styles from './validation.module.css';
+import styles from './pages.module.css';
 import { useParams } from "react-router-dom";
 import IngredientDetails from "../components/IngredientDetails/IngredientDetails";
 import { useDispatch, useSelector } from "react-redux";

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import styles from './validation.module.css';
+import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDispatch, useSelector} from "react-redux";
 import {registerUser} from "../services/actions/auth";
@@ -22,7 +22,7 @@ export const RegisterPage = () => {
     useEffect(() => {
         if (data.isAuth) {
             navigate(`/profile`);
-        };
+        }
     }, [data.isAuth]);
 
     const onIconClick = () => {

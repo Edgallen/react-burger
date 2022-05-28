@@ -2,11 +2,9 @@ import React, {useState, useEffect, useMemo, createRef} from "react";
 import styles from "./BurgerIngredients.module.css"
 import { Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import {useSelector} from "react-redux";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
 import { Menu } from '../Menu/Menu';
 import { Outlet } from "react-router-dom";
-import { IngredientPage } from "../../pages";
 
 const BurgerIngredients = () => {
     const data = useSelector(store => store.burgerIngredients.ingredients)
