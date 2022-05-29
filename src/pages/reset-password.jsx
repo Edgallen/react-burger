@@ -1,15 +1,13 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {resetPassword} from "../services/actions/auth";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export const ResetPasswordPage = () => {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const data = useSelector(store => store.auth);
     const [inputs, setInputs] = useState({
         token: '',
         password: '',
@@ -17,19 +15,13 @@ export const ResetPasswordPage = () => {
         passwordIcon: 'ShowIcon'
     });
 
-    useEffect(() => {
-        if (!data.recoveryRequest) {
-            data.isAuth === true ? navigate('/profile') : navigate('/login')
-        }
-    }, [data.recoveryRequest, data.isAuth]);
-
     const onIconClick = () => {
         inputs.passwordType === 'password'
         ? setInputs({...inputs, passwordType: 'text', passwordIcon: 'HideIcon'}) 
         : setInputs({...inputs, passwordType: 'password', passwordIcon: 'ShowIcon'});
     }
 
-    const onRecoveryClick = () => {
+    const onSubmitHandler = () => {
         const body = {
             'password': inputs.password,
             'token': inputs.token
@@ -41,7 +33,7 @@ export const ResetPasswordPage = () => {
     return (
         <>
             <section className={styles.login}>
-                <div className={styles.login__form}>
+                <form className={styles.login__form} onSubmit={onSubmitHandler}>
                     <h1 className="text text_type_main-medium">Восстановление пароля</h1>
 
                     <Input
@@ -74,11 +66,10 @@ export const ResetPasswordPage = () => {
                     <Button 
                         type="primary"
                         size="big"
-                        onClick={onRecoveryClick}
                     >
                         Сохранить
                     </Button>
-                </div>
+                </form>
 
                 <div className={`${styles.login__service} mt-20`}>
                     <p className="text text_type_main-default text_color_inactive mb-4">

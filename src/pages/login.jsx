@@ -1,13 +1,16 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, useNavigate } from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser, recoveryRequest } from "../services/actions/auth";
+import {recoveryRequest} from "../services/actions/auth";
+import {useAuth} from "../services/authProvider";
 
 export const LoginPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
+    const auth = useAuth();
     const data = useSelector(store => store.auth);
     
     const [inputs, setInputs] = useState({
@@ -17,25 +20,22 @@ export const LoginPage = () => {
         passwordIcon: 'ShowIcon'
     });
 
-    useEffect(() => {
-        if (data.isAuth) {
-            navigate('/');
-        }
-    }, [data.isAuth]);
-
     const onIconClick = () => {
         inputs.passwordType === 'password'
         ? setInputs({...inputs, passwordType: 'text', passwordIcon: 'HideIcon'})
         : setInputs({...inputs, passwordType: 'password', passwordIcon: 'ShowIcon'});
     };
 
-    const onLogInHandler = (e) => {
+    const redirectPath = location.state?.path || '/';
+
+    const onSubmitHandler = (e) => {
         e.preventDefault();
-        const data = {
+        const body = {
             'email': inputs.email,
             'password': inputs.password
         };
-        dispatch(loginUser(data));
+        auth.logIn(body);
+        navigate(redirectPath, {replace: true});
     };
 
     const onForgotClick = (e) => {
@@ -47,7 +47,7 @@ export const LoginPage = () => {
     return (
         <>
             {!data.isAuth && (<section className={styles.login}>
-                <div className={styles.login__form}>
+                <form className={styles.login__form} onSubmit={onSubmitHandler}>
                     <h1 className="text text_type_main-medium">Вход</h1>
 
                     <Input
@@ -81,11 +81,10 @@ export const LoginPage = () => {
                     <Button
                         type="primary"
                         size="big"
-                        onClick={onLogInHandler}
                     >
                         Войти
                     </Button>
-                </div>
+                </form>
 
                 <div className={`${styles.login__service} mt-20`}>
                     <p className={`${styles.login__redirections} text text_type_main-default text_color_inactive mb-4`}>

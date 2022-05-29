@@ -17,14 +17,14 @@ import {
 } from '../../pages'
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import AppHeader from "../AppHeader/AppHeader";
+import {AuthProvider, RequireAuth, RequireLogIn, RequireReset} from "../../services/authProvider";
 
 const Switcher = () => {
   let location = useLocation();
   let state = location.state as { backgroundLocation?: Location };
 
   return (
-    <>
-
+    <AuthProvider>
       <div>
         <Routes>
           <Route path='*' element={<AppHeader />} />
@@ -37,15 +37,31 @@ const Switcher = () => {
             {state?.backgroundLocation && (<Route path='ingredient/:id' element={<IngredientDetails/>} />)}
           </Route>
 
-          <Route path='login' element={<LoginPage /> }/>
+          <Route path='login' element={
+            <RequireLogIn>
+              <LoginPage />
+            </RequireLogIn>
+          }/>
 
-          <Route path='register' element={<RegisterPage /> }/>
+          <Route path='register' element={
+             <RequireLogIn>
+                <RegisterPage />
+             </RequireLogIn>
+          }/>
 
           <Route path='forgot-password' element={<ForgotPasswordPage /> }/>
 
-          <Route path='reset-password' element={<ResetPasswordPage /> }/>
+          <Route path='reset-password' element={
+            <RequireReset>
+              <ResetPasswordPage />
+            </RequireReset>
+          }/>
 
-          <Route path='profile' element={<ProfilePage /> }/>
+          <Route path='profile' element={
+            <RequireAuth>
+              <ProfilePage />
+            </RequireAuth>
+          }/>
 
           <Route path='ingredient/:id' element={<IngredientPage /> } />
 
@@ -53,7 +69,7 @@ const Switcher = () => {
 
         </Routes>
       </div>
-    </>
+    </AuthProvider>
   )
 }
 

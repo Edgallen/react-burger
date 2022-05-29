@@ -3,16 +3,12 @@ import React from "react";
 import styles from './AppHeader.module.css';
 import { BurgerIcon, ListIcon, ProfileIcon, Logo } from '@ya.praktikum/react-developer-burger-ui-components';
 import {NavLink, useNavigate} from "react-router-dom";
-import { useSelector } from "react-redux";
-
 
 function AppHeader() {
     const navigate = useNavigate();
-    // @ts-ignore
-    const data = useSelector(store => store.auth);
 
     const onProfileClick = () => {
-       data.isAuth === false ? navigate('/login') : navigate('/profile')
+       navigate('/profile')
     }
 
     const onConstructorClick = () => {

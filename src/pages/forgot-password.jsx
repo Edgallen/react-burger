@@ -14,7 +14,7 @@ export const ForgotPasswordPage = () => {
     })
     const inputRef = React.useRef(null)
 
-    const onClickHandle = () => {
+    const onSubmitHandler = () => {
         const body = {
             "email": inputs.email
         }
@@ -37,7 +37,7 @@ export const ForgotPasswordPage = () => {
     return (
         <>
             <section className={styles.login}>
-                <div className={styles.login__form}>
+                <form className={styles.login__form} onSubmit={onSubmitHandler}>
                     <h1 className="text text_type_main-medium">Восстановление пароля</h1>
 
                     <Input
@@ -56,11 +56,10 @@ export const ForgotPasswordPage = () => {
                     <Button
                         type="primary"
                         size="big"
-                        onClick={onClickHandle}
                     >
                         Восстановить
                     </Button>
-                </div>
+                </form>
 
                 <div className={`${styles.login__service} mt-20`}>
                     <p className="text text_type_main-default text_color_inactive mb-4">

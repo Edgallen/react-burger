@@ -1,15 +1,13 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {registerUser} from "../services/actions/auth";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const RegisterPage = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
-    const data = useSelector(store => store.auth)
     const [inputs, setInputs] = useState({
         name: '',
         email: '',
@@ -19,19 +17,13 @@ export const RegisterPage = () => {
     })
     const inputRef = React.useRef(null)
 
-    useEffect(() => {
-        if (data.isAuth) {
-            navigate(`/profile`);
-        }
-    }, [data.isAuth]);
-
     const onIconClick = () => {
         inputs.passwordType === 'password'
         ? setInputs({...inputs, passwordType: 'text', passwordIcon: 'HideIcon'}) 
         : setInputs({...inputs, passwordType: 'password', passwordIcon: 'ShowIcon'});
     }
 
-    const onRegisterClick = (e) => {
+    const onSubmitHandler = (e) => {
         e.preventDefault();
         const body = {
             'email': inputs.email,
@@ -45,7 +37,7 @@ export const RegisterPage = () => {
     return (
         <>
             <section className={styles.login}>
-                <div className={styles.login__form}>
+                <form className={styles.login__form} onSubmit={onSubmitHandler}>
                     <h1 className="text text_type_main-medium">Регистрация</h1>
 
                     <Input
@@ -95,11 +87,10 @@ export const RegisterPage = () => {
                     <Button 
                         type="primary" 
                         size="big"
-                        onClick={onRegisterClick}
                     >
                         Зарегестрироваться
                     </Button>
-                </div>
+                </form>
 
                 <div className={`${styles.login__service} mt-20`}>
                     <p className="text text_type_main-default text_color_inactive mb-4">

@@ -4,11 +4,13 @@ import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components"
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {getCookie} from "../utils/cookies";
-import {logoutUser, updateUser} from "../services/actions/auth";
+import {updateUser} from "../services/actions/auth";
+import {useAuth} from "../services/authProvider";
 
 export const ProfilePage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const auth = useAuth();
 
     const data = useSelector(store => store.auth)
     const [nameEdit, setNameEdit] = useState(true)
@@ -30,11 +32,6 @@ export const ProfilePage = () => {
         })
     }, []);
 
-    useEffect(() => {
-        if (!data.isAuth) {
-            navigate('/login')
-        }
-    }, [data.isAuth]);
 
     const onLogoutHandler = (e) => {
         e.preventDefault();
@@ -43,28 +40,33 @@ export const ProfilePage = () => {
         const body = {
             "token": refreshToken
         };
-        dispatch(logoutUser(body));
+        auth.logOut(body);
+        navigate('/login');
     };
 
-    const defaultEdits = () => {
+    const defaultEdits = (name, login) => {
         setNameEdit(true);
         setLoginEdit(true);
         setPasswordEdit(true);
+
+        if (name && login) {
+            setInputs({
+                ...inputs,
+                name: data.user.name,
+                login: data.user.email,
+                editing: false
+            });
+            return
+        }
         setInputs({...inputs, editing: false});
     };
 
     const cancelButtonHandler = (e) => {
         e.preventDefault();
-
-        setInputs({
-            ...inputs,
-            name: data.user.name,
-            login: data.user.email
-        });
-        defaultEdits();
+        defaultEdits(data.user.name, data.user.email);
     };
 
-    const saveButtonHandler = (e) => {
+    const onSubmitHandler = (e) => {
         e.preventDefault();
 
         let body = {
@@ -114,7 +116,7 @@ export const ProfilePage = () => {
                         </div>
                     </div>
 
-                    <div className={styles.login__form}>
+                    <form className={styles.login__form} onSubmit={onSubmitHandler}>
                         <Input
                             type={'text'}
                             name={'name'}
@@ -178,7 +180,6 @@ export const ProfilePage = () => {
                                 <Button
                                     type="primary"
                                     size="big"
-                                    onClick={saveButtonHandler}
                                 >
                                     Сохранить
                                 </Button>
@@ -191,7 +192,7 @@ export const ProfilePage = () => {
                                 </Button>
                             </div>
                         )}
-                    </div>
+                    </form>
 
                 </section>
             )}
