@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 
 import styles from "./Menu.module.css";
 import PropTypes from "prop-types";
@@ -69,8 +69,6 @@ Ingredient.propTypes = {
 export const Menu = ({menu, type}) => {
     return (
         <>
-            <h1 className="text text_type_main-medium mt-10">{type}</h1>
-
             <div className={styles.menu__type}>
                 {menu.map((ingredient) =>(
                     <div key={ingredient._id}>
