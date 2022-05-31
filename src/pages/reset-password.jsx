@@ -21,7 +21,8 @@ export const ResetPasswordPage = () => {
         : setInputs({...inputs, passwordType: 'password', passwordIcon: 'ShowIcon'});
     }
 
-    const onSubmitHandler = () => {
+    const onSubmitHandler = (e) => {
+        e.preventDefault();
         const body = {
             'password': inputs.password,
             'token': inputs.token
@@ -31,56 +32,54 @@ export const ResetPasswordPage = () => {
     };
 
     return (
-        <>
-            <section className={styles.login}>
-                <form className={styles.login__form} onSubmit={onSubmitHandler}>
-                    <h1 className="text text_type_main-medium">Восстановление пароля</h1>
+        <section className={styles.login}>
+            <form className={styles.login__form} onSubmit={onSubmitHandler}>
+                <h1 className="text text_type_main-medium">Восстановление пароля</h1>
 
-                    <Input
-                        type={inputs.passwordType}
-                        placeholder={'Введите новый пароль'}
-                        onChange={e => setInputs({
-                            ...inputs,
-                            password: e.target.value
-                        })}
-                        error={false}
-                        value={inputs.password}
-                        onIconClick={onIconClick}
-                        icon={inputs.passwordIcon}
-                        errorText={'Ошибка'}
-                        size={'default'}
-                    />
+                <Input
+                    type={inputs.passwordType}
+                    placeholder={'Введите новый пароль'}
+                    onChange={e => setInputs({
+                        ...inputs,
+                        password: e.target.value
+                    })}
+                    error={false}
+                    value={inputs.password}
+                    onIconClick={onIconClick}
+                    icon={inputs.passwordIcon}
+                    errorText={'Ошибка'}
+                    size={'default'}
+                />
 
-                    <Input
-                        type={'text'}
-                        placeholder={'Введите код из письма'}
-                        onChange={e => setInputs({
-                            ...inputs,
-                            token: e.target.value
-                        })}
-                        error={false}
-                        value={inputs.token}
-                        errorText={'Ошибка'}
-                    />
+                <Input
+                    type={'text'}
+                    placeholder={'Введите код из письма'}
+                    onChange={e => setInputs({
+                        ...inputs,
+                        token: e.target.value
+                    })}
+                    error={false}
+                    value={inputs.token}
+                    errorText={'Ошибка'}
+                />
 
-                    <Button 
-                        type="primary"
-                        size="big"
-                    >
-                        Сохранить
-                    </Button>
-                </form>
+                <Button
+                    type="primary"
+                    size="big"
+                >
+                    Сохранить
+                </Button>
+            </form>
 
-                <div className={`${styles.login__service} mt-20`}>
-                    <p className="text text_type_main-default text_color_inactive mb-4">
-                        Вспоинили вопрос?
-                        <Link 
-                            className={styles.login__link} 
-                            to='/login'
-                        > Войти</Link>
-                    </p>
-                </div>
-            </section>
-        </>
+            <div className={`${styles.login__service} mt-20`}>
+                <p className="text text_type_main-default text_color_inactive mb-4">
+                    Вспоинили вопрос?
+                    <Link
+                        className={styles.login__link}
+                        to='/login'
+                    > Войти</Link>
+                </p>
+            </div>
+        </section>
     );
 };

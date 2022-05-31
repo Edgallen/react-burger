@@ -41,7 +41,7 @@ export const LoginPage = () => {
     const onForgotClick = (e) => {
         e.preventDefault();
         dispatch(recoveryRequest());
-        navigate('/forgot-password')
+        navigate('/forgot-password');
     };
 
     return (

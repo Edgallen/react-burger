@@ -5,11 +5,9 @@ import {HTML5Backend} from 'react-dnd-html5-backend';
 
 export const HomePage = () => {
   return (
-    <>
       <DndProvider backend={HTML5Backend}>
           <BurgerIngredients />
           <BurgerConstructor />
       </DndProvider>
-    </>
   )
 };

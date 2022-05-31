@@ -2,14 +2,12 @@ import React, {useEffect, useState} from "react";
 import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
 import {getCookie} from "../utils/cookies";
 import {updateUser} from "../services/actions/auth";
 import {useAuth} from "../services/authProvider";
 
 export const ProfilePage = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const auth = useAuth();
 
     const data = useSelector(store => store.auth)
@@ -41,7 +39,6 @@ export const ProfilePage = () => {
             "token": refreshToken
         };
         auth.logOut(body);
-        navigate('/login');
     };
 
     const defaultEdits = (name, login) => {

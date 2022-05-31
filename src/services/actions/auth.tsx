@@ -17,14 +17,56 @@ export const RESET_FAILED = 'RESET_FAILED';
 export const SET_USER = 'SET_USER';
 
 const signIn = (data: any) => {
-    return{
+    return {
         type: SIGN_IN_USER,
         payload: data
     };
 };
 
+const signOut = () => {
+    return {
+        type: SIGN_OUT_USER
+    };
+};
+
+const registerUserSuccess = () => {
+    return {
+        type: REGISTER_USER_SUCCESS
+    };
+};
+
+const registerUserFailed = () => {
+    return {
+        type: REGISTER_USER_FAILED
+    };
+};
+
+const recoverySuccess = () => {
+    return {
+        type: RECOVERY_SUCCESS
+    };
+};
+
+const recoveryFailed = () => {
+    return {
+        type: RECOVERY_FAILED
+    };
+};
+
+const resetSuccess = () => {
+    return {
+        type: RESET_SUCCESS
+    };
+};
+
+const resetFailed = () => {
+    return {
+        type: RESET_FAILED
+    };
+};
+
 const setUser = (data: any) => {
-    return{
+    return {
         type: SET_USER,
         payload: data
     };
@@ -52,10 +94,10 @@ export function loginUser(body: any) {
             const refreshToken = data.refreshToken;
             if (accessToken) {
                 setCookie('token', accessToken);
-            };
+            }
             if (refreshToken) {
                 setCookie('refreshToken', refreshToken);
-            };
+            }
 
             dispatch(signIn({ ...data.user }));
         })
@@ -75,12 +117,10 @@ export function logoutUser(body: any) {
             body: JSON.stringify(body)
         })
         .then(checkResponse)
-        .then(data => {
+        .then(() => {
             deleteCookie('token');
             deleteCookie('refreshToken');
-            dispatch({
-                type: SIGN_OUT_USER
-            });
+            dispatch(signOut());
         })
         .catch(e => {
             console.log(`Что-то пошло не так ${e}`);
@@ -106,11 +146,11 @@ export function registerUser(body: any) {
             }
             if (refreshToken) {
                 setCookie('refreshToken', refreshToken);
-            };
-            dispatch({ type: REGISTER_USER_SUCCESS });
+            }
+            dispatch(registerUserSuccess());
         })
         .catch(e => {
-            dispatch({ type: REGISTER_USER_FAILED })
+            dispatch(registerUserFailed())
             console.log(`Что-то пошло не так ${e}`);
         })
     };
@@ -134,11 +174,11 @@ export function updateToken() {
             }
             if (refreshToken) {
                 setCookie('refreshToken', refreshToken);
-            };
+            }
             console.log('Токены обновились');
         })
         .catch(e => {
-            dispatch({ type: REGISTER_USER_FAILED })
+            dispatch(registerUserFailed())
             console.log(`Что-то пошло не так ${e}`);
         })
     }
@@ -154,11 +194,11 @@ export function requestRecovery(body: any) {
             body: JSON.stringify(body)
         })
         .then(checkResponse)
-        .then(data => {
-            dispatch({ type: RECOVERY_SUCCESS });
+        .then(() => {
+            dispatch(recoverySuccess());
         })
         .catch(e => {
-            dispatch({ type: RECOVERY_FAILED });
+            dispatch(recoveryFailed());
             console.log(`Что-то пошло не так ${e}`);
         })
     };
@@ -174,11 +214,11 @@ export function resetPassword(body: any) {
             body: JSON.stringify(body)
         })
         .then(checkResponse)
-        .then(data => {
-            dispatch({ type: RESET_SUCCESS });
+        .then(() => {
+            dispatch(resetSuccess());
         })
         .catch(e => {
-            dispatch({ type: RESET_FAILED });
+            dispatch(resetFailed());
             console.log(`Что-то пошло не так ${e}`);
         })
     };
@@ -200,10 +240,9 @@ export function getUser() {
             } else {
                 dispatch(updateToken())
             }
-            console.log(data);
         })
         .catch(e => {
-            dispatch({ type: RESET_FAILED });
+            dispatch(resetFailed);
             console.log(`Что-то пошло не так ${e}`);
         })
     };
@@ -222,10 +261,9 @@ export function updateUser(body: any) {
         .then(checkResponse)
         .then(data => {
             dispatch(setUser(data));
-            console.log(data);
         })
         .catch(e => {
-            dispatch({ type: RESET_FAILED });
+            dispatch(resetFailed());
             console.log(`Что-то пошло не так ${e}`);
         })
     };

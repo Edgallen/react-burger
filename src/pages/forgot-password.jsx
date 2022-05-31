@@ -14,7 +14,8 @@ export const ForgotPasswordPage = () => {
     })
     const inputRef = React.useRef(null)
 
-    const onSubmitHandler = () => {
+    const onSubmitHandler = (e) => {
+        e.preventDefault();
         const body = {
             "email": inputs.email
         }
@@ -36,42 +37,40 @@ export const ForgotPasswordPage = () => {
     }, [data.recoveryRequest])
 
     return (
-        <>
-            <section className={styles.login}>
-                <form className={styles.login__form} onSubmit={onSubmitHandler}>
-                    <h1 className="text text_type_main-medium">Восстановление пароля</h1>
+        <section className={styles.login}>
+            <form className={styles.login__form} onSubmit={onSubmitHandler}>
+                <h1 className="text text_type_main-medium">Восстановление пароля</h1>
 
-                    <Input
-                        type={'email'}
-                        placeholder={'Укажите e-mail'}
-                        onChange={e => setInputs({
-                            ...inputs,
-                            email: e.target.value
-                        })}
-                        error={false}
-                        value={inputs.email}
-                        ref={inputRef}
-                        errorText={'Ошибка'}
-                    />
+                <Input
+                    type={'email'}
+                    placeholder={'Укажите e-mail'}
+                    onChange={e => setInputs({
+                        ...inputs,
+                        email: e.target.value
+                    })}
+                    error={false}
+                    value={inputs.email}
+                    ref={inputRef}
+                    errorText={'Ошибка'}
+                />
 
-                    <Button
-                        type="primary"
-                        size="big"
-                    >
-                        Восстановить
-                    </Button>
-                </form>
+                <Button
+                    type="primary"
+                    size="big"
+                >
+                    Восстановить
+                </Button>
+            </form>
 
-                <div className={`${styles.login__service} mt-20`}>
-                    <p className="text text_type_main-default text_color_inactive mb-4">
-                        Вспоинили пароль?
-                        <Link
-                            className={styles.login__link}
-                            to='/login'
-                        > Войти</Link>
-                    </p>
-                </div>
-            </section>
-        </>
+            <div className={`${styles.login__service} mt-20`}>
+                <p className="text text_type_main-default text_color_inactive mb-4">
+                    Вспоинили пароль?
+                    <Link
+                        className={styles.login__link}
+                        to='/login'
+                    > Войти</Link>
+                </p>
+            </div>
+        </section>
     );
 };

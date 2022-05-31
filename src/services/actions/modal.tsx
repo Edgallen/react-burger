@@ -11,6 +11,25 @@ export const GET_ORDER_MODAL_FAILED = 'GET_ORDER_MODAL_FAILED';
 export const OPEN_INGREDIENT_MODAL = 'OPEN_INGREDIENT_MODAL';
 export const SELECT_INGREDIENT = 'SELECT_INGREDIENT';
 
+export const orderModalRequest = () => {
+    return {
+        type: GET_ORDER_MODAL_REQUEST
+    };
+};
+
+export const orderModalSuccess = (data: any) => {
+    return {
+        type: GET_ORDER_MODAL_SUCCESS,
+        payload: data.order.number
+    };
+};
+
+export const orderModalFailed = () => {
+    return {
+        type: GET_ORDER_MODAL_FAILED
+    };
+};
+
 export const openModal = (ingredient: any) => {
     return {
         type: OPEN_INGREDIENT_MODAL,
@@ -40,9 +59,7 @@ export const updateOrderModal = (id: any) => {
 
   export function getOrderId(body: any) {
     return (dispatch: any) => {
-        dispatch({
-            type: GET_ORDER_MODAL_REQUEST
-        });
+        dispatch(orderModalRequest);
 
         fetch(`${baseUrl}/orders`, {
             method: 'POST',
@@ -53,11 +70,11 @@ export const updateOrderModal = (id: any) => {
         })
         .then(checkResponse)
         .then(data => {
-            dispatch({ type: GET_ORDER_MODAL_SUCCESS, payload: data.order.number });
+            dispatch(orderModalSuccess(data));
             dispatch(resetCart());
         })
         .catch(e => {
-            dispatch({ type: GET_ORDER_MODAL_FAILED});
+            dispatch(orderModalFailed);
             console.log(`Что-то пошло не так ${e}`);
         })
     };

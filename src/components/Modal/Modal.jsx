@@ -7,15 +7,20 @@ import ModalOverlay from '../ModalOverlay/ModalOverlay'
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch } from "react-redux";
 import { closeModal } from '../../services/actions/modal'
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 
 const Modal = ({children, headerTitle}) => {
+    const location = useLocation();
+    const { id } = useParams()
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const handleClose = () => {
         dispatch(closeModal());
-        navigate(-1);
+
+        if (location.pathname === `/ingredient/${id}`) {
+            navigate('/');
+        }
     };
     
     const handleEscape = React.useCallback((evt) => {

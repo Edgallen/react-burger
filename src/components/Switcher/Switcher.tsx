@@ -25,20 +25,18 @@ const Switcher = () => {
   // @ts-ignore
   const background = location.state && location.state.background;
   // @ts-ignore
-  const indredientModal = useSelector(store => store.modal.ingredientModal.isVisible)
+  const ingredientModal = useSelector(store => store.modal.ingredientModal.isVisible)
 
   return (
     <AuthProvider>
-      <div>
         <Routes>
           <Route path='*' element={<AppHeader />} />
         </Routes>
-      </div>
 
-      <div className={styles.body}>
+      <main className={styles.body}>
         <Routes location={location || background}>
           <Route path='/' element={<HomePage />}>
-            {background && indredientModal && (<Route path='ingredient/:id' element={<IngredientDetails />} />)}
+            {background && ingredientModal && (<Route path='ingredient/:id' element={<IngredientDetails />} />)}
           </Route>
 
           <Route path='login' element={
@@ -66,13 +64,13 @@ const Switcher = () => {
               <ProfilePage />
             </RequireAuth>
           }/>
-          
+
           <Route path='ingredient/:id' element={<IngredientPage /> } />
-            
+
           <Route path='*' element={<NotFoundPage /> } />
 
         </Routes>
-      </div>
+      </main>
     </AuthProvider>
   )
 }
