@@ -20,6 +20,7 @@ export const ForgotPasswordPage = () => {
         }
         // @ts-ignore
         dispatch(requestRecovery(body));
+        navigate(`/reset-password`);
     };
 
     useEffect(() => {

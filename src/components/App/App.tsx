@@ -23,11 +23,9 @@ const App = () => {
   }, []);
 
   return (
-    <>
-        <BrowserRouter>
-            <Switcher />
-        </BrowserRouter>
-    </>
+      <BrowserRouter>
+          <Switcher />
+      </BrowserRouter>
   );
 };
 

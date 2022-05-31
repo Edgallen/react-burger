@@ -1,11 +1,10 @@
 import React from "react";
-
 import styles from './IngredientDetails.module.css';
 import {useSelector} from "react-redux";
 
 const IngredientDetails = () => {
     const ingredient = useSelector(store => store.modal.ingredientModal.selectedIngredient);
-
+    
     return (
         <div className={styles.module__container}>
             <img className={styles.module__img + ' mb-4'} src={ingredient.image_large}

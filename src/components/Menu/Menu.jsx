@@ -1,5 +1,4 @@
-import React, {useEffect, useState, useRef} from "react";
-
+import React, {useEffect, useState} from "react";
 import styles from "./Menu.module.css";
 import PropTypes from "prop-types";
 import {dataPropTypes} from "../../utils/dataPropTypes";
@@ -33,11 +32,11 @@ const Ingredient = ({ingredient}) => {
         setCounter({
             count: burgerConstructor.cart.filter(item => item._id === ingredient._id).length
         });
-    }, [burgerConstructor.cart, burgerConstructor.bun])
+    }, [burgerConstructor.cart, burgerConstructor.bun, ingredient._id, counter])
 
     const handleIngredientClick = (e) => {
         e.preventDefault();
-        navigate(`/ingredient/${ingredient._id}`, {state: { backgroundLocation: location }})
+        navigate(`/ingredient/${ingredient._id}`, {state: { background: location }})
         dispatch(openModal(ingredient));
     };
 
@@ -66,7 +65,7 @@ Ingredient.propTypes = {
     ingredient: dataPropTypes.isRequired
 };
 
-export const Menu = ({menu, type}) => {
+export const Menu = ({menu}) => {
     return (
         <>
             <div className={styles.menu__type}>
@@ -84,5 +83,4 @@ export const Menu = ({menu, type}) => {
 
 Menu.propTypes = {
     menu: PropTypes.arrayOf(dataPropTypes).isRequired,
-    type: PropTypes.string.isRequired
 };

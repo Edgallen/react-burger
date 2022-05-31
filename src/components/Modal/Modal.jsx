@@ -10,14 +10,14 @@ import { closeModal } from '../../services/actions/modal'
 import { useNavigate } from "react-router-dom";
 
 const Modal = ({children, headerTitle}) => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const dispatch = useDispatch();
+
     const handleClose = () => {
         dispatch(closeModal());
-        navigate('/');
+        navigate(-1);
     };
     
-
     const handleEscape = React.useCallback((evt) => {
         if (evt.key === 'Escape') {
             handleClose();

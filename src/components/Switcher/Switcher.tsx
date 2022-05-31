@@ -18,10 +18,14 @@ import {
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import AppHeader from "../AppHeader/AppHeader";
 import {AuthProvider, RequireAuth, RequireLogIn, RequireReset} from "../../services/authProvider";
+import { useSelector } from "react-redux";
 
 const Switcher = () => {
-  let location = useLocation();
-  let state = location.state as { backgroundLocation?: Location };
+  const location = useLocation();
+  // @ts-ignore
+  const background = location.state && location.state.background;
+  // @ts-ignore
+  const indredientModal = useSelector(store => store.modal.ingredientModal.isVisible)
 
   return (
     <AuthProvider>
@@ -32,9 +36,9 @@ const Switcher = () => {
       </div>
 
       <div className={styles.body}>
-        <Routes>
+        <Routes location={location || background}>
           <Route path='/' element={<HomePage />}>
-            {state?.backgroundLocation && (<Route path='ingredient/:id' element={<IngredientDetails/>} />)}
+            {background && indredientModal && (<Route path='ingredient/:id' element={<IngredientDetails />} />)}
           </Route>
 
           <Route path='login' element={
@@ -62,9 +66,9 @@ const Switcher = () => {
               <ProfilePage />
             </RequireAuth>
           }/>
-
+          
           <Route path='ingredient/:id' element={<IngredientPage /> } />
-
+            
           <Route path='*' element={<NotFoundPage /> } />
 
         </Routes>

@@ -85,7 +85,7 @@ export const modalReducer = (state = initialState, action: any) => {
                 ...state,
                 ingredientModal: {
                     ...state.ingredientModal,
-                    selectedIngredient: action.payload,
+                    selectedIngredient: action.payload
                 }
             };
         }

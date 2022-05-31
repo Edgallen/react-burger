@@ -54,7 +54,7 @@ export const RequireReset = ({ children }) => {
     const data = useSelector(store => store.auth);
     const location = useLocation();
 
-    if (!data.recoveryRequest) {
+    if (!data.isForgot) {
         return (
             <Navigate
                 to={data.isAuth === true ? '/profile' : '/login'}
@@ -65,4 +65,3 @@ export const RequireReset = ({ children }) => {
 
     return children;
 }
-

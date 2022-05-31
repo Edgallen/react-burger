@@ -7,8 +7,8 @@ import { Menu } from '../Menu/Menu';
 import { Outlet } from "react-router-dom";
 
 const BurgerIngredients = () => {
-    const data = useSelector(store => store.burgerIngredients.ingredients)
-    const ingredientModal = useSelector(store => store.modal.ingredientModal)
+    const data = useSelector(store => store.burgerIngredients.ingredients);
+    const ingredientModal = useSelector(store => store.modal.ingredientModal);
     const [state, setState] = useState({
         bun: {
             ingredients: [],
@@ -132,7 +132,6 @@ const BurgerIngredients = () => {
 
                                 <Menu
                                     menu={state[type].ingredients}
-                                    type={state[type].title}
                                 />
                             </div>
                         ))}
