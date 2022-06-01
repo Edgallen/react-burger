@@ -2,13 +2,11 @@ import React, {useState, useEffect, useMemo, createRef, useRef} from "react";
 import styles from "./BurgerIngredients.module.css"
 import { Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import {useSelector} from "react-redux";
-import Modal from "../Modal/Modal";
 import { Menu } from '../Menu/Menu';
 import { Outlet } from "react-router-dom";
 
 const BurgerIngredients = () => {
     const data = useSelector(store => store.burgerIngredients.ingredients);
-    const ingredientModal = useSelector(store => store.modal.ingredientModal);
     const [state, setState] = useState({
         bun: {
             ingredients: [],
@@ -140,9 +138,7 @@ const BurgerIngredients = () => {
 
             </section>
 
-            {ingredientModal.isVisible && (<Modal headerTitle='Детали ингредиента'>
-                <Outlet />
-            </Modal>)}
+            <Outlet />
         </>
     );
 };

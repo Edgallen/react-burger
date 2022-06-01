@@ -1,31 +1,14 @@
 import React, {useEffect} from "react";
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-
 import styles from './Modal.module.css';
 import ModalOverlay from '../ModalOverlay/ModalOverlay'
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch } from "react-redux";
-import { closeModal } from '../../services/actions/modal'
-import {useLocation, useNavigate, useParams} from "react-router-dom";
 
-const Modal = ({children, headerTitle}) => {
-    const location = useLocation();
-    const { id } = useParams()
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-
-    const handleClose = () => {
-        dispatch(closeModal());
-
-        if (location.pathname === `/ingredient/${id}`) {
-            navigate('/');
-        }
-    };
-    
+const Modal = ({children, headerTitle, closeHandler}) => {
     const handleEscape = React.useCallback((evt) => {
         if (evt.key === 'Escape') {
-            handleClose();
+            closeHandler();
         }
     }, []);
 
@@ -38,14 +21,14 @@ const Modal = ({children, headerTitle}) => {
 
     return ReactDOM.createPortal(
         <section className={styles.modal}>
-            <ModalOverlay closeModal={handleClose} />
+            <ModalOverlay closeModal={closeHandler} />
             <div className={styles.modal__card}>
 
                 <div className={styles.modal__content + ' mr-10 ml-10 mt-10'}>
                     <div>
                         {headerTitle && <h1 className="text text_type_main-large">{headerTitle}</h1>}
                     </div>
-                    <button className={styles.modal__closeButton} onClick={handleClose}>
+                    <button className={styles.modal__closeButton} onClick={closeHandler}>
                         <CloseIcon type="primary" />
                     </button>
                 </div>
@@ -62,7 +45,8 @@ Modal.propTypes = {
     headerTitle: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool
-    ]).isRequired
+    ]).isRequired,
+    closeHandler: PropTypes.func.isRequired
 };
 
 export default Modal;
