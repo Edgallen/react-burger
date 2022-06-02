@@ -3,7 +3,7 @@ import React, {useMemo, useEffect} from "react";
 import styles from './BurgerConstructor.module.css';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import {useDispatch, useSelector} from "react-redux";
-import {getOrderId, updateOrderModal} from "../../services/actions/modal";
+import {closeModal, getOrderId, updateOrderModal} from "../../services/actions/modal";
 import {addToCart, addBun, setCart} from "../../services/actions/burgerConstructor";
 import IngredientsConstructor from '../IngredientsConstructor/IngredientsConstructor'
 import OrderDetails from "../OrderDetails/OrderDetails";
@@ -78,6 +78,10 @@ const BurgerConstructor = () => {
 
         dispatch(getOrderId(body));
     };
+
+    const closeOrderModal = () => {
+        dispatch(closeModal());
+    };
     
     const moveCard = (dragIndex, hoverIndex) => {
         const dragCard = data.cart[dragIndex]
@@ -117,9 +121,14 @@ const BurgerConstructor = () => {
                 </div>
             </section>
 
-            {orderModal.isVisible && (<Modal headerTitle={false}>
-                <OrderDetails />
-            </Modal>)}
+            {orderModal.isVisible && (
+                <Modal 
+                    headerTitle={false}
+                    closeHandler={closeOrderModal}
+                >
+                    <OrderDetails />
+                </Modal>
+            )}
         </>
     );
 };
