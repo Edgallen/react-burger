@@ -1,33 +1,31 @@
 import React, {useEffect} from 'react';
-import styles from './App.module.css'
 
-import AppHeader from '../AppHeader/AppHeader';
-import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
-import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import {useDispatch} from "react-redux";
 import {getIngredients} from "../../services/actions/burgerIngredients";
-import {DndProvider} from "react-dnd";
-import {HTML5Backend} from 'react-dnd-html5-backend';
+import { BrowserRouter } from "react-router-dom";
+import Switcher from '../Switcher/Switcher'
+import { getUser } from '../../services/actions/auth';
+import { getCookie } from '../../utils/cookies';
 
 const App = () => {
   const dispatch = useDispatch();
+
   // @ts-ignore
   useEffect(() => {
+    const refreshToken = getCookie('refreshToken');
     // @ts-ignore
-    dispatch(getIngredients())
+    dispatch(getIngredients());
+
+    if (refreshToken) {
+      // @ts-ignore
+      dispatch(getUser());
+    }
   }, []);
 
   return (
-    <>
-      <AppHeader />
-      
-      <main className={styles.body}>
-          <DndProvider backend={HTML5Backend}>
-              <BurgerIngredients />
-              <BurgerConstructor />
-          </DndProvider>
-      </main>
-    </>
+      <BrowserRouter>
+          <Switcher />
+      </BrowserRouter>
   );
 };
 

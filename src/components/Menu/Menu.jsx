@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-
 import styles from "./Menu.module.css";
 import PropTypes from "prop-types";
 import {dataPropTypes} from "../../utils/dataPropTypes";
@@ -8,13 +7,17 @@ import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-com
 import {useSelector} from "react-redux";
 import { useDispatch } from "react-redux";
 import { openModal } from '../../services/actions/modal'
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Ingredient = ({ingredient}) => {
+    const location = useLocation();
+    const navigate = useNavigate();
+
     const dispatch = useDispatch();
     const burgerConstructor = useSelector(store => store.burgerConstructor)
     const [counter, setCounter] = useState({
         count: 0
-    })
+    });
     const [, ingrRef] = useDrag({
         type: 'ingredient',
         item: ingredient,
@@ -24,15 +27,16 @@ const Ingredient = ({ingredient}) => {
         if (burgerConstructor.bun._id === ingredient._id) {
             setCounter({...counter, count: 2})
             return
-        };
+        }
 
         setCounter({
             count: burgerConstructor.cart.filter(item => item._id === ingredient._id).length
         });
-    }, [burgerConstructor.cart, burgerConstructor.bun])
+    }, [burgerConstructor.cart, burgerConstructor.bun, ingredient._id, counter])
 
     const handleIngredientClick = (e) => {
         e.preventDefault();
+        navigate(`/ingredient/${ingredient._id}`, {state: { background: location }})
         dispatch(openModal(ingredient));
     };
 
@@ -48,7 +52,11 @@ const Ingredient = ({ingredient}) => {
                 <h3 className='text text_type_digits-default mr-2'>{ingredient.price}</h3>
                 <CurrencyIcon type="primary"/>
             </div>
-            <p className={styles.card__name + " text text_type_main-default mt-1"}>{ingredient.name}</p>
+            <p 
+                className={styles.card__name + " text text_type_main-default mt-1"}
+            >
+                {ingredient.name}
+            </p>
         </div>
     );
 };
@@ -57,11 +65,9 @@ Ingredient.propTypes = {
     ingredient: dataPropTypes.isRequired
 };
 
-export const Menu = ({menu, type}) => {
+export const Menu = ({menu}) => {
     return (
         <>
-            <h1 className="text text_type_main-medium mt-10">{type}</h1>
-
             <div className={styles.menu__type}>
                 {menu.map((ingredient) =>(
                     <div key={ingredient._id}>
@@ -77,5 +83,4 @@ export const Menu = ({menu, type}) => {
 
 Menu.propTypes = {
     menu: PropTypes.arrayOf(dataPropTypes).isRequired,
-    type: PropTypes.string.isRequired
 };

@@ -3,17 +3,21 @@ import React, {useMemo, useEffect} from "react";
 import styles from './BurgerConstructor.module.css';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import {useDispatch, useSelector} from "react-redux";
-import {getOrderId, updateOrderModal} from "../../services/actions/modal";
+import {closeModal, getOrderId, updateOrderModal} from "../../services/actions/modal";
 import {addToCart, addBun, setCart} from "../../services/actions/burgerConstructor";
 import IngredientsConstructor from '../IngredientsConstructor/IngredientsConstructor'
 import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
 import { useDrop } from "react-dnd";
 import { v4 as uuid } from 'uuid';
+import {useNavigate} from "react-router-dom";
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const data = useSelector(store => store.burgerConstructor);
+    const isAuth = useSelector(store => store.auth.isAuth);
     const orderModal = useSelector(store => store.modal.orderModal);
 
     const [, dropContainer] = useDrop({
@@ -63,11 +67,20 @@ const BurgerConstructor = () => {
             return
         }
 
+        if (!isAuth) {
+            navigate('/login');
+            return
+        }
+
         const body = {
             'ingredients': cartId
         };
 
         dispatch(getOrderId(body));
+    };
+
+    const closeOrderModal = () => {
+        dispatch(closeModal());
     };
     
     const moveCard = (dragIndex, hoverIndex) => {
@@ -108,9 +121,14 @@ const BurgerConstructor = () => {
                 </div>
             </section>
 
-            {orderModal.isVisible && (<Modal headerTitle={false}>
-                <OrderDetails />
-            </Modal>)}
+            {orderModal.isVisible && (
+                <Modal 
+                    headerTitle={false}
+                    closeHandler={closeOrderModal}
+                >
+                    <OrderDetails />
+                </Modal>
+            )}
         </>
     );
 };

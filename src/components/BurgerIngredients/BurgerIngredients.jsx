@@ -1,14 +1,12 @@
-import React, {useState, useEffect, useMemo, createRef} from "react";
+import React, {useState, useEffect, useMemo, createRef, useRef} from "react";
 import styles from "./BurgerIngredients.module.css"
 import { Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import {useSelector} from "react-redux";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import Modal from "../Modal/Modal";
 import { Menu } from '../Menu/Menu';
+import { Outlet } from "react-router-dom";
 
 const BurgerIngredients = () => {
-    const data = useSelector(store => store.burgerIngredients.ingredients)
-    const ingredientModal = useSelector(store => store.modal.ingredientModal)
+    const data = useSelector(store => store.burgerIngredients.ingredients);
     const [state, setState] = useState({
         bun: {
             ingredients: [],
@@ -23,6 +21,15 @@ const BurgerIngredients = () => {
             title: 'Начинки'
         }
     });
+
+    function useArrayRef() {
+        const refs = []
+        return [refs, el => el && refs.push(el)]
+    }
+
+    const container = useRef(null);
+    const tabs = useRef(null);
+    const [headings, heading] = useArrayRef()
 
     const tabsRef = useMemo( () => (
         {
@@ -51,18 +58,14 @@ const BurgerIngredients = () => {
                 ingredients: data.filter(element => element.type === 'main')
             }
         })
-    }, [data]);
+    }, [data, state]);
 
     const selectTab = (tab) => {
         tabsRef[tab].current.scrollIntoView({ behavior: "smooth" });
     };
 
     useEffect(() => {
-        const container = document.querySelector(`.${styles.menu__ingredients}`);
-        const tabs = document.querySelector(`.${styles.menu__filter}`);
-        const headings = container.querySelectorAll('h1');
-
-        const border = tabs.getBoundingClientRect().bottom;
+        const border = tabs.current.getBoundingClientRect().bottom;
 
         const scrollHandler = () => {
             const distances = [];
@@ -82,13 +85,17 @@ const BurgerIngredients = () => {
         };
 
         if (data.length > 0) {
-            container.addEventListener('scroll', scrollHandler);
+            if (container.current) {
+                container.current.addEventListener('scroll', scrollHandler);
+            }
         }
 
         return () => {
-            container.removeEventListener('scroll', scrollHandler);
+            if (container.current) {
+                container.current.removeEventListener('scroll', scrollHandler);
+            }
         };
-    }, [data]);
+    }, [container, data, headings, ingredientGroupsTypes]);
 
     return (
         <>
@@ -96,8 +103,8 @@ const BurgerIngredients = () => {
                 <h1 className='text text_type_main-large mt-10 mb-5'>Соберите бургер</h1>
 
                 {!data.isLoading && !data.isFailed && (
-                    <div className={styles.menu__filter}>
-                        {ingredientGroupsTypes.map((type) => (
+                    <div className={styles.menu__filter} ref={tabs}>
+                        {ingredientGroupsTypes.map((type) => (  
                             <Tab
                                 key={type}
                                 active={type === currentIngredientsType}
@@ -111,12 +118,18 @@ const BurgerIngredients = () => {
                 )}
 
                 {!data.isLoading && !data.isFailed && (
-                    <div className={styles.menu__ingredients}>
+                    <div ref={container} className={styles.menu__ingredients}>
                         {ingredientGroupsTypes.map((type) => (
                             <div key={type} ref={tabsRef[type]}>
+                                <h1 
+                                    className="text text_type_main-medium mt-10" 
+                                    ref={heading}
+                                >
+                                    {state[type].title}
+                                </h1>
+
                                 <Menu
                                     menu={state[type].ingredients}
-                                    type={state[type].title}
                                 />
                             </div>
                         ))}
@@ -125,9 +138,7 @@ const BurgerIngredients = () => {
 
             </section>
 
-            {ingredientModal.isVisible && (<Modal headerTitle='Детали ингредиента'>
-                <IngredientDetails/>
-            </Modal>)}
+            <Outlet />
         </>
     );
 };

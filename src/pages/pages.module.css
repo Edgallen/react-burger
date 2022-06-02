@@ -1,0 +1,98 @@
+.login {
+    display: flex;
+    flex-direction: column;
+    margin-top: 180px;
+}
+
+.login__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    width: 480px;
+}
+
+.login__service {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login__redirections {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+}
+
+.login__link {
+    color: #4C4CFF;
+    cursor: pointer;
+    margin: 0;
+    text-decoration: none;
+    transition: .4s;
+}
+
+.login__link:hover {
+    color: #ffffff;
+}
+
+.profile {
+    display: flex;
+    margin-top: 180px;
+}
+
+.profile__buttons {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.profile__selector {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile__tabs {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile__tab {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 64px;
+    cursor: pointer;
+    transition: .4s;
+}
+
+.profile__tab:hover {
+    color:#ffffff;
+}
+
+.profile__description {
+    max-width: 320px;
+}
+
+.ingredients {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 120px;
+}
+
+.ingredient {
+    display: flex;
+    gap: 2rem;
+    margin-top: 120px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.notFound {
+    display: flex;
+    margin-top: 250px;
+    gap: 3rem;
+    flex-direction: column;
+    align-items: center;
+}

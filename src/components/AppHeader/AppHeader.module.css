@@ -23,6 +23,6 @@
      align-items: center;
      border-radius: 5rem;
      background-color: transparent;
-     border: solid 0px;
+     border: solid 0;
      cursor: pointer;
   }
