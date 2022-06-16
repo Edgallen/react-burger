@@ -11,7 +11,7 @@ export const LoginPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const auth = useAuth();
-    const data = useSelector(store => store.auth);
+    const data = useSelector((store: any) => store.auth);
     
     const [inputs, setInputs] = useState({
         email: '',
@@ -28,7 +28,7 @@ export const LoginPage = () => {
 
     const redirectPath = location.state?.path || '/';
 
-    const onSubmitHandler = (e) => {
+    const onSubmitHandler = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         const body = {
             'email': inputs.email,
@@ -38,7 +38,7 @@ export const LoginPage = () => {
         navigate(redirectPath, {replace: true});
     };
 
-    const onForgotClick = (e) => {
+    const onForgotClick = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         dispatch(recoveryRequest());
         navigate('/forgot-password');

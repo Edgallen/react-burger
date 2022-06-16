@@ -27,10 +27,8 @@ const Switcher = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  // @ts-ignore
   const background = location.state && location.state.background;
-  // @ts-ignore
-  const ingredientModal = useSelector(store => store.modal.ingredientModal.isVisible)
+  const ingredientModal = useSelector((store: any) => store.modal.ingredientModal.isVisible)
 
   const closeIngredientModal = () => {
     dispatch(closeModal());

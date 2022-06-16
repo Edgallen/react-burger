@@ -1,12 +1,12 @@
-import React, {useEffect} from "react";
+import React, {useEffect, FC} from "react";
 import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
 import styles from './Modal.module.css';
 import ModalOverlay from '../ModalOverlay/ModalOverlay'
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { IModal } from "../../types";
 
-const Modal = ({children, headerTitle, closeHandler}) => {
-    const handleEscape = React.useCallback((evt) => {
+const Modal: FC<IModal> = ({children, headerTitle, closeHandler}) => {
+    const handleEscape = React.useCallback((evt: { key: string; }) => {
         if (evt.key === 'Escape') {
             closeHandler();
         }
@@ -36,17 +36,8 @@ const Modal = ({children, headerTitle, closeHandler}) => {
                 {children}
 
             </div>
-        </section>, document.getElementById('modals')
+        </section>, document.getElementById('modals')!
     );
-};
-
-Modal.propTypes = {
-    children: PropTypes.node.isRequired,
-    headerTitle: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool
-    ]).isRequired,
-    closeHandler: PropTypes.func.isRequired
 };
 
 export default Modal;

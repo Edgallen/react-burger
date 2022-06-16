@@ -8,7 +8,7 @@ import { selectIngredient } from "../services/actions/modal";
 export const IngredientPage = () => {
   const dispatch = useDispatch();
   let { id } = useParams();
-  const item = useSelector(store => store.burgerIngredients.ingredients.find(e => e._id === id));
+  const item = useSelector((store: any) => store.burgerIngredients.ingredients.find((e: { _id: string | undefined; }) => e._id === id));
 
   useEffect(() => {
     if (item) {

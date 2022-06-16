@@ -5,7 +5,7 @@ import styles from './OrderDetails.module.css'
 import {useSelector} from "react-redux";
 
 const OrderDetails = () => {
-    const orderModal = useSelector(store => store.modal.orderModal)
+    const orderModal = useSelector((store: any) => store.modal.orderModal)
 
     return (
         <div className={styles.module__container}>

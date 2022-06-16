@@ -4,10 +4,18 @@ import { Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import {useSelector} from "react-redux";
 import { Menu } from '../Menu/Menu';
 import { Outlet } from "react-router-dom";
+import { TItem } from "../../types";
+
+interface IState {
+    [key: string]: {
+        ingredients: Array<TItem>;
+        title: string;
+    }
+}
 
 const BurgerIngredients = () => {
-    const data = useSelector(store => store.burgerIngredients.ingredients);
-    const [state, setState] = useState({
+    const data = useSelector((store: any) => store.burgerIngredients.ingredients);
+    const [state, setState] = useState<IState>({
         bun: {
             ingredients: [],
             title: 'Булки'
@@ -23,19 +31,19 @@ const BurgerIngredients = () => {
     });
 
     function useArrayRef() {
-        const refs = []
-        return [refs, el => el && refs.push(el)]
+        const refs: Array<HTMLHeadingElement> = [];
+        return [refs, (el: HTMLHeadingElement) => el && refs.push(el)];
     }
 
-    const container = useRef(null);
-    const tabs = useRef(null);
-    const [headings, heading] = useArrayRef()
+    const container = useRef<HTMLDivElement>(null);
+    const tabs = useRef<HTMLDivElement>(null);
+    const [headings, heading] = useArrayRef();
 
-    const tabsRef = useMemo( () => (
+    const tabsRef = useMemo(() => (
         {
-            bun: createRef(),
-            sauce: createRef(),
-            main: createRef()
+            bun: createRef<HTMLElement>(),
+            sauce: createRef<HTMLElement>(),
+            main: createRef<HTMLElement>()
         }
     ), []);
 
@@ -47,20 +55,22 @@ const BurgerIngredients = () => {
             ...state,
             bun: {
                 ...state.bun,
-                ingredients: data.filter(element => element.type === 'bun')
+                ingredients: data.filter((element: TItem) => element.type === 'bun')
             },
             sauce: {
                 ...state.sauce,
-                ingredients: data.filter(element => element.type === 'sauce')
+                ingredients: data.filter((element: TItem) => element.type === 'sauce')
             },
             main: {
                 ...state.main,
-                ingredients: data.filter(element => element.type === 'main')
+                ingredients: data.filter((element: TItem) => element.type === 'main')
             }
         })
     }, [data, state]);
 
-    const selectTab = (tab) => {
+    type TTabsRef = keyof typeof tabsRef;
+
+    const selectTab = (tab: string): void => {
         tabsRef[tab].current.scrollIntoView({ behavior: "smooth" });
     };
 
@@ -68,9 +78,9 @@ const BurgerIngredients = () => {
         const border = tabs.current.getBoundingClientRect().bottom;
 
         const scrollHandler = () => {
-            const distances = [];
+            const distances: Array<number> = [];
 
-            headings.forEach((heading, i) => {
+            headings.forEach((heading: HTMLElement, i: number) => {
                 const coords = heading.getBoundingClientRect();
                 distances[i] = Math.abs(border - coords.top);
             })
@@ -119,7 +129,7 @@ const BurgerIngredients = () => {
 
                 {!data.isLoading && !data.isFailed && (
                     <div ref={container} className={styles.menu__ingredients}>
-                        {ingredientGroupsTypes.map((type) => (
+                        {ingredientGroupsTypes.map((type: string) => (
                             <div key={type} ref={tabsRef[type]}>
                                 <h1 
                                     className="text text_type_main-medium mt-10" 
