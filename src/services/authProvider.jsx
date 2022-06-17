@@ -1,22 +1,21 @@
-import React, { FC } from "react";
+import React from "react";
 import {createContext, useContext} from "react";
 import {Navigate, useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {loginUser, logoutUser} from "./actions/auth";
-import { IAuthProvider } from "../types";
 
 const AuthContext = createContext(null);
 
-export const AuthProvider: FC<IAuthProvider> = ({ children }) => {
+export const AuthProvider = ({ children }) => {
     const dispatch = useDispatch();
-    const isAuth = useSelector((store: any) => store.auth.isAuth);
+    const isAuth = useSelector(store => store.auth.isAuth);
 
-    const logIn = (body: any) => {
-        dispatch(loginUser(body) as any);
+    const logIn = (body) => {
+        dispatch(loginUser(body));
     };
 
-    const logOut = (body: any) => {
-        dispatch(logoutUser(body) as any);
+    const logOut = (body) => {
+        dispatch(logoutUser(body));
     };
 
     return (
@@ -31,7 +30,7 @@ export const useAuth = () => {
 }
 
 export const RequireAuth = ({ children }) => {
-    const isAuth = useSelector((store: any) => store.auth.isAuth);
+    const isAuth = useSelector(store => store.auth.isAuth);
     const location = useLocation();
 
     if (!isAuth) {
@@ -42,7 +41,7 @@ export const RequireAuth = ({ children }) => {
 }
 
 export const RequireLogIn = ({ children }) => {
-    const isAuth = useSelector((store: any) => store.auth.isAuth);
+    const isAuth = useSelector(store => store.auth.isAuth);
     const location = useLocation();
 
     if (isAuth) {
@@ -53,7 +52,7 @@ export const RequireLogIn = ({ children }) => {
 }
 
 export const RequireReset = ({ children }) => {
-    const data = useSelector((store: any) => store.auth);
+    const data = useSelector(store => store.auth);
     const location = useLocation();
 
     if (!data.isForgot) {

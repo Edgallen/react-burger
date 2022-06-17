@@ -13,6 +13,12 @@ export type TItem = {
   __v: number;
 };
 
+export type TBurgerConstructor = {
+  cart: Array<TItem>;
+  bun: TItem;
+  isLoading: boolean;
+}
+
 export type TOrderModal = {
   orderId: number;
   cartId?: Array<string> | number; // исправить!
@@ -39,6 +45,19 @@ export interface IModalOverlay {
   closeModal: () => void;
 }
 
-export interface IAuthProvider {
-  children: React.ReactNode;
+export interface IBunConstructor {
+  position: 'top' | 'bottom';
+  positionText: '(верх)' | '(низ)';
+  bun: TItem;
+}
+
+export interface IConstructorElements {
+  ingredient: TItem;
+  index: number;
+  moveCard: (dragIndex: number, hoverIndex: number) => void;
+}
+
+export interface IIngredientsConstructor {
+  state: TBurgerConstructor;
+  moveCard: (dragIndex: number, hoverIndex: number) => void;
 }

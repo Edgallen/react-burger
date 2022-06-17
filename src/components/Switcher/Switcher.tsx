@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from './Switcher.module.css'
 import {
   Routes,
@@ -26,7 +26,7 @@ import { closeModal } from "../../services/actions/modal";
 const Switcher = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
+  const location: any = useLocation();
   const background = location.state && location.state.background;
   const ingredientModal = useSelector((store: any) => store.modal.ingredientModal.isVisible)
 
@@ -34,7 +34,7 @@ const Switcher = () => {
     dispatch(closeModal());
 
     navigate('/');
-};
+  };
 
   return (
     <AuthProvider>

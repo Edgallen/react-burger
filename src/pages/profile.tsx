@@ -6,15 +6,39 @@ import {getCookie} from "../utils/cookies";
 import {updateUser} from "../services/actions/auth";
 import {useAuth} from "../services/authProvider";
 
+declare module 'react' {
+    interface FunctionComponent<P = {}> {
+        (props: PropsWithChildren<P>, context?: any): ReactElement<any, any> | null;
+    }
+}
+
+type TInputs = {
+    name: string;
+    login: string;
+    password: string;
+    icon: any;
+    editing: boolean;
+};
+
+type TBody = {
+    [key: string]: string
+};
+
+type TAuth = {
+    isAuth: boolean;
+    logIn: () => void;
+    logOut: (body: { token: string | undefined; }) => void;
+}
+
 export const ProfilePage = () => {
     const dispatch = useDispatch();
-    const auth = useAuth();
+    const auth: TAuth | null = useAuth();
 
-    const data = useSelector(store => store.auth)
+    const data = useSelector((store: any) => store.auth)
     const [nameEdit, setNameEdit] = useState(true)
     const [loginEdit, setLoginEdit] = useState(true)
     const [passwordEdit, setPasswordEdit] = useState(true)
-    const [inputs, setInputs] = useState({
+    const [inputs, setInputs] = useState<TInputs>({
         name: '',
         login: '',
         password: '',
@@ -31,17 +55,19 @@ export const ProfilePage = () => {
     }, []);
 
 
-    const onLogoutHandler = (e) => {
+    const onLogoutHandler = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        // @ts-ignore
         const refreshToken = getCookie('refreshToken');
         const body = {
             "token": refreshToken
         };
-        auth.logOut(body);
+
+        if ( auth !== null ) {
+            auth.logOut(body);
+        }
     };
 
-    const defaultEdits = (name, login) => {
+    const defaultEdits = (name?: string, login?: string) => {
         setNameEdit(true);
         setLoginEdit(true);
         setPasswordEdit(true);
@@ -58,15 +84,15 @@ export const ProfilePage = () => {
         setInputs({...inputs, editing: false});
     };
 
-    const cancelButtonHandler = (e) => {
+    const cancelButtonHandler = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         defaultEdits(data.user.name, data.user.email);
     };
 
-    const onSubmitHandler = (e) => {
+    const onSubmitHandler = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
 
-        let body = {
+        let body: TBody = {
           'name':  inputs.name,
           'login':  inputs.login,
         };
@@ -78,9 +104,13 @@ export const ProfilePage = () => {
             };
         }
 
-        dispatch(updateUser(body));
+        dispatch(updateUser(body) as any);
         defaultEdits();
     };
+
+    useEffect(() => {
+        console.log(auth)
+    }, [auth])
 
     return (
         <>
@@ -176,13 +206,13 @@ export const ProfilePage = () => {
                             <div className={`${styles.profile__buttons} mt-6`}>
                                 <Button
                                     type="primary"
-                                    size="big"
+                                    size="large"
                                 >
                                     Сохранить
                                 </Button>
                                 <Button
                                     type="primary"
-                                    size="big"
+                                    size="large"
                                     onClick={cancelButtonHandler}
                                 >
                                     Отмена

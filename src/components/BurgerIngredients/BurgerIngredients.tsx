@@ -6,11 +6,21 @@ import { Menu } from '../Menu/Menu';
 import { Outlet } from "react-router-dom";
 import { TItem } from "../../types";
 
+declare module 'react' {
+    interface FunctionComponent<P = {}> {
+        (props: PropsWithChildren<P>, context?: any): ReactElement<any, any> | null;
+    }
+}
+
 interface IState {
     [key: string]: {
         ingredients: Array<TItem>;
         title: string;
     }
+}
+
+interface ITabsRef {
+    [key: string]: React.RefObject<HTMLDivElement>;
 }
 
 const BurgerIngredients = () => {
@@ -30,25 +40,24 @@ const BurgerIngredients = () => {
         }
     });
 
-    function useArrayRef() {
-        const refs: Array<HTMLHeadingElement> = [];
-        return [refs, (el: HTMLHeadingElement) => el && refs.push(el)];
-    }
-
     const container = useRef<HTMLDivElement>(null);
     const tabs = useRef<HTMLDivElement>(null);
-    const [headings, heading] = useArrayRef();
 
-    const tabsRef = useMemo(() => (
+    const headingRef = useRef<Array<HTMLHeadingElement>>([]);
+    useEffect(() => {
+        headingRef.current = headingRef.current.slice(0, ingredientGroupsTypes.length);
+    }, [headingRef]);
+
+    const tabsRef = useMemo<ITabsRef>(() => (
         {
-            bun: createRef<HTMLElement>(),
-            sauce: createRef<HTMLElement>(),
-            main: createRef<HTMLElement>()
+            bun: createRef<HTMLDivElement>(),
+            sauce: createRef<HTMLDivElement>(),
+            main: createRef<HTMLDivElement>()
         }
     ), []);
 
     const ingredientGroupsTypes = Object.keys(state);
-    const [currentIngredientsType, setCurrentIngredientsType] = useState(ingredientGroupsTypes[0])
+    const [currentIngredientsType, setCurrentIngredientsType] = useState(ingredientGroupsTypes[0]);
 
     useEffect(() => {
         setState({
@@ -68,44 +77,47 @@ const BurgerIngredients = () => {
         })
     }, [data, state]);
 
-    type TTabsRef = keyof typeof tabsRef;
-
     const selectTab = (tab: string): void => {
-        tabsRef[tab].current.scrollIntoView({ behavior: "smooth" });
+        if (tabsRef[tab].current) {
+            tabsRef[tab].current.scrollIntoView({ behavior: "smooth" });
+        }
     };
 
     useEffect(() => {
-        const border = tabs.current.getBoundingClientRect().bottom;
+        if (tabs.current) {
+            const border = tabs.current.getBoundingClientRect().bottom;
 
-        const scrollHandler = () => {
-            const distances: Array<number> = [];
-
-            headings.forEach((heading: HTMLElement, i: number) => {
-                const coords = heading.getBoundingClientRect();
-                distances[i] = Math.abs(border - coords.top);
-            })
-
-            const currentMinDistance = Math.min(...distances);
-
-            distances.forEach((distance, i) => {
-                if (distance === currentMinDistance) {
-                    setCurrentIngredientsType(ingredientGroupsTypes[i]);
+            const scrollHandler = () => {
+                const distances: Array<number> = [];
+    
+                headingRef.current.forEach((heading: HTMLHeadingElement, i: number) => {
+                    const coords = heading.getBoundingClientRect();
+                    distances[i] = Math.abs(border - coords.top);
+                })
+    
+                const currentMinDistance = Math.min(...distances);
+    
+                distances.forEach((distance, i) => {
+                    if (distance === currentMinDistance) {
+                        setCurrentIngredientsType(ingredientGroupsTypes[i]);
+                    }
+                })
+            };
+    
+            if (data.length > 0) {
+                if (container.current) {
+                    container.current.addEventListener('scroll', scrollHandler);
                 }
-            })
-        };
-
-        if (data.length > 0) {
-            if (container.current) {
-                container.current.addEventListener('scroll', scrollHandler);
             }
+    
+            return () => {
+                if (container.current) {
+                    container.current.removeEventListener('scroll', scrollHandler);
+                }
+            };
         }
 
-        return () => {
-            if (container.current) {
-                container.current.removeEventListener('scroll', scrollHandler);
-            }
-        };
-    }, [container, data, headings, ingredientGroupsTypes]);
+    }, [container, data, headingRef, ingredientGroupsTypes]);
 
     return (
         <>
@@ -129,11 +141,11 @@ const BurgerIngredients = () => {
 
                 {!data.isLoading && !data.isFailed && (
                     <div ref={container} className={styles.menu__ingredients}>
-                        {ingredientGroupsTypes.map((type: string) => (
+                        {ingredientGroupsTypes.map((type: string, index: number) => (
                             <div key={type} ref={tabsRef[type]}>
                                 <h1 
                                     className="text text_type_main-medium mt-10" 
-                                    ref={heading}
+                                    ref={(el: HTMLHeadingElement) => (headingRef.current[index] = el)}
                                 >
                                     {state[type].title}
                                 </h1>

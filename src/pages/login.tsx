@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useLocation, useNavigate} from "react-router-dom";
@@ -6,14 +6,21 @@ import { useDispatch, useSelector } from "react-redux";
 import {recoveryRequest} from "../services/actions/auth";
 import {useAuth} from "../services/authProvider";
 
+type TInputs = {
+    email: string;
+    password: string;
+    passwordType: "email" | "password" | "text" | undefined;
+    passwordIcon: any;
+}
+
 export const LoginPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const location = useLocation();
+    const location: any = useLocation();
     const auth = useAuth();
     const data = useSelector((store: any) => store.auth);
     
-    const [inputs, setInputs] = useState({
+    const [inputs, setInputs] = useState<TInputs>({
         email: '',
         password: '',
         passwordType: 'password',
@@ -34,7 +41,9 @@ export const LoginPage = () => {
             'email': inputs.email,
             'password': inputs.password
         };
-        auth.logIn(body);
+        if (auth) {
+            auth.logIn(body);
+        }
         navigate(redirectPath, {replace: true});
     };
 
@@ -43,6 +52,10 @@ export const LoginPage = () => {
         dispatch(recoveryRequest());
         navigate('/forgot-password');
     };
+
+    useEffect(() => {
+        console.log(auth)
+    },[auth])
 
     return (
         <>
@@ -80,7 +93,7 @@ export const LoginPage = () => {
 
                     <Button
                         type="primary"
-                        size="big"
+                        size="large"
                     >
                         Войти
                     </Button>

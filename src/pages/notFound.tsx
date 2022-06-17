@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 export const NotFoundPage = () => {
   const navigate = useNavigate();
 
-  const returnHomeClick = (e) => {
+  const returnHomeClick = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     navigate('/');
   };

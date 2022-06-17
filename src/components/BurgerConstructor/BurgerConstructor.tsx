@@ -13,6 +13,12 @@ import { v4 as uuid } from 'uuid';
 import {useNavigate} from "react-router-dom";
 import { TItem } from "../../types";
 
+declare module 'react' {
+    interface FunctionComponent<P = {}> {
+        (props: PropsWithChildren<P>, context?: any): ReactElement<any, any> | null;
+    }
+}
+
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
