@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getCookie} from "../utils/cookies";
 import {updateUser} from "../services/actions/auth";
 import {useAuth} from "../services/authProvider";
+import {TAuth, TAuthBody} from "../types";
 
 declare module 'react' {
     interface FunctionComponent<P = {}> {
@@ -20,19 +21,9 @@ type TInputs = {
     editing: boolean;
 };
 
-type TBody = {
-    [key: string]: string
-};
-
-type TAuth = {
-    isAuth: boolean;
-    logIn: () => void;
-    logOut: (body: { token: string | undefined; }) => void;
-}
-
 export const ProfilePage = () => {
     const dispatch = useDispatch();
-    const auth: TAuth | null = useAuth();
+    // const auth: TAuth | null = useAuth();
 
     const data = useSelector((store: any) => store.auth)
     const [nameEdit, setNameEdit] = useState(true)
@@ -45,6 +36,12 @@ export const ProfilePage = () => {
         icon: 'EditIcon',
         editing: false
     });
+
+    const requestAuth = useAuth();
+    let auth: TAuth;
+    if (requestAuth) {
+        auth = requestAuth;
+    }
 
     useEffect(() => {
         setInputs({
@@ -92,7 +89,7 @@ export const ProfilePage = () => {
     const onSubmitHandler = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
 
-        let body: TBody = {
+        let body: TAuthBody = {
           'name':  inputs.name,
           'login':  inputs.login,
         };
@@ -107,10 +104,6 @@ export const ProfilePage = () => {
         dispatch(updateUser(body) as any);
         defaultEdits();
     };
-
-    useEffect(() => {
-        console.log(auth)
-    }, [auth])
 
     return (
         <>

@@ -61,3 +61,23 @@ export interface IIngredientsConstructor {
   state: TBurgerConstructor;
   moveCard: (dragIndex: number, hoverIndex: number) => void;
 }
+
+export type TAuthBody = {
+  [key: string]: string | undefined
+}
+
+export type TAuth = {
+  isAuth: boolean;
+  logIn: (body: TAuthBody) => void;
+  logOut: (body: TAuthBody) => void;
+} | null
+
+export interface IAppContextInterface {
+  isAuth: boolean;
+  logIn: (body: TAuthBody) => void;
+  logOut: (body: TAuthBody) => void;
+}
+
+export interface IAuthProvider {
+  children: React.ReactNode;
+}

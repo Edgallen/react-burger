@@ -5,7 +5,7 @@ import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-co
 import {useDispatch, useSelector} from "react-redux";
 import {closeModal, getOrderId, updateOrderModal} from "../../services/actions/modal";
 import {addToCart, addBun, setCart} from "../../services/actions/burgerConstructor";
-import IngredientsConstructor from '../IngredientsConstructor/IngredientsConstructor'
+import IngredientsConstructor from '../IngredientsConstructor/IngredientsConstructor';
 import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
 import { useDrop } from "react-dnd";

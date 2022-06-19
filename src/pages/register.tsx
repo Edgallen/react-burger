@@ -4,6 +4,7 @@ import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components"
 import {useDispatch} from "react-redux";
 import {registerUser} from "../services/actions/auth";
 import { Link } from "react-router-dom";
+import {TAuthBody} from "../types";
 
 type TInputs = {
     name: string;
@@ -33,7 +34,7 @@ export const RegisterPage = () => {
 
     const onSubmitHandler = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        const body = {
+        const body: TAuthBody = {
             'email': inputs.email,
             'password': inputs.password,
             'name': inputs.name,

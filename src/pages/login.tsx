@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {recoveryRequest} from "../services/actions/auth";
 import {useAuth} from "../services/authProvider";
+import {TAuth, TAuthBody} from "../types";
 
 type TInputs = {
     email: string;
@@ -17,8 +18,13 @@ export const LoginPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location: any = useLocation();
-    const auth = useAuth();
     const data = useSelector((store: any) => store.auth);
+
+    const requestAuth = useAuth();
+    let auth: TAuth;
+    if (requestAuth) {
+        auth = requestAuth;
+    }
     
     const [inputs, setInputs] = useState<TInputs>({
         email: '',
@@ -37,10 +43,11 @@ export const LoginPage = () => {
 
     const onSubmitHandler = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        const body = {
+        const body: TAuthBody = {
             'email': inputs.email,
             'password': inputs.password
         };
+
         if (auth) {
             auth.logIn(body);
         }
@@ -52,10 +59,6 @@ export const LoginPage = () => {
         dispatch(recoveryRequest());
         navigate('/forgot-password');
     };
-
-    useEffect(() => {
-        console.log(auth)
-    },[auth])
 
     return (
         <>
