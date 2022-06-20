@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useMemo, createRef, useRef} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import styles from "./BurgerIngredients.module.css"
 import { Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import {useSelector} from "react-redux";
@@ -6,21 +6,11 @@ import { Menu } from '../Menu/Menu';
 import { Outlet } from "react-router-dom";
 import { TItem } from "../../types";
 
-declare module 'react' {
-    interface FunctionComponent<P = {}> {
-        (props: PropsWithChildren<P>, context?: any): ReactElement<any, any> | null;
-    }
-}
-
 interface IState {
     [key: string]: {
         ingredients: Array<TItem>;
         title: string;
     }
-}
-
-interface ITabsRef {
-    [key: string]: React.RefObject<HTMLDivElement>;
 }
 
 const BurgerIngredients = () => {
@@ -48,13 +38,11 @@ const BurgerIngredients = () => {
         headingRef.current = headingRef.current.slice(0, ingredientGroupsTypes.length);
     }, [headingRef]);
 
-    const tabsRef = useMemo<ITabsRef>(() => (
-        {
-            bun: createRef<HTMLDivElement>(),
-            sauce: createRef<HTMLDivElement>(),
-            main: createRef<HTMLDivElement>()
-        }
-    ), []);
+    const tabsRef = useRef<Array<HTMLHeadingElement>>([]);
+    useEffect(() => {
+        tabsRef.current = tabsRef.current.slice(0, ingredientGroupsTypes.length);
+    }, [tabsRef]);
+
 
     const ingredientGroupsTypes = Object.keys(state);
     const [currentIngredientsType, setCurrentIngredientsType] = useState(ingredientGroupsTypes[0]);
@@ -77,10 +65,8 @@ const BurgerIngredients = () => {
         })
     }, [data, state]);
 
-    const selectTab = (tab: string): void => {
-        if (tabsRef[tab].current) {
-            tabsRef[tab].current.scrollIntoView({ behavior: "smooth" });
-        }
+    const selectTab = (index: number): void => {
+        tabsRef.current[index].scrollIntoView({ behavior: "smooth" })
     };
 
     useEffect(() => {
@@ -116,7 +102,6 @@ const BurgerIngredients = () => {
                 }
             };
         }
-
     }, [container, data, headingRef, ingredientGroupsTypes]);
 
     return (
@@ -126,12 +111,12 @@ const BurgerIngredients = () => {
 
                 {!data.isLoading && !data.isFailed && (
                     <div className={styles.menu__filter} ref={tabs}>
-                        {ingredientGroupsTypes.map((type) => (  
+                        {ingredientGroupsTypes.map((type, index) => (  
                             <Tab
                                 key={type}
                                 active={type === currentIngredientsType}
                                 value={type}
-                                onClick={() => selectTab(type)}
+                                onClick={() => selectTab(index)}
                             >
                                 {state[type].title}
                             </Tab>
@@ -142,7 +127,7 @@ const BurgerIngredients = () => {
                 {!data.isLoading && !data.isFailed && (
                     <div ref={container} className={styles.menu__ingredients}>
                         {ingredientGroupsTypes.map((type: string, index: number) => (
-                            <div key={type} ref={tabsRef[type]}>
+                            <div key={type} ref={(el: HTMLDivElement) => (tabsRef.current[index] = el)}>
                                 <h1 
                                     className="text text_type_main-medium mt-10" 
                                     ref={(el: HTMLHeadingElement) => (headingRef.current[index] = el)}

@@ -19,14 +19,6 @@ export type TBurgerConstructor = {
   isLoading: boolean;
 }
 
-export type TOrderModal = {
-  orderId: number;
-  cartId?: Array<string> | number; // исправить!
-  isLoading: boolean;
-  isFailed: boolean;
-  isVisible: boolean;
-}
-
 export interface IMenuIngredient {
   ingredient: TItem;
 }
