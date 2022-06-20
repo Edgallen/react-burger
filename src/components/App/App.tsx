@@ -10,15 +10,12 @@ import { getCookie } from '../../utils/cookies';
 const App = () => {
   const dispatch = useDispatch();
 
-  // @ts-ignore
   useEffect(() => {
     const refreshToken = getCookie('refreshToken');
-    // @ts-ignore
-    dispatch(getIngredients());
+    dispatch(getIngredients() as any);
 
     if (refreshToken) {
-      // @ts-ignore
-      dispatch(getUser());
+      dispatch(getUser() as any);
     }
   }, []);
 

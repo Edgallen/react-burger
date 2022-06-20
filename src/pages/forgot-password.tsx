@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {FormEvent, useEffect, useState} from "react";
 import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,19 +8,19 @@ import {requestRecovery} from "../services/actions/auth";
 export const ForgotPasswordPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const data = useSelector(store => store.auth);
+    const data = useSelector((store: any) => store.auth);
     const [inputs, setInputs] = useState({
         email: ''
     })
     const inputRef = React.useRef(null)
 
-    const onSubmitHandler = (e) => {
+    const onSubmitHandler = (e: FormEvent) => {
         e.preventDefault();
         const body = {
             "email": inputs.email
         }
-        // @ts-ignore
-        dispatch(requestRecovery(body));
+
+        dispatch(requestRecovery(body) as any);
         navigate(`/reset-password`);
     };
 
@@ -56,7 +56,7 @@ export const ForgotPasswordPage = () => {
 
                 <Button
                     type="primary"
-                    size="big"
+                    size="large"
                 >
                     Восстановить
                 </Button>

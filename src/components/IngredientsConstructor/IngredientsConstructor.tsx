@@ -1,14 +1,12 @@
-import React, {useRef} from "react";
-import PropTypes from 'prop-types';
-
+import React, {useRef, FC} from "react";
 import styles from './IngredientsConstructor.module.css';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { dataPropTypes } from '../../utils/dataPropTypes';
 import { useDrag, useDrop } from "react-dnd";
 import { useDispatch } from "react-redux";
 import { removeFromCart } from '../../services/actions/burgerConstructor';
+import { IBunConstructor, IConstructorElements, IIngredientsConstructor } from "../../types";
 
-const BunConstructor = ({position, positionText, bun}) => {
+const BunConstructor: FC<IBunConstructor> = ({position, positionText, bun}) => {
     return (
         <div className={styles.constructor__card + ' ml-8'}>
             <ConstructorElement
@@ -22,17 +20,11 @@ const BunConstructor = ({position, positionText, bun}) => {
     );
 };
 
-BunConstructor.propTypes = {
-    position: PropTypes.string.isRequired,
-    positionText: PropTypes.string.isRequired,
-    bun: dataPropTypes.isRequired
-};
-
-const ConstructorElements = ({ingredient, index, moveCard}) => {
+const ConstructorElements: FC<IConstructorElements> = ({ingredient, index, moveCard}) => {
     const dispatch = useDispatch();
 
     const id = ingredient._id;
-    const ref = useRef(null);
+    const ref = useRef<HTMLLIElement>(null);
     const [, drag] = useDrag({
         type: 'card',
         item: () => {
@@ -42,7 +34,7 @@ const ConstructorElements = ({ingredient, index, moveCard}) => {
 
     const [, drop] = useDrop({
         accept: 'card',
-        hover: (item, monitor) => {
+        hover: (item: {id: number; index: number}, monitor) => {
             const dragIndex = item.index;
             const hoverIndex = index;
 
@@ -50,15 +42,17 @@ const ConstructorElements = ({ingredient, index, moveCard}) => {
                 return
             }
             
-            const hoverBoundingRect = ref.current?.getBoundingClientRect()
-            const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-            const clientOffset = monitor.getClientOffset()
-            const hoverClientY = clientOffset.y - hoverBoundingRect.top
-            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-                return
-            }
-            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-                return
+            const hoverBoundingRect = ref.current?.getBoundingClientRect();
+            const clientOffset = monitor.getClientOffset();
+            if (hoverBoundingRect && clientOffset) {
+                const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+                const hoverClientY = clientOffset.y - hoverBoundingRect.top
+                if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+                    return
+                }
+                if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+                    return
+                }
             }
 
             moveCard(dragIndex, hoverIndex);
@@ -66,7 +60,7 @@ const ConstructorElements = ({ingredient, index, moveCard}) => {
         },
     });
 
-    const handleDelete = (index) => {
+    const handleDelete = (index: number) => {
         dispatch(removeFromCart(index));
     };
 
@@ -86,13 +80,7 @@ const ConstructorElements = ({ingredient, index, moveCard}) => {
     );
 };
 
-ConstructorElements.propTypes = {
-    ingredient: dataPropTypes.isRequired,
-    index: PropTypes.number.isRequired,
-    moveCard: PropTypes.func.isRequired
-};
-
-const IngredientsConstructor = ({state, moveCard}) => {
+const IngredientsConstructor: FC<IIngredientsConstructor> = ({state, moveCard}) => {
     return (
         <div className={styles.constructor + ' pr-2'}>
             {state.bun.type && <BunConstructor position='top' positionText='(верх)' bun={state.bun} />}
@@ -103,7 +91,7 @@ const IngredientsConstructor = ({state, moveCard}) => {
                         ingredient={ingredient}
                         index={index}
                         moveCard={moveCard}
-                        key={ingredient.id}
+                        key={ingredient._id}
                     />
                 ))}
             </div>
@@ -112,14 +100,6 @@ const IngredientsConstructor = ({state, moveCard}) => {
         </div>
         
     );
-};
-
-IngredientsConstructor.propTypes = {
-    state: PropTypes.shape({
-        cart: PropTypes.arrayOf(dataPropTypes).isRequired,
-        bun: dataPropTypes.isRequired
-    }).isRequired,
-    moveCard: PropTypes.func.isRequired
 };
 
 export default IngredientsConstructor

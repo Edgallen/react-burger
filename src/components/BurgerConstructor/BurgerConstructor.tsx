@@ -5,24 +5,31 @@ import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-co
 import {useDispatch, useSelector} from "react-redux";
 import {closeModal, getOrderId, updateOrderModal} from "../../services/actions/modal";
 import {addToCart, addBun, setCart} from "../../services/actions/burgerConstructor";
-import IngredientsConstructor from '../IngredientsConstructor/IngredientsConstructor'
+import IngredientsConstructor from '../IngredientsConstructor/IngredientsConstructor';
 import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
 import { useDrop } from "react-dnd";
 import { v4 as uuid } from 'uuid';
 import {useNavigate} from "react-router-dom";
+import { TItem } from "../../types";
+
+declare module 'react' {
+    interface FunctionComponent<P = {}> {
+        (props: PropsWithChildren<P>, context?: any): ReactElement<any, any> | null;
+    }
+}
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const data = useSelector(store => store.burgerConstructor);
-    const isAuth = useSelector(store => store.auth.isAuth);
-    const orderModal = useSelector(store => store.modal.orderModal);
+    const data = useSelector((store: any) => store.burgerConstructor);
+    const isAuth = useSelector((store: any) => store.auth.isAuth);
+    const orderModal = useSelector((store: any) => store.modal.orderModal);
 
     const [, dropContainer] = useDrop({
         accept: 'ingredient',
-        drop(item) {
+        drop(item: TItem) {
             if (item.type === 'bun') {
                 dispatch(addBun(item));
                 return
@@ -35,7 +42,7 @@ const BurgerConstructor = () => {
     const totalPrice = useMemo(() => {
         let cartPrice = 0;
 
-        data.cart.forEach(ingredient => {
+        data.cart.forEach((ingredient: TItem) => {
             cartPrice += ingredient.price;
         });
 
@@ -48,7 +55,7 @@ const BurgerConstructor = () => {
 
     useEffect(() => {
         let cartId = [];
-        data.cart.forEach(ingredient => {
+        data.cart.forEach((ingredient: TItem) => {
             cartId.push(ingredient._id)
         });
 
@@ -60,8 +67,7 @@ const BurgerConstructor = () => {
     }, [data.bun, data.cart]);
 
 
-    const handleSubmit = (e, cartId) => {
-        e.preventDefault();
+    const handleSubmit = (): void => {
 
         if (!data.bun.type || data.cart.length === 0) {
             return
@@ -72,18 +78,18 @@ const BurgerConstructor = () => {
             return
         }
 
-        const body = {
-            'ingredients': cartId
+        const body: {'ingredients': string} = {
+            'ingredients': orderModal.cartId[0]
         };
 
-        dispatch(getOrderId(body));
+        dispatch(getOrderId(body) as any);
     };
 
-    const closeOrderModal = () => {
+    const closeOrderModal = (): void => {
         dispatch(closeModal());
     };
     
-    const moveCard = (dragIndex, hoverIndex) => {
+    const moveCard = (dragIndex: number, hoverIndex: number): void => {
         const dragCard = data.cart[dragIndex]
         const newCart = [...data.cart];
         newCart.splice(dragIndex, 1);
@@ -115,7 +121,11 @@ const BurgerConstructor = () => {
                         <h1 className='text text_type_digits-medium mr-2'>{`${totalPrice}`}</h1>
                         <CurrencyIcon type="primary" />
                     </div>
-                    <Button type="primary" size="large" onClick={(e) => handleSubmit(e, orderModal.cartId[0])}>
+                    <Button 
+                        type="primary" 
+                        size="large" 
+                        onClick={handleSubmit}
+                    > 
                         Оформить заказ
                     </Button>
                 </div>

@@ -1,14 +1,21 @@
-import React, {useState} from "react";
+import React, {useState, FormEvent} from "react";
 import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
 import {resetPassword} from "../services/actions/auth";
 import { useDispatch } from "react-redux";
 
+type TInputs = {
+    token: string;
+    password: string;
+    passwordType: "email" | "password" | "text" | undefined;
+    passwordIcon: any;
+}
+
 export const ResetPasswordPage = () => {
     const dispatch = useDispatch();
 
-    const [inputs, setInputs] = useState({
+    const [inputs, setInputs] = useState<TInputs>({
         token: '',
         password: '',
         passwordType: 'password',
@@ -21,14 +28,14 @@ export const ResetPasswordPage = () => {
         : setInputs({...inputs, passwordType: 'password', passwordIcon: 'ShowIcon'});
     }
 
-    const onSubmitHandler = (e) => {
+    const onSubmitHandler = (e: FormEvent) => {
         e.preventDefault();
         const body = {
             'password': inputs.password,
             'token': inputs.token
         }
 
-        dispatch(resetPassword(body));
+        dispatch(resetPassword(body) as any);
     };
 
     return (
@@ -65,7 +72,7 @@ export const ResetPasswordPage = () => {
 
                 <Button
                     type="primary"
-                    size="big"
+                    size="large"
                 >
                     Сохранить
                 </Button>

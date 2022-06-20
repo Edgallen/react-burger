@@ -1,14 +1,23 @@
-import React, {useState} from "react";
+import React, {useState, FormEvent} from "react";
 import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDispatch} from "react-redux";
 import {registerUser} from "../services/actions/auth";
 import { Link } from "react-router-dom";
+import {TAuthBody} from "../types";
+
+type TInputs = {
+    name: string;
+    email: string;
+    password: string;
+    passwordType: "email" | "password" | "text" | undefined;
+    passwordIcon: any;
+}
 
 export const RegisterPage = () => {
     const dispatch = useDispatch();
 
-    const [inputs, setInputs] = useState({
+    const [inputs, setInputs] = useState<TInputs>({
         name: '',
         email: '',
         password: '',
@@ -23,15 +32,15 @@ export const RegisterPage = () => {
         : setInputs({...inputs, passwordType: 'password', passwordIcon: 'ShowIcon'});
     }
 
-    const onSubmitHandler = (e) => {
+    const onSubmitHandler = (e: FormEvent) => {
         e.preventDefault();
-        const body = {
+        const body: TAuthBody = {
             'email': inputs.email,
             'password': inputs.password,
             'name': inputs.name,
         }
 
-        dispatch(registerUser(body));
+        dispatch(registerUser(body) as any);
     };
 
     return (
@@ -54,7 +63,6 @@ export const RegisterPage = () => {
                     />
 
                     <Input
-                        className={'mb-6'}
                         type={'email'}
                         placeholder={'E-mail'}
                         onChange={e => setInputs({
@@ -86,7 +94,7 @@ export const RegisterPage = () => {
 
                     <Button 
                         type="primary" 
-                        size="big"
+                        size="large"
                     >
                         Зарегестрироваться
                     </Button>

@@ -1,21 +1,20 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, FormEvent, useState, FC} from "react";
 import styles from "./Menu.module.css";
-import PropTypes from "prop-types";
-import {dataPropTypes} from "../../utils/dataPropTypes";
 import {useDrag} from "react-dnd";
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useSelector} from "react-redux";
 import { useDispatch } from "react-redux";
 import { openModal } from '../../services/actions/modal'
 import { useLocation, useNavigate } from "react-router-dom";
+import { TItem, IMenu, IMenuIngredient } from "../../types";
 
-const Ingredient = ({ingredient}) => {
+const Ingredient: FC<IMenuIngredient> = ({ingredient}) => {
     const location = useLocation();
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
-    const burgerConstructor = useSelector(store => store.burgerConstructor)
-    const [counter, setCounter] = useState({
+    const burgerConstructor = useSelector((store: any) => store.burgerConstructor)
+    const [counter, setCounter] = useState<{ count: number }>({
         count: 0
     });
     const [, ingrRef] = useDrag({
@@ -30,13 +29,13 @@ const Ingredient = ({ingredient}) => {
         }
 
         setCounter({
-            count: burgerConstructor.cart.filter(item => item._id === ingredient._id).length
+            count: burgerConstructor.cart.filter((item: TItem) => item._id === ingredient._id).length
         });
-    }, [burgerConstructor.cart, burgerConstructor.bun, ingredient._id, counter])
+    }, [burgerConstructor.cart, burgerConstructor.bun, ingredient._id, counter]);
 
-    const handleIngredientClick = (e) => {
+    const handleIngredientClick = (e: FormEvent): void => {
         e.preventDefault();
-        navigate(`/ingredient/${ingredient._id}`, {state: { background: location }})
+        navigate(`/ingredient/${ingredient._id}`, {state: { background: location }});
         dispatch(openModal(ingredient));
     };
 
@@ -61,15 +60,11 @@ const Ingredient = ({ingredient}) => {
     );
 };
 
-Ingredient.propTypes = {
-    ingredient: dataPropTypes.isRequired
-};
-
-export const Menu = ({menu}) => {
+export const Menu: FC<IMenu> = ({menu}) => {
     return (
         <>
             <div className={styles.menu__type}>
-                {menu.map((ingredient) =>(
+                {menu.map((ingredient: TItem) =>(
                     <div key={ingredient._id}>
                         <Ingredient
                             ingredient={ingredient}
@@ -79,8 +74,4 @@ export const Menu = ({menu}) => {
             </div>
         </>
     );
-};
-
-Menu.propTypes = {
-    menu: PropTypes.arrayOf(dataPropTypes).isRequired,
 };

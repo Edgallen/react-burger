@@ -1,19 +1,32 @@
-import React, {useState} from "react";
+import React, {FormEvent, useState} from "react";
 import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {recoveryRequest} from "../services/actions/auth";
 import {useAuth} from "../services/authProvider";
+import {TAuth, TAuthBody} from "../types";
+
+type TInputs = {
+    email: string;
+    password: string;
+    passwordType: "email" | "password" | "text" | undefined;
+    passwordIcon: any;
+}
 
 export const LoginPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const location = useLocation();
-    const auth = useAuth();
-    const data = useSelector(store => store.auth);
+    const location: any = useLocation();
+    const data = useSelector((store: any) => store.auth);
+
+    const requestAuth = useAuth();
+    let auth: TAuth;
+    if (requestAuth) {
+        auth = requestAuth;
+    }
     
-    const [inputs, setInputs] = useState({
+    const [inputs, setInputs] = useState<TInputs>({
         email: '',
         password: '',
         passwordType: 'password',
@@ -28,17 +41,20 @@ export const LoginPage = () => {
 
     const redirectPath = location.state?.path || '/';
 
-    const onSubmitHandler = (e) => {
+    const onSubmitHandler = (e: FormEvent) => {
         e.preventDefault();
-        const body = {
+        const body: TAuthBody = {
             'email': inputs.email,
             'password': inputs.password
         };
-        auth.logIn(body);
+
+        if (auth) {
+            auth.logIn(body);
+        }
         navigate(redirectPath, {replace: true});
     };
 
-    const onForgotClick = (e) => {
+    const onForgotClick = (e: FormEvent) => {
         e.preventDefault();
         dispatch(recoveryRequest());
         navigate('/forgot-password');
@@ -80,7 +96,7 @@ export const LoginPage = () => {
 
                     <Button
                         type="primary"
-                        size="big"
+                        size="large"
                     >
                         Войти
                     </Button>

@@ -1,11 +1,12 @@
 import styles from './pages.module.css';
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate } from 'react-router-dom';
+import { FormEvent } from 'react';
 
 export const NotFoundPage = () => {
   const navigate = useNavigate();
 
-  const returnHomeClick = (e) => {
+  const returnHomeClick = (e: FormEvent) => {
     e.preventDefault();
     navigate('/');
   };
