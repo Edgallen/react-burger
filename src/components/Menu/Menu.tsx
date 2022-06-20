@@ -1,4 +1,4 @@
-import React, {useEffect, useState, FC} from "react";
+import React, {useEffect, FormEvent, useState, FC} from "react";
 import styles from "./Menu.module.css";
 import {useDrag} from "react-dnd";
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
@@ -31,11 +31,11 @@ const Ingredient: FC<IMenuIngredient> = ({ingredient}) => {
         setCounter({
             count: burgerConstructor.cart.filter((item: TItem) => item._id === ingredient._id).length
         });
-    }, [burgerConstructor.cart, burgerConstructor.bun, ingredient._id, counter])
+    }, [burgerConstructor.cart, burgerConstructor.bun, ingredient._id, counter]);
 
-    const handleIngredientClick = (e: { preventDefault: () => void; }): void => {
+    const handleIngredientClick = (e: FormEvent): void => {
         e.preventDefault();
-        navigate(`/ingredient/${ingredient._id}`, {state: { background: location }})
+        navigate(`/ingredient/${ingredient._id}`, {state: { background: location }});
         dispatch(openModal(ingredient));
     };
 

@@ -6,7 +6,7 @@ import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { IModal } from "../../types";
 
 const Modal: FC<IModal> = ({children, headerTitle, closeHandler}) => {
-    const handleEscape = React.useCallback((evt: { key: string; }) => {
+    const handleEscape = React.useCallback((evt: KeyboardEvent ) => {
         if (evt.key === 'Escape') {
             closeHandler();
         }

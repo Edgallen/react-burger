@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, FormEvent} from "react";
 import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
@@ -28,7 +28,7 @@ export const ResetPasswordPage = () => {
         : setInputs({...inputs, passwordType: 'password', passwordIcon: 'ShowIcon'});
     }
 
-    const onSubmitHandler = (e: { preventDefault: () => void; }) => {
+    const onSubmitHandler = (e: FormEvent) => {
         e.preventDefault();
         const body = {
             'password': inputs.password,

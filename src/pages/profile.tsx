@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {FormEvent, useEffect, useState} from "react";
 import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDispatch, useSelector} from "react-redux";
@@ -52,7 +52,7 @@ export const ProfilePage = () => {
     }, []);
 
 
-    const onLogoutHandler = (e: { preventDefault: () => void; }) => {
+    const onLogoutHandler = (e: FormEvent) => {
         e.preventDefault();
         const refreshToken = getCookie('refreshToken');
         const body = {
@@ -81,12 +81,12 @@ export const ProfilePage = () => {
         setInputs({...inputs, editing: false});
     };
 
-    const cancelButtonHandler = (e: { preventDefault: () => void; }) => {
+    const cancelButtonHandler = (e: FormEvent) => {
         e.preventDefault();
         defaultEdits(data.user.name, data.user.email);
     };
 
-    const onSubmitHandler = (e: { preventDefault: () => void; }) => {
+    const onSubmitHandler = (e: FormEvent) => {
         e.preventDefault();
 
         let body: TAuthBody = {

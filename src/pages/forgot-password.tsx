@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {FormEvent, useEffect, useState} from "react";
 import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useNavigate } from "react-router-dom";
@@ -14,7 +14,7 @@ export const ForgotPasswordPage = () => {
     })
     const inputRef = React.useRef(null)
 
-    const onSubmitHandler = (e: { preventDefault: () => void; }) => {
+    const onSubmitHandler = (e: FormEvent) => {
         e.preventDefault();
         const body = {
             "email": inputs.email

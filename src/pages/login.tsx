@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {FormEvent, useState} from "react";
 import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useLocation, useNavigate} from "react-router-dom";
@@ -41,7 +41,7 @@ export const LoginPage = () => {
 
     const redirectPath = location.state?.path || '/';
 
-    const onSubmitHandler = (e: { preventDefault: () => void; }) => {
+    const onSubmitHandler = (e: FormEvent) => {
         e.preventDefault();
         const body: TAuthBody = {
             'email': inputs.email,
@@ -54,7 +54,7 @@ export const LoginPage = () => {
         navigate(redirectPath, {replace: true});
     };
 
-    const onForgotClick = (e: { preventDefault: () => void; }) => {
+    const onForgotClick = (e: FormEvent) => {
         e.preventDefault();
         dispatch(recoveryRequest());
         navigate('/forgot-password');
