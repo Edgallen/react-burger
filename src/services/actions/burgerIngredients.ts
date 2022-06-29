@@ -1,17 +1,44 @@
+import { TItem } from '../../types';
 import { baseUrl, checkResponse } from '../../utils/fetchData';
+import {
+    GET_INGREDIENTS_FAILED,
+    GET_INGREDIENTS_REQUEST,
+    GET_INGREDIENTS_SUCCESS,
+} from '../constants/burgerIngredients';
+import { TIngredientsResponse } from '../types/data';
 
-export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
-export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
-export const GET_INGREDIENTS_FAILED = 'GET_INGREDIENTS_FAILED';
+export interface IGetIngredientsRequest {
+    readonly type: typeof GET_INGREDIENTS_REQUEST;
+};
 
-export const getIngredientsSuccess = (data: any) => {
+export interface IGetIngredientsSuccess {
+    readonly type: typeof GET_INGREDIENTS_SUCCESS;
+    readonly payload: Array<TItem>;
+};
+
+export interface IGetIngredientsFailed {
+    readonly type: typeof GET_INGREDIENTS_FAILED;
+};
+
+export type TBurgerIngredientsActions = 
+    | IGetIngredientsRequest
+    | IGetIngredientsSuccess
+    | IGetIngredientsFailed;
+
+export const getIngredientsRequest = (): IGetIngredientsRequest => {
+    return {
+        type: GET_INGREDIENTS_REQUEST
+    }
+};
+
+export const getIngredientsSuccess = (data: TIngredientsResponse): IGetIngredientsSuccess => {
     return {
         type: GET_INGREDIENTS_SUCCESS,
         payload: data.data
     }
 };
 
-export const getIngredientsFailed = () => {
+export const getIngredientsFailed = (): IGetIngredientsFailed => {
     return {
         type: GET_INGREDIENTS_FAILED
     }
@@ -19,9 +46,7 @@ export const getIngredientsFailed = () => {
 
 export function getIngredients() {
     return (dispatch: any) => {
-        dispatch({
-            type: GET_INGREDIENTS_REQUEST
-        });
+        dispatch(getIngredientsRequest());
 
         fetch(`${baseUrl}/ingredients`)
             .then(checkResponse)

@@ -1,3 +1,5 @@
+import { TItem } from "../../types";
+import { TModalActions } from "../actions/modal";
 import {
     CLOSE_MODAL,
     UPDATE_ORDER_MODAL,
@@ -6,9 +8,27 @@ import {
     GET_ORDER_MODAL_SUCCESS,
     OPEN_INGREDIENT_MODAL,
     SELECT_INGREDIENT
-} from "../actions/modal";
+} from "../constants/modal";
 
-const initialState = {
+export type TCartItem = {
+    [key: string]: string
+}
+
+type TModalState = {
+    ingredientModal: {
+        selectedIngredient: TItem | {};
+        isVisible: boolean;
+    };
+    orderModal: {
+        orderId: number;
+        cartId: Array<string>;
+        isLoading: boolean;
+        isFailed: boolean;
+        isVisible: boolean;
+    }
+}
+
+const initialState: TModalState = {
     ingredientModal: {
         selectedIngredient: {},
         isVisible: false
@@ -16,14 +36,14 @@ const initialState = {
 
     orderModal: {
         orderId: 0,
-        cartId: 0,
+        cartId: [],
         isLoading: false,
         isFailed: false,
         isVisible: false
     }
 };
 
-export const modalReducer = (state = initialState, action: any) => {
+export const modalReducer = (state = initialState, action: TModalActions): TModalState => {
     switch (action.type) {
         case CLOSE_MODAL: {
             return {
@@ -35,7 +55,7 @@ export const modalReducer = (state = initialState, action: any) => {
         case UPDATE_ORDER_MODAL: {
             return {
                 ...state,
-                orderModal: {...state.orderModal, cartId: [action.payload]}
+                orderModal: {...state.orderModal, cartId: action.payload}
             }
         }
         case OPEN_INGREDIENT_MODAL: {

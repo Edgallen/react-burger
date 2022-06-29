@@ -5,6 +5,7 @@ import { useDrag, useDrop } from "react-dnd";
 import { useDispatch } from "react-redux";
 import { removeFromCart } from '../../services/actions/burgerConstructor';
 import { IBunConstructor, IConstructorElements, IIngredientsConstructor } from "../../types";
+import { v4 as uuid } from 'uuid';
 
 const BunConstructor: FC<IBunConstructor> = ({position, positionText, bun}) => {
     return (
@@ -91,7 +92,7 @@ const IngredientsConstructor: FC<IIngredientsConstructor> = ({state, moveCard}) 
                         ingredient={ingredient}
                         index={index}
                         moveCard={moveCard}
-                        key={ingredient._id}
+                        key={uuid()}
                     />
                 ))}
             </div>

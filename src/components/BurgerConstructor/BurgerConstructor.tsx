@@ -1,5 +1,4 @@
 import React, {useMemo, useEffect} from "react";
-
 import styles from './BurgerConstructor.module.css';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import {useDispatch, useSelector} from "react-redux";
@@ -54,14 +53,14 @@ const BurgerConstructor = () => {
     }, [data.bun, data.cart]);
 
     useEffect(() => {
-        let cartId = [];
+        let cartId: Array<string> = [];
         data.cart.forEach((ingredient: TItem) => {
             cartId.push(ingredient._id)
         });
 
         if (data.bun.type) {
             cartId.push(data.bun._id, data.bun._id)
-        }
+        };
 
         dispatch(updateOrderModal(cartId));
     }, [data.bun, data.cart]);

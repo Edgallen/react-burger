@@ -7,9 +7,20 @@ import {
     SIGN_IN_USER,
     SIGN_OUT_USER, 
     SET_USER
-} from "../actions/auth";
+} from "../constants/auth";
+import { TAuthActions } from '../actions/auth'
+import { TUser } from "../types/data";
 
-const initialState = {
+type TAuthState = {
+    isAuth: boolean;
+    authFailed: boolean;
+    isForgot: boolean;
+    recoveryRequest: boolean;
+    recoverIsFailed: boolean;
+    user: TUser | { }
+}
+
+const initialState: TAuthState = {
     isAuth: false,
     authFailed: false,
 
@@ -20,7 +31,7 @@ const initialState = {
     user: { }
 };
 
-export const authReducer = (state = initialState, action: any) => {
+export const authReducer = (state = initialState, action: TAuthActions): TAuthState => {
     switch (action.type) {
         case SIGN_IN_USER: {
             return {

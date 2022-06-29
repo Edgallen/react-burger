@@ -1,38 +1,72 @@
-export const ADD_TO_CART = 'ADD_TO_CART';
-export const ADD_BUN = 'ADD_BUN';
-export const SET_CART = 'SET_CART';
-export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
-export const RESET_CART = 'RESET_CART';
+import { TItem } from "../../types";
+import {
+  ADD_BUN,
+  ADD_TO_CART,
+  REMOVE_FROM_CART,
+  RESET_CART,
+  SET_CART,
+} from "../constants/burgerConstructor";
 
-export const addToCart = (item: any, uuid: any) => {
+export interface IAddToCart {
+  readonly type: typeof ADD_TO_CART;
+  readonly payload: TItem;
+};
+
+export interface IAddBun {
+  readonly type: typeof ADD_BUN;
+  readonly payload: TItem;
+};
+
+export interface ISetCart {
+  readonly type: typeof SET_CART;
+  readonly payload: Array<TItem>;
+};
+
+export interface IRemoveFromCart {
+  readonly type: typeof REMOVE_FROM_CART;
+  readonly payload: number;
+};
+
+export interface IResetCart {
+  readonly type: typeof RESET_CART;
+};
+
+export type TBurgerConstructorActions =
+  | IAddToCart
+  | IAddBun
+  | ISetCart
+  | IRemoveFromCart
+  | IResetCart;
+
+export const addToCart = (item: TItem, uuid: string): IAddToCart => {
   return {
     type: ADD_TO_CART,
     payload: {...item, id: uuid},
   };
 };
 
-export const addBun = (item: any) => {
+export const addBun = (item: TItem): IAddBun => {
   return {
     type: ADD_BUN,
     payload: item,
   };
 };
 
-export const setCart = (newCart: any) => {
+export const setCart = (newCart: Array<TItem>): ISetCart => {
   return {
     type: SET_CART,
     payload: newCart
   };
 };
 
-export const removeFromCart = (index: any) => {
+export const removeFromCart = (index: number): IRemoveFromCart => {
   return {
     type: REMOVE_FROM_CART,
     payload: index
   };
 };
 
-export const resetCart = () => {
+export const resetCart = (): IResetCart => {
   return {
     type: RESET_CART
   };

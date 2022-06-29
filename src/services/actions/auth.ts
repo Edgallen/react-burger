@@ -1,83 +1,140 @@
 import {baseUrl, checkResponse} from "../../utils/fetchData";
 import {deleteCookie, getCookie, setCookie} from "../../utils/cookies";
+import { 
+    RECOVERY_FAILED,
+    RECOVERY_REQUEST,
+    RECOVERY_SUCCESS,
+    REGISTER_USER_FAILED,
+    REGISTER_USER_SUCCESS,
+    RESET_FAILED,
+    RESET_SUCCESS,
+    SET_USER,
+    SIGN_IN_USER, 
+    SIGN_OUT_USER
+ } from "../constants/auth";
+import { TChangeUser, TUser } from "../types/data";
+import { TAuthBody } from "../../types";
 
-export const SIGN_IN_USER = 'SIGN_IN_USER';
-export const SIGN_OUT_USER = 'SIGN_OUT_USER';
+export interface IsignIn {
+    readonly type: typeof SIGN_IN_USER;
+    readonly payload: TUser;
+}
 
-export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
-export const REGISTER_USER_FAILED = 'REGISTER_USER_FAILED';
+export interface IsignOut {
+    readonly type: typeof SIGN_OUT_USER;
+}
 
-export const RECOVERY_REQUEST = 'RECOVERY_REQUEST';
-export const RECOVERY_SUCCESS = 'RECOVERY_SUCCESS';
-export const RECOVERY_FAILED = 'RECOVERY_FAILED';
+export interface IregisterUserSuccess {
+    readonly type: typeof REGISTER_USER_SUCCESS;
+}
 
-export const RESET_SUCCESS = 'RESET_SUCCESS';
-export const RESET_FAILED = 'RESET_FAILED';
+export interface IregisterUserFailed {
+    readonly type: typeof REGISTER_USER_FAILED;
+}
 
-export const SET_USER = 'SET_USER';
+export interface IrecoveryRequest {
+    readonly type: typeof RECOVERY_REQUEST;
+}
 
-const signIn = (data: any) => {
+export interface IrecoverySuccess {
+    readonly type: typeof RECOVERY_SUCCESS;
+}
+
+export interface IrecoveryFailed {
+    readonly type: typeof RECOVERY_FAILED;
+}
+
+export interface IresetSuccess {
+    readonly type: typeof RESET_SUCCESS;
+}
+
+export interface IresetFailed {
+    readonly type: typeof RESET_FAILED;
+}
+
+export interface IsetUser {
+    readonly type: typeof SET_USER;
+    readonly payload: TChangeUser;
+}
+
+export interface IloginUser {
+    readonly type: typeof SET_USER;
+
+}
+
+export type TAuthActions = 
+  | IsignIn
+  | IsignOut
+  | IregisterUserSuccess
+  | IregisterUserFailed
+  | IrecoveryRequest
+  | IrecoverySuccess
+  | IrecoveryFailed
+  | IresetSuccess
+  | IresetFailed
+  | IsetUser;
+
+const signIn = (data: TUser): IsignIn => {
     return {
         type: SIGN_IN_USER,
         payload: data
     };
 };
 
-const signOut = () => {
+const signOut = (): IsignOut => {
     return {
         type: SIGN_OUT_USER
     };
 };
 
-const registerUserSuccess = () => {
+const registerUserSuccess = (): IregisterUserSuccess => {
     return {
         type: REGISTER_USER_SUCCESS
     };
 };
 
-const registerUserFailed = () => {
+const registerUserFailed = (): IregisterUserFailed => {
     return {
         type: REGISTER_USER_FAILED
     };
 };
 
-const recoverySuccess = () => {
-    return {
-        type: RECOVERY_SUCCESS
-    };
-};
-
-const recoveryFailed = () => {
-    return {
-        type: RECOVERY_FAILED
-    };
-};
-
-const resetSuccess = () => {
-    return {
-        type: RESET_SUCCESS
-    };
-};
-
-const resetFailed = () => {
-    return {
-        type: RESET_FAILED
-    };
-};
-
-const setUser = (data: any) => {
-    return {
-        type: SET_USER,
-        payload: data
-    };
-};
-
-export const recoveryRequest = () => {
+export const recoveryRequest = (): IrecoveryRequest => {
     return {
         type: RECOVERY_REQUEST
     };
 };
 
+const recoverySuccess = (): IrecoverySuccess => {
+    return {
+        type: RECOVERY_SUCCESS
+    };
+};
+
+const recoveryFailed = (): IrecoveryFailed => {
+    return {
+        type: RECOVERY_FAILED
+    };
+};
+
+const resetSuccess = (): IresetSuccess => {
+    return {
+        type: RESET_SUCCESS
+    };
+};
+
+const resetFailed = (): IresetFailed => {
+    return {
+        type: RESET_FAILED
+    };
+};
+
+const setUser = (data: TChangeUser): IsetUser => {
+    return {
+        type: SET_USER,
+        payload: data
+    };
+};
 
 export function loginUser(body: any) {
     return (dispatch: any) => {
@@ -184,7 +241,7 @@ export function updateToken() {
     }
 }
 
-export function requestRecovery(body: any) {
+export function requestRecovery(body: {email: string}) {
     return (dispatch: any) => {
         fetch(`${baseUrl}/password-reset`, {
             method: 'POST',
@@ -204,7 +261,7 @@ export function requestRecovery(body: any) {
     };
 }
 
-export function resetPassword(body: any) {
+export function resetPassword(body: {password: string; token: string;}) {
     return (dispatch: any) => {
         fetch(`${baseUrl}/password-reset/reset`, {
             method: 'POST',
@@ -248,7 +305,7 @@ export function getUser() {
     };
 }
 
-export function updateUser(body: any) {
+export function updateUser(body: TAuthBody) {
     return (dispatch: any) => {
         fetch(`${baseUrl}/auth/user`, {
             method: 'PATCH',
