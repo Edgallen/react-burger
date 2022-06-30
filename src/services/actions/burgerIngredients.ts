@@ -5,6 +5,7 @@ import {
     GET_INGREDIENTS_REQUEST,
     GET_INGREDIENTS_SUCCESS,
 } from '../constants/burgerIngredients';
+import { AppDispatch, AppThunk } from '../types';
 import { TIngredientsResponse } from '../types/data';
 
 export interface IGetIngredientsRequest {
@@ -44,18 +45,16 @@ export const getIngredientsFailed = (): IGetIngredientsFailed => {
     }
 };
 
-export function getIngredients() {
-    return (dispatch: any) => {
-        dispatch(getIngredientsRequest());
+export const getIngredients: AppThunk = () => (dispatch: AppDispatch) => {
+    dispatch(getIngredientsRequest());
 
-        fetch(`${baseUrl}/ingredients`)
-            .then(checkResponse)
-            .then((data) => {
-                dispatch(getIngredientsSuccess(data))
-            })
-            .catch(e => {
-                dispatch(getIngredientsFailed())
-                console.log(`Что-то пошло не так ${e}`);
-            })
-    };
+    fetch(`${baseUrl}/ingredients`)
+        .then(checkResponse)
+        .then((data) => {
+            dispatch(getIngredientsSuccess(data))
+        })
+        .catch(e => {
+            dispatch(getIngredientsFailed())
+            console.log(`Что-то пошло не так ${e}`);
+        })
 }

@@ -14,6 +14,7 @@ import {
  } from "../constants/auth";
 import { TChangeUser, TUser } from "../types/data";
 import { TAuthBody } from "../../types";
+import { AppDispatch, AppThunk } from "../types";
 
 export interface IsignIn {
     readonly type: typeof SIGN_IN_USER;
@@ -164,8 +165,7 @@ export function loginUser(body: any) {
     };
 }
 
-export function logoutUser(body: any) {
-    return (dispatch: any) => {
+export const logoutUser: AppThunk = (body: string) => (dispatch: AppDispatch) => {
         fetch(`${baseUrl}/auth/logout`, {
             method: 'POST',
             headers: {
@@ -182,67 +182,62 @@ export function logoutUser(body: any) {
         .catch(e => {
             console.log(`Что-то пошло не так ${e}`);
         })
-    };
 }
 
-export function registerUser(body: any) {
-    return (dispatch: any) => {
-        fetch(`${baseUrl}/auth/register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        })
-        .then(checkResponse)
-        .then(data => {
-            const accessToken = data.accessToken.split('Bearer ')[1];
-            const refreshToken = data.refreshToken;
-            if (accessToken) {
-                setCookie('token', accessToken);
-            }
-            if (refreshToken) {
-                setCookie('refreshToken', refreshToken);
-            }
-            dispatch(registerUserSuccess());
-        })
-        .catch(e => {
-            dispatch(registerUserFailed())
-            console.log(`Что-то пошло не так ${e}`);
-        })
-    };
+export const registerUser: AppThunk = (body: string) => (dispatch: AppDispatch) => {
+    fetch(`${baseUrl}/auth/register`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    })
+    .then(checkResponse)
+    .then(data => {
+        const accessToken = data.accessToken.split('Bearer ')[1];
+        const refreshToken = data.refreshToken;
+        if (accessToken) {
+            setCookie('token', accessToken);
+        }
+        if (refreshToken) {
+            setCookie('refreshToken', refreshToken);
+        }
+        dispatch(registerUserSuccess());
+    })
+    .catch(e => {
+        dispatch(registerUserFailed())
+        console.log(`Что-то пошло не так ${e}`);
+    })
 }
 
-export function updateToken() {
-    return (dispatch: any) => {
-        fetch(`${baseUrl}/auth/token`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ 'token': getCookie('refreshToken') })
-        })
-        .then(checkResponse)
-        .then(data => {
-            const accessToken = data.accessToken.split('Bearer ')[1];
-            const refreshToken = data.refreshToken;
-            if (accessToken) {
-                setCookie('token', accessToken);
-            }
-            if (refreshToken) {
-                setCookie('refreshToken', refreshToken);
-            }
-            console.log('Токены обновились');
-        })
-        .catch(e => {
-            dispatch(registerUserFailed())
-            console.log(`Что-то пошло не так ${e}`);
-        })
-    }
+export const updateToken: AppThunk = () => (dispatch: AppDispatch) => {
+    fetch(`${baseUrl}/auth/token`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 'token': getCookie('refreshToken') })
+    })
+    .then(checkResponse)
+    .then(data => {
+        const accessToken = data.accessToken.split('Bearer ')[1];
+        const refreshToken = data.refreshToken;
+        if (accessToken) {
+            setCookie('token', accessToken);
+        }
+        if (refreshToken) {
+            setCookie('refreshToken', refreshToken);
+        }
+        console.log('Токены обновились');
+    })
+    .catch(e => {
+        dispatch(registerUserFailed())
+        console.log(`Что-то пошло не так ${e}`);
+    })
 }
 
-export function requestRecovery(body: {email: string}) {
-    return (dispatch: any) => {
+export const requestRecovery: AppThunk = (body: {email: string}) =>
+    (dispatch: AppDispatch) => {
         fetch(`${baseUrl}/password-reset`, {
             method: 'POST',
             headers: {
@@ -258,11 +253,10 @@ export function requestRecovery(body: {email: string}) {
             dispatch(recoveryFailed());
             console.log(`Что-то пошло не так ${e}`);
         })
-    };
 }
 
-export function resetPassword(body: {password: string; token: string;}) {
-    return (dispatch: any) => {
+export const resetPassword: AppThunk = (body: {password: string; token: string;}) =>
+    (dispatch: AppDispatch) => {
         fetch(`${baseUrl}/password-reset/reset`, {
             method: 'POST',
             headers: {
@@ -278,50 +272,45 @@ export function resetPassword(body: {password: string; token: string;}) {
             dispatch(resetFailed());
             console.log(`Что-то пошло не так ${e}`);
         })
-    };
 }
 
-export function getUser() {
-    return (dispatch: any) => {
-        fetch(`${baseUrl}/auth/user`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + getCookie('token')
-            },
-        })
-        .then(checkResponse)
-        .then(data => {
-            if (data.success) {
-                dispatch(setUser(data));
-            } else {
-                dispatch(updateToken())
-            }
-        })
-        .catch(e => {
-            dispatch(resetFailed);
-            console.log(`Что-то пошло не так ${e}`);
-        })
-    };
-}
-
-export function updateUser(body: TAuthBody) {
-    return (dispatch: any) => {
-        fetch(`${baseUrl}/auth/user`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + getCookie('token')
-            },
-            body: JSON.stringify(body)
-        })
-        .then(checkResponse)
-        .then(data => {
+export const getUser: AppThunk = () => (dispatch) => {
+    fetch(`${baseUrl}/auth/user`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + getCookie('token')
+        },
+    })
+    .then(checkResponse)
+    .then(data => {
+        if (data.success) {
             dispatch(setUser(data));
-        })
-        .catch(e => {
-            dispatch(resetFailed());
-            console.log(`Что-то пошло не так ${e}`);
-        })
-    };
+        } else {
+            dispatch(updateToken());
+        }
+    })
+    .catch(e => {
+        dispatch(resetFailed());
+        console.log(`Что-то пошло не так ${e}`);
+    })
+}
+
+export const updateUser: AppThunk = (body: TAuthBody) => (dispatch: AppDispatch) => {
+    fetch(`${baseUrl}/auth/user`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + getCookie('token')
+        },
+        body: JSON.stringify(body)
+    })
+    .then(checkResponse)
+    .then(data => {
+        dispatch(setUser(data));
+    })
+    .catch(e => {
+        dispatch(resetFailed());
+        console.log(`Что-то пошло не так ${e}`);
+    })
 }

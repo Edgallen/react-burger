@@ -1,0 +1,51 @@
+.feed {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 60px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.stats {
+  display: flex;
+  gap: 36px;
+}
+
+.stats_card {
+  width: 272px;
+}
+
+.stats_list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: calc(206px - 54px);
+  overflow: auto;
+}
+
+.stats_list_ready {
+  color: #00CCCC;
+}
+
+.stats_count {
+  text-shadow: 0 0 16px rgba(51, 51, 255, 0.25), 0 0 8px rgba(51, 51, 255, 0.25), 0 4px 32px rgba(51, 51, 255, 0.5);
+}
+
+.stats_list::-webkit-scrollbar {
+  width: 8px;
+  height: 400px;
+}
+
+.stats_list::-webkit-scrollbar-thumb {
+  width: 8px;
+  background-color: #8585AD;
+}
+
+.stats_list::-webkit-scrollbar-track {
+  background: #2F2F37;
+}

@@ -11,6 +11,7 @@ import {
 } from '../constants/modal';
 import { TModalResponse } from '../types/data';
 import { TItem } from '../../types';
+import { AppDispatch, AppThunk } from '../types';
 
 export interface IOrderModalRequest {
     readonly type: typeof GET_ORDER_MODAL_REQUEST;
@@ -51,7 +52,7 @@ export type TModalActions =
     | IOpenModal
     | ISelectIngredient
     | ICloseModal
-    | IUpdateOrderModal
+    | IUpdateOrderModal;
 
 export const orderModalRequest = (): IOrderModalRequest => {
     return {
@@ -99,9 +100,8 @@ export const updateOrderModal = (arrayOfIds: Array<string>): IUpdateOrderModal =
     };
   };
 
-  export function getOrderId(body: any) {
-    return (dispatch: any) => {
-        dispatch(orderModalRequest);
+  export const getOrderId: AppThunk = (body: string) => (dispatch: AppDispatch) => {
+        dispatch(orderModalRequest());
 
         fetch(`${baseUrl}/orders`, {
             method: 'POST',
@@ -116,8 +116,7 @@ export const updateOrderModal = (arrayOfIds: Array<string>): IUpdateOrderModal =
             dispatch(resetCart());
         })
         .catch(e => {
-            dispatch(orderModalFailed);
+            dispatch(orderModalFailed());
             console.log(`Что-то пошло не так ${e}`);
         })
-    };
 }

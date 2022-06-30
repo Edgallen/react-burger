@@ -14,7 +14,7 @@ export type TCartItem = {
     [key: string]: string
 }
 
-type TModalState = {
+export type TModalState = {
     ingredientModal: {
         selectedIngredient: TItem | {};
         isVisible: boolean;

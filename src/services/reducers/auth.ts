@@ -11,7 +11,7 @@ import {
 import { TAuthActions } from '../actions/auth'
 import { TUser } from "../types/data";
 
-type TAuthState = {
+export type TAuthState = {
     isAuth: boolean;
     authFailed: boolean;
     isForgot: boolean;
