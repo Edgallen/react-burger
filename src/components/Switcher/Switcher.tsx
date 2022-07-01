@@ -15,7 +15,8 @@ import {
   ProfilePage,
   IngredientPage,
   NotFoundPage,
-  FeedPage
+  FeedPage,
+  OrderPage
 } from '../../pages'
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import AppHeader from "../AppHeader/AppHeader";
@@ -84,11 +85,10 @@ const Switcher = () => {
             </RequireAuth>
           }/>
 
-          <Route path='feed' element={
-              <FeedPage />
-          }/>
+          <Route path="feed" element={<FeedPage />} />
 
           <Route path='ingredient/:id' element={<IngredientPage /> } />
+          <Route path='feed/:id' element={<OrderPage /> } />
 
           <Route path='*' element={<NotFoundPage /> } />
 

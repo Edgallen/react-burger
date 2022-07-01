@@ -27,6 +27,14 @@
     cursor: pointer;
 }
 
+.button__text {
+    transition: .4s;
+}
+
+.button__text:hover {
+    color: white;
+}
+
 .logo {
     cursor: pointer;
 }

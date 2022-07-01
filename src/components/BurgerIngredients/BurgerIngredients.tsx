@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from "react";
 import styles from "./BurgerIngredients.module.css"
-import { Tab} from '@ya.praktikum/react-developer-burger-ui-components';
+import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import {useSelector} from "react-redux";
 import { Menu } from '../Menu/Menu';
 import { Outlet } from "react-router-dom";

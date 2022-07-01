@@ -6,6 +6,7 @@
 }
 
 .info {
+  width: 600px;
   display: flex;
   flex-direction: column;
   gap: 60px;
@@ -16,36 +17,233 @@
   gap: 36px;
 }
 
-.stats_card {
+.stats__card {
   width: 272px;
 }
 
-.stats_list {
+.stats__list {
   display: flex;
   flex-direction: column;
   gap: 8px;
   max-height: calc(206px - 54px);
+  min-height: calc(206px - 54px);
   overflow: auto;
 }
 
-.stats_list_ready {
+.stats__list__ready {
   color: #00CCCC;
 }
 
-.stats_count {
+.stats__count {
   text-shadow: 0 0 16px rgba(51, 51, 255, 0.25), 0 0 8px rgba(51, 51, 255, 0.25), 0 4px 32px rgba(51, 51, 255, 0.5);
 }
 
-.stats_list::-webkit-scrollbar {
-  width: 8px;
-  height: 400px;
+.orders {
+  width: 600px;
 }
 
-.stats_list::-webkit-scrollbar-thumb {
-  width: 8px;
-  background-color: #8585AD;
+.orders__card__container {
+  max-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow: auto;
 }
 
-.stats_list::-webkit-scrollbar-track {
-  background: #2F2F37;
+.orders__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 584px;
+  height: 214px;
+  gap: 24px;
+  border-radius: 40px;
+  background-color: #1C1C21;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.orders__info {
+  width: 536px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.orders__title {
+  width: 536px;
+  text-align: start;
+}
+
+.orders__images {
+  position: relative;
+  display: flex;
+}
+
+.orders__img__box:nth-child(2) {
+  position: absolute;
+  left: 50px;
+  z-index: -2;
+}
+
+.orders__img__box:nth-child(3) {
+  position: absolute;
+  left: 100px;
+  z-index: -3;
+}
+
+.orders__img__box:nth-child(4) {
+  position: absolute;
+  left: 150px;
+  z-index: -4;
+}
+
+.orders__img__box:nth-child(5) {
+  position: absolute;
+  left: 200px;
+  z-index: -5;
+}
+
+.orders__img__box:nth-child(6) {
+  position: absolute;
+  left: 250px;
+  z-index: -6;
+}
+
+.orders__count__countainer {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  position: absolute;
+  z-index: 1;
+  background-color: rgba(28, 28, 33, 0.6);
+}
+
+.orders__img__container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 100%;
+  width: 64px;
+  height: 64px;
+  background: #131316;
+}
+
+.orders__img__container::after {
+  position: absolute;
+  top: -3px; bottom: -3px;
+  left: -3px; right: -3px;
+  background: linear-gradient(#801AB2, #4C4CFF);
+  content: '';
+  z-index: -1;
+  border-radius: 100%;
+}
+
+.orders__card__img {
+  position: absolute;
+  width: 112px;
+  height: 56;
+  transform: translate(-23px, 0);
+}
+
+.orders__list {
+  width: 536px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.orders__price {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.order {
+  width: 640px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 122px;
+}
+
+.order__details {
+  width: 640px;
+  text-align: start;
+}
+
+.order__status {
+  color: #00CCCC;
+}
+
+.order__container {
+  width: calc(640px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 32vh;
+  overflow: auto;
+  padding-top: 3px;
+}
+
+.order__card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 5px;
+  margin-right: 24px;
+}
+
+.order__card__title {
+  display: flex;
+  align-items: center;
+}
+
+.order__img__container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 100%;
+  width: 64px;
+  height: 64px;
+  background: #131316;
+}
+
+.order__img__container::after {
+  position: absolute;
+  top: -3px; bottom: -3px;
+  left: -3px; right: -3px;
+  background: linear-gradient(#801AB2, #4C4CFF);
+  content: '';
+  z-index: -1;
+  border-radius: 100%;
+}
+
+.order__card__img {
+  position: absolute;
+  width: 112px;
+  height: 56;
+  transform: translate(-23px, 0);
+}
+
+.order__price {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 9px;
+}
+
+.order__info {
+  width: 640px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.order__time {
+  color: #00CCCC;
 }

@@ -25,7 +25,7 @@ function AppHeader() {
                                     style={{
                                         color: isActive ? "white" : "",
                                     }}
-                                    className="text text_type_main-default text_color_inactive pl-2"
+                                    className={`${styles.button__text} text text_type_main-default text_color_inactive pl-2`}
                                 >
                                     Конструктор
                                 </p>
@@ -43,7 +43,7 @@ function AppHeader() {
                                     style={{
                                         color: isActive ? "white" : "",
                                     }}
-                                    className="text text_type_main-default text_color_inactive pl-2"
+                                    className={`${styles.button__text} text text_type_main-default text_color_inactive pl-2`}
                                 >
                                     Лента новостей
                                 </p>
@@ -70,9 +70,9 @@ function AppHeader() {
                                     style={{
                                         color: isActive ? "white" : "",
                                     }}
-                                    className='text text_type_main-default text_color_inactive pl-2'
+                                    className={`${styles.button__text} text text_type_main-default text_color_inactive pl-2`}
                                 >
-                                    Лента новостей
+                                    Личный кабинет
                                 </p>
                             </div>
                         )}
