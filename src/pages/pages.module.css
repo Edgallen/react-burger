@@ -38,7 +38,6 @@
 
 .profile {
     display: flex;
-    margin-top: 180px;
 }
 
 .profile__buttons {
@@ -50,6 +49,7 @@
 .profile__selector {
     display: flex;
     flex-direction: column;
+    margin-top: 180px;
 }
 
 .profile__tabs {
@@ -72,6 +72,18 @@
 
 .profile__description {
     max-width: 320px;
+}
+
+.profile__edits {
+    width: 850px;
+    margin-top: 180px;
+}
+
+.profile__orders {
+    width: 850px;
+    margin-top: 40px;
+    max-height: 85vh;
+    overflow: auto;
 }
 
 .ingredients {

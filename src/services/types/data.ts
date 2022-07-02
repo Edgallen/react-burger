@@ -2,7 +2,7 @@ import { TItem } from "../../types";
 
 export type TUser = {
   email: string;
-  name: number;
+  name: string;
 };
 
 export type TChangeUser = {

@@ -14,7 +14,7 @@ code {
 
 ::-webkit-scrollbar {
   width: 8px;
-  height: 400px;
+  height: 0;
 }
 
 ::-webkit-scrollbar-thumb {

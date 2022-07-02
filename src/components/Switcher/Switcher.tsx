@@ -24,6 +24,7 @@ import {AuthProvider, RequireAuth, RequireLogIn, RequireReset} from "../../servi
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../Modal/Modal";
 import { closeModal } from "../../services/actions/modal";
+import OrdersList from "../OrdersList/OrdersList";
 
 const Switcher = () => {
   const dispatch = useDispatch();
@@ -83,12 +84,15 @@ const Switcher = () => {
             <RequireAuth>
               <ProfilePage />
             </RequireAuth>
-          }/>
+          }>
+            <Route path='orders' element={<RequireAuth><OrdersList type={'profile'} /></RequireAuth>} />
+          </Route>
 
           <Route path="feed" element={<FeedPage />} />
 
           <Route path='ingredient/:id' element={<IngredientPage /> } />
           <Route path='feed/:id' element={<OrderPage /> } />
+          <Route path='profile/:id' element={<OrderPage /> } />
 
           <Route path='*' element={<NotFoundPage /> } />
 

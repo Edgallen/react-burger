@@ -1,3 +1,5 @@
+import {TUser} from "../services/types/data";
+
 export type TItem = {
   _id: string;
   name: string;
@@ -73,4 +75,12 @@ export interface IAppContextInterface {
 
 export interface IAuthProvider {
   children: React.ReactNode;
+}
+
+export interface IOrdersList {
+  type: 'feed' | 'profile';
+}
+
+export interface IProfileInputs {
+  user: TUser;
 }

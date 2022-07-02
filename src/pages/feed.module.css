@@ -42,125 +42,9 @@
   width: 600px;
 }
 
-.orders__card__container {
+.orders__container {
   max-height: 75vh;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
   overflow: auto;
-}
-
-.orders__card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 584px;
-  height: 214px;
-  gap: 24px;
-  border-radius: 40px;
-  background-color: #1C1C21;
-  cursor: pointer;
-  z-index: 1;
-}
-
-.orders__info {
-  width: 536px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.orders__title {
-  width: 536px;
-  text-align: start;
-}
-
-.orders__images {
-  position: relative;
-  display: flex;
-}
-
-.orders__img__box:nth-child(2) {
-  position: absolute;
-  left: 50px;
-  z-index: -2;
-}
-
-.orders__img__box:nth-child(3) {
-  position: absolute;
-  left: 100px;
-  z-index: -3;
-}
-
-.orders__img__box:nth-child(4) {
-  position: absolute;
-  left: 150px;
-  z-index: -4;
-}
-
-.orders__img__box:nth-child(5) {
-  position: absolute;
-  left: 200px;
-  z-index: -5;
-}
-
-.orders__img__box:nth-child(6) {
-  position: absolute;
-  left: 250px;
-  z-index: -6;
-}
-
-.orders__count__countainer {
-  width: 64px;
-  height: 64px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 100%;
-  position: absolute;
-  z-index: 1;
-  background-color: rgba(28, 28, 33, 0.6);
-}
-
-.orders__img__container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  border-radius: 100%;
-  width: 64px;
-  height: 64px;
-  background: #131316;
-}
-
-.orders__img__container::after {
-  position: absolute;
-  top: -3px; bottom: -3px;
-  left: -3px; right: -3px;
-  background: linear-gradient(#801AB2, #4C4CFF);
-  content: '';
-  z-index: -1;
-  border-radius: 100%;
-}
-
-.orders__card__img {
-  position: absolute;
-  width: 112px;
-  height: 56;
-  transform: translate(-23px, 0);
-}
-
-.orders__list {
-  width: 536px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.orders__price {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 8px;
 }
 
 .order {
@@ -226,7 +110,6 @@
 .order__card__img {
   position: absolute;
   width: 112px;
-  height: 56;
   transform: translate(-23px, 0);
 }
 
