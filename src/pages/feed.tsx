@@ -1,8 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './feed.module.css';
 import OrdersList from "../components/OrdersList/OrdersList";
+import { useDispatch, useSelector } from 'react-redux';
+import { wsFeedInit, wsFeedClose } from '../services/actions/wsActions';
+import { WSUrl } from '../utils/fetchData';
+import { TOrder } from '../types'
 
 export const FeedPage = () => {
+  const dispatch = useDispatch();
+  const ws = useSelector((store: any) => store.webSocket)
+
+  useEffect(() => {
+    dispatch(wsFeedInit(`${WSUrl}/all`));
+    return () => {
+      dispatch(wsFeedClose());
+    }
+  }, [])
 
   return (
     <section className={`${styles.feed} mt-10`}>
@@ -10,7 +23,9 @@ export const FeedPage = () => {
       <div className={styles.orders}>
         <h2 className='text text_type_main-large mb-5'>Лента заказов</h2>
         <div className={styles.orders__container}>
-          <OrdersList type='feed' />
+          {ws.feedMessages[0].orders.map((order: TOrder) => (
+              <OrdersList type='feed' order={order} />
+          ))}
         </div>
       </div>
 

@@ -77,10 +77,33 @@ export interface IAuthProvider {
   children: React.ReactNode;
 }
 
-export interface IOrdersList {
-  type: 'feed' | 'profile';
-}
-
 export interface IProfileInputs {
   user: TUser;
+}
+
+export type TOrder = {
+  _id: string;
+  ingredients: Array<string>;
+  status: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  number: number;
+}
+
+export interface IFeedWSMessage {
+  orders: Array<TOrder>;
+  total: number;
+  totalToday: number;
+}
+
+export interface IUserWSMessage {
+  orders: Array<TOrder>;
+  total: number;
+  totalToday: number;
+}
+
+export interface IOrdersList {
+  type: 'feed' | 'profile';
+  order: TOrder;
 }

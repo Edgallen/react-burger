@@ -6,7 +6,7 @@ import {
     SET_CART,
     REMOVE_FROM_CART,
     RESET_CART
-} from "../constants/burgerConstructor";
+} from "../constants/burgerConstructorTypes";
 
 type TBurgerConstructorState = {
     cart: Array<TItem>;

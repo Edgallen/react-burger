@@ -45,6 +45,17 @@
 .orders__container {
   max-height: 75vh;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-right: 12px;
+}
+
+.orders__card__container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-right: 12px;
 }
 
 .order {

@@ -8,7 +8,7 @@ import {
     OPEN_INGREDIENT_MODAL,
     SELECT_INGREDIENT,
     UPDATE_ORDER_MODAL,
-} from '../constants/modal';
+} from '../constants/modalTypes';
 import { TModalResponse } from '../types/data';
 import { TItem } from '../../types';
 import { AppDispatch, AppThunk } from '../types';

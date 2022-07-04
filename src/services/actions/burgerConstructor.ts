@@ -5,7 +5,7 @@ import {
   REMOVE_FROM_CART,
   RESET_CART,
   SET_CART,
-} from "../constants/burgerConstructor";
+} from "../constants/burgerConstructorTypes";
 
 export interface IAddToCart {
   readonly type: typeof ADD_TO_CART;

@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Modal from "../Modal/Modal";
 import { closeModal } from "../../services/actions/modal";
 import OrdersList from "../OrdersList/OrdersList";
+import { ProfileLayout } from "../ProfileLayout/ProfileLayout";
 
 const Switcher = () => {
   const dispatch = useDispatch();
@@ -82,10 +83,10 @@ const Switcher = () => {
 
           <Route path='profile' element={
             <RequireAuth>
-              <ProfilePage />
+              <ProfileLayout />
             </RequireAuth>
           }>
-            <Route path='orders' element={<RequireAuth><OrdersList type={'profile'} /></RequireAuth>} />
+            {/* <Route path='orders' element={<RequireAuth><OrdersList type={'profile'} /></RequireAuth>} /> */}
           </Route>
 
           <Route path="feed" element={<FeedPage />} />

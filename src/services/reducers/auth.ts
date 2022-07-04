@@ -7,7 +7,7 @@ import {
     SIGN_IN_USER,
     SIGN_OUT_USER, 
     SET_USER
-} from "../constants/auth";
+} from "../constants/authTypes";
 import { TAuthActions } from '../actions/auth'
 import { TUser } from "../types/data";
 

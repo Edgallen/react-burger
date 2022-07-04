@@ -8,7 +8,7 @@ import {
     GET_ORDER_MODAL_SUCCESS,
     OPEN_INGREDIENT_MODAL,
     SELECT_INGREDIENT
-} from "../constants/modal";
+} from "../constants/modalTypes";
 
 export type TCartItem = {
     [key: string]: string

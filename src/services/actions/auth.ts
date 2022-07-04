@@ -11,7 +11,7 @@ import {
     SET_USER,
     SIGN_IN_USER, 
     SIGN_OUT_USER
- } from "../constants/auth";
+ } from "../constants/authTypes";
 import { TChangeUser, TUser } from "../types/data";
 import { TAuthBody } from "../../types";
 import { AppDispatch, AppThunk } from "../types";
