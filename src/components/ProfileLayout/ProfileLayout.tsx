@@ -1,6 +1,6 @@
 import React, {FormEvent, useState} from "react";
 import styles from './ProfileLeyout.module.css';
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import { getCookie } from "../../utils/cookies";
 import { useAuth } from "../../services/authProvider";
 import { TAuth } from "../../types";

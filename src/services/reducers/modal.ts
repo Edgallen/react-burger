@@ -1,4 +1,4 @@
-import { TItem } from "../../types";
+import { TItem, TOrder } from "../../types";
 import { TModalActions } from "../actions/modal";
 import {
     CLOSE_MODAL,
@@ -7,7 +7,8 @@ import {
     GET_ORDER_MODAL_REQUEST,
     GET_ORDER_MODAL_SUCCESS,
     OPEN_INGREDIENT_MODAL,
-    SELECT_INGREDIENT
+    SELECT_INGREDIENT,
+    OPEN_FEED_MODAL
 } from "../constants/modalTypes";
 
 export type TCartItem = {
@@ -25,6 +26,10 @@ export type TModalState = {
         isLoading: boolean;
         isFailed: boolean;
         isVisible: boolean;
+    };
+    feedModal: {
+        selectedFeed: TOrder | {};
+        isVisible: boolean;
     }
 }
 
@@ -40,6 +45,11 @@ const initialState: TModalState = {
         isLoading: false,
         isFailed: false,
         isVisible: false
+    },
+
+    feedModal: {
+        selectedFeed: {},
+        isVisible: false
     }
 };
 
@@ -49,7 +59,8 @@ export const modalReducer = (state = initialState, action: TModalActions): TModa
             return {
                 ...state,
                 ingredientModal: {...state.ingredientModal, isVisible: false},
-                orderModal: {...state.orderModal, isVisible: false}
+                orderModal: {...state.orderModal, isVisible: false},
+                feedModal: {...state.feedModal, isVisible: false}
             };
         }
         case UPDATE_ORDER_MODAL: {
@@ -106,6 +117,16 @@ export const modalReducer = (state = initialState, action: TModalActions): TModa
                 ingredientModal: {
                     ...state.ingredientModal,
                     selectedIngredient: action.payload
+                }
+            };
+        }
+        case OPEN_FEED_MODAL: {
+            return {
+                ...state,
+                feedModal: {
+                    ...state.feedModal,
+                    isVisible: true,
+                    selectedFeed: action.payload
                 }
             };
         }

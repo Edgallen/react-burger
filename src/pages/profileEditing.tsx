@@ -1,9 +1,9 @@
-import React, {FormEvent, useEffect, useState, FC} from "react";
+import React, {FormEvent, useEffect, useState} from "react";
 import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {updateUser} from "../services/actions/auth";
-import {IProfileInputs, TAuthBody} from "../types";
+import {TAuthBody} from "../types";
 
 declare module 'react' {
     interface FunctionComponent<P = {}> {
@@ -15,11 +15,11 @@ type TInputs = {
     name: string;
     login: string;
     password: string;
-    icon: any;
     editing: boolean;
 };
 
-export const ProfileInputs: FC<IProfileInputs> = ({user}) => {
+export const ProfileEditingPage = () => {
+    const user = useSelector((store: any) => store.auth.user);
     const dispatch = useDispatch();
 
     const [nameEdit, setNameEdit] = useState(true)
@@ -29,7 +29,6 @@ export const ProfileInputs: FC<IProfileInputs> = ({user}) => {
         name: '',
         login: '',
         password: '',
-        icon: 'EditIcon',
         editing: false
     });
 
@@ -98,7 +97,7 @@ export const ProfileInputs: FC<IProfileInputs> = ({user}) => {
                     setNameEdit(!nameEdit);
                     setInputs({...inputs, editing: true});
                 }}
-                icon={inputs.icon}
+                icon={nameEdit ? 'EditIcon' : 'CloseIcon'}
                 errorText={'Ошибка'}
                 size={'default'}
                 disabled={nameEdit}
@@ -118,7 +117,7 @@ export const ProfileInputs: FC<IProfileInputs> = ({user}) => {
                     setLoginEdit(!loginEdit);
                     setInputs({...inputs, editing: true});
                 }}
-                icon={inputs.icon}
+                icon={loginEdit ? 'EditIcon' : 'CloseIcon'}
                 errorText={'Ошибка'}
                 disabled={loginEdit}
             />
@@ -137,7 +136,7 @@ export const ProfileInputs: FC<IProfileInputs> = ({user}) => {
                     setPasswordEdit(!passwordEdit);
                     setInputs({...inputs, editing: true});
                 }}
-                icon={inputs.icon}
+                icon={passwordEdit ? 'EditIcon' : 'CloseIcon'}
                 errorText={'Ошибка'}
                 disabled={passwordEdit}
             />
@@ -145,17 +144,17 @@ export const ProfileInputs: FC<IProfileInputs> = ({user}) => {
             {inputs.editing && (
                 <div className={`${styles.profile__buttons} mt-6`}>
                     <Button
-                        type="primary"
-                        size="large"
-                    >
-                        Сохранить
-                    </Button>
-                    <Button
-                        type="primary"
+                        type="secondary"
                         size="large"
                         onClick={cancelButtonHandler}
                     >
                         Отмена
+                    </Button>
+                    <Button
+                        type="primary"
+                        size="large"
+                    >
+                        Сохранить
                     </Button>
                 </div>
             )}

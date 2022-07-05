@@ -77,10 +77,6 @@ export interface IAuthProvider {
   children: React.ReactNode;
 }
 
-export interface IProfileInputs {
-  user: TUser;
-}
-
 export type TOrder = {
   _id: string;
   ingredients: Array<string>;

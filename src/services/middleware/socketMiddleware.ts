@@ -19,12 +19,12 @@ export const socketMiddleware = (wsActions: any): Middleware => {
       }
 
       if (socket) {
-        socket.onopen = event => {
-          dispatch({ type: onOpen, payload: event });
+        socket.onopen = () => {
+          dispatch({ type: onOpen });
         };
 
-        socket.onerror = event => {
-          dispatch({ type: onError, payload: event });
+        socket.onerror = () => {
+          dispatch({ type: onError });
         };
 
         socket.onmessage = event => {
@@ -35,9 +35,9 @@ export const socketMiddleware = (wsActions: any): Middleware => {
           dispatch({ type: onMessage, payload: restParsedData });
         };
 
-        socket.onclose = event => {
+        socket.onclose = () => {
           socket = null;
-          dispatch({ type: onClose, payload: event });
+          dispatch({ type: onClose });
         };
       }
 

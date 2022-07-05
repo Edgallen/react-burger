@@ -5,12 +5,13 @@ import {
     GET_ORDER_MODAL_FAILED,
     GET_ORDER_MODAL_REQUEST,
     GET_ORDER_MODAL_SUCCESS,
+    OPEN_FEED_MODAL,
     OPEN_INGREDIENT_MODAL,
     SELECT_INGREDIENT,
     UPDATE_ORDER_MODAL,
 } from '../constants/modalTypes';
 import { TModalResponse } from '../types/data';
-import { TItem } from '../../types';
+import { TItem, TOrder } from '../../types';
 import { AppDispatch, AppThunk } from '../types';
 
 export interface IOrderModalRequest {
@@ -45,6 +46,11 @@ export interface IUpdateOrderModal {
     readonly payload: Array<string>;
 };
 
+export interface IOpenFeedModal {
+    readonly type: typeof OPEN_FEED_MODAL;
+    readonly payload: TOrder;
+};
+
 export type TModalActions = 
     | IOrderModalRequest
     | IOrderModalSuccess
@@ -52,7 +58,8 @@ export type TModalActions =
     | IOpenModal
     | ISelectIngredient
     | ICloseModal
-    | IUpdateOrderModal;
+    | IUpdateOrderModal
+    | IOpenFeedModal;
 
 export const orderModalRequest = (): IOrderModalRequest => {
     return {
@@ -98,25 +105,32 @@ export const updateOrderModal = (arrayOfIds: Array<string>): IUpdateOrderModal =
         type: UPDATE_ORDER_MODAL,
         payload: arrayOfIds
     };
-  };
+};
 
-  export const getOrderId: AppThunk = (body: string) => (dispatch: AppDispatch) => {
-        dispatch(orderModalRequest());
+export const openFeedModal = (feed: TOrder): IOpenFeedModal => {
+    return {
+        type: OPEN_FEED_MODAL,
+        payload: feed
+    };
+};
 
-        fetch(`${baseUrl}/orders`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        })
-        .then(checkResponse)
-        .then(data => {
-            dispatch(orderModalSuccess(data));
-            dispatch(resetCart());
-        })
-        .catch(e => {
-            dispatch(orderModalFailed());
-            console.log(`Что-то пошло не так ${e}`);
-        })
+export const getOrderId: AppThunk = (body: string) => (dispatch: AppDispatch) => {
+    dispatch(orderModalRequest());
+
+    fetch(`${baseUrl}/orders`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    })
+    .then(checkResponse)
+    .then(data => {
+        dispatch(orderModalSuccess(data));
+        dispatch(resetCart());
+    })
+    .catch(e => {
+        dispatch(orderModalFailed());
+        console.log(`Что-то пошло не так ${e}`);
+    })
 }

@@ -1,4 +1,4 @@
-import { TItem } from "../../types";
+import { TItem, TOrder } from "../../types";
 
 export type TUser = {
   email: string;
@@ -21,4 +21,8 @@ export type TModalResponse = {
   order: {
     number: number
   };
+}
+
+export type TFeedDetails = {
+  type: 'modal' | 'page';
 }

@@ -12,11 +12,12 @@ import {
   RegisterPage,
   ForgotPasswordPage,
   ResetPasswordPage,
-  ProfilePage,
   IngredientPage,
   NotFoundPage,
   FeedPage,
-  OrderPage
+  OrderPage,
+  ProfileEditingPage,
+  ProfileFeedPage
 } from '../../pages'
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import AppHeader from "../AppHeader/AppHeader";
@@ -24,20 +25,24 @@ import {AuthProvider, RequireAuth, RequireLogIn, RequireReset} from "../../servi
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../Modal/Modal";
 import { closeModal } from "../../services/actions/modal";
-import OrdersList from "../OrdersList/OrdersList";
 import { ProfileLayout } from "../ProfileLayout/ProfileLayout";
+import FeedDetails from "../FeedDetails/FeedDetails";
 
 const Switcher = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location: any = useLocation();
   const background = location.state && location.state.background;
-  const ingredientModal = useSelector((store: any) => store.modal.ingredientModal.isVisible)
+  const modals = useSelector((store: any) => store.modal)
 
   const closeIngredientModal = () => {
     dispatch(closeModal());
-
     navigate('/');
+  };
+
+  const closeFeedModal = () => {
+    dispatch(closeModal());
+    navigate('/feed');
   };
 
   return (
@@ -49,7 +54,7 @@ const Switcher = () => {
       <main className={styles.body}>
         <Routes location={location || background}>
           <Route path='/' element={<HomePage />}>
-            {background && ingredientModal && (
+            {background && modals.ingredientModal.isVisible && (
               <Route path='ingredient/:id' element={
                 <Modal 
                   headerTitle='Детали ингредиента'
@@ -86,10 +91,21 @@ const Switcher = () => {
               <ProfileLayout />
             </RequireAuth>
           }>
-            {/* <Route path='orders' element={<RequireAuth><OrdersList type={'profile'} /></RequireAuth>} /> */}
+            <Route index element={<ProfileEditingPage />} />
+            <Route path='orders' element={<ProfileFeedPage/>} />
           </Route>
 
-          <Route path="feed" element={<FeedPage />} />
+          <Route path="feed" element={<FeedPage />}>
+            {background && modals.feedModal.isVisible && (
+                <Route path=':id' element={
+                  <Modal 
+                    closeHandler={closeFeedModal}
+                  >
+                    <FeedDetails type='modal' />
+                  </Modal>
+                } />
+              )}
+          </Route>
 
           <Route path='ingredient/:id' element={<IngredientPage /> } />
           <Route path='feed/:id' element={<OrderPage /> } />
