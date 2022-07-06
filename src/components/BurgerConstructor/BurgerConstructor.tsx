@@ -11,6 +11,7 @@ import { useDrop } from "react-dnd";
 import { v4 as uuid } from 'uuid';
 import {useNavigate} from "react-router-dom";
 import { TItem } from "../../types";
+import {AppThunk} from '../../services/types'
 
 declare module 'react' {
     interface FunctionComponent<P = {}> {
@@ -77,8 +78,8 @@ const BurgerConstructor = () => {
             return
         }
 
-        const body: {'ingredients': string} = {
-            'ingredients': orderModal.cartId[0]
+        const body: {'ingredients': Array<string>} = {
+            'ingredients': orderModal.cartId
         };
 
         dispatch(getOrderId(body) as any);

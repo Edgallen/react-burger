@@ -8,7 +8,8 @@ import {
     GET_ORDER_MODAL_SUCCESS,
     OPEN_INGREDIENT_MODAL,
     SELECT_INGREDIENT,
-    OPEN_FEED_MODAL
+    OPEN_FEED_MODAL,
+    SELECT_FEED_INGREDIENT
 } from "../constants/modalTypes";
 
 export type TCartItem = {
@@ -126,6 +127,15 @@ export const modalReducer = (state = initialState, action: TModalActions): TModa
                 feedModal: {
                     ...state.feedModal,
                     isVisible: true,
+                    selectedFeed: action.payload
+                }
+            };
+        }
+        case SELECT_FEED_INGREDIENT: {
+            return {
+                ...state,
+                feedModal: {
+                    ...state.feedModal,
                     selectedFeed: action.payload
                 }
             };

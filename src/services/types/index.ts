@@ -15,10 +15,9 @@ export type TApplicationActions = TAuthActions
 | TModalActions
 | TWSActions;
 
-export type AppThunk<TReturn = void> = ActionCreator<
-  ThunkAction<TReturn, Action, RootState, TApplicationActions>
+export type AppThunk<ReturnType = void> = ActionCreator<
+  ThunkAction<ReturnType, Action, RootState, TApplicationActions>
 >;
-
 export type AppDispatch = Dispatch<TApplicationActions>
 
 export type TestDispatch = typeof store.dispatch & ThunkDispatch<RootState, null, AnyAction>;

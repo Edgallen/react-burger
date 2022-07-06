@@ -45,6 +45,11 @@ const Switcher = () => {
     navigate('/feed');
   };
 
+  const closeProfileModal = () => {
+    dispatch(closeModal());
+    navigate('/profile/orders');
+  };
+
   return (
     <AuthProvider>
         <Routes>
@@ -66,50 +71,44 @@ const Switcher = () => {
             )}
           </Route>
 
-          <Route path='login' element={
-            <RequireLogIn>
-              <LoginPage />
-            </RequireLogIn>
-          }/>
+          <Route path='login' element={<RequireLogIn><LoginPage /></RequireLogIn>}/>
 
-          <Route path='register' element={
-             <RequireLogIn>
-                <RegisterPage />
-             </RequireLogIn>
-          }/>
+          <Route path='register' element={ <RequireLogIn><RegisterPage /></RequireLogIn>}/>
 
           <Route path='forgot-password' element={<ForgotPasswordPage /> }/>
 
-          <Route path='reset-password' element={
-            <RequireReset>
-              <ResetPasswordPage />
-            </RequireReset>
-          }/>
+          <Route path='reset-password' element={<RequireReset><ResetPasswordPage /></RequireReset>}/>
 
-          <Route path='profile' element={
-            <RequireAuth>
-              <ProfileLayout />
-            </RequireAuth>
-          }>
+          <Route path='profile' element={<RequireAuth><ProfileLayout /></RequireAuth>}>
             <Route index element={<ProfileEditingPage />} />
-            <Route path='orders' element={<ProfileFeedPage/>} />
-          </Route>
-
-          <Route path="feed" element={<FeedPage />}>
-            {background && modals.feedModal.isVisible && (
+            <Route path='orders' element={<ProfileFeedPage/>}>
+              {background && modals.feedModal.isVisible && (
                 <Route path=':id' element={
                   <Modal 
-                    closeHandler={closeFeedModal}
+                    closeHandler={closeProfileModal}
                   >
                     <FeedDetails type='modal' />
                   </Modal>
                 } />
               )}
+            </Route>
+          </Route>
+
+          <Route path="feed" element={<FeedPage />}>
+            {background && modals.feedModal.isVisible && (
+              <Route path=':id' element={
+                <Modal 
+                  closeHandler={closeFeedModal}
+                >
+                  <FeedDetails type='modal' />
+                </Modal>
+              } />
+            )}
           </Route>
 
           <Route path='ingredient/:id' element={<IngredientPage /> } />
           <Route path='feed/:id' element={<OrderPage /> } />
-          <Route path='profile/:id' element={<OrderPage /> } />
+          <Route path='profile/orders/:id' element={<OrderPage /> } />
 
           <Route path='*' element={<NotFoundPage /> } />
 

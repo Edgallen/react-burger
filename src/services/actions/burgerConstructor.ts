@@ -31,6 +31,7 @@ export interface IResetCart {
   readonly type: typeof RESET_CART;
 };
 
+
 export type TBurgerConstructorActions =
   | IAddToCart
   | IAddBun

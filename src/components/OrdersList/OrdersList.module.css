@@ -7,7 +7,7 @@
     border-radius: 40px;
     background-color: #1C1C21;
     cursor: pointer;
-    z-index: 1;
+    z-index: 0;
 }
 
 .orders__info {
@@ -107,9 +107,6 @@
     transform: translate(-23px, 0);
 }
 
-/*.profile {*/
-/*    width: 844px;*/
-/*}*/
-/*.feed {*/
-/*    width: 584px;*/
-/*}*/
+.orders__text__ready {
+    color: #00CCCC;
+}

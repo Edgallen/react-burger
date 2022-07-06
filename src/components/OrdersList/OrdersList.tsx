@@ -1,10 +1,12 @@
-import React, {FC, useEffect} from "react";
+import React, {FC, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import styles from "./OrdersList.module.css";
 import {IOrdersList, TItem, TOrder} from "../../types";
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useLocation, useNavigate} from "react-router";
 import { openFeedModal } from "../../services/actions/modal";
+import { v4 as uuid } from 'uuid';
+import { formatDate } from "../../utils/date";
 
 type TImages = {
     order: TOrder;
@@ -23,7 +25,7 @@ const Images: FC<TImages> = ({order}) => {
     return (
         <div className={styles.orders__images}>
             {slicedImages.map((ingredient: string) => (
-                <div className={styles.orders__img__box}>
+                <div className={styles.orders__img__box} key={uuid()}>
                     <div className={`${styles.orders__img__container} mr-4`}>
                         <img
                             src={getImage(ingredient)}
@@ -34,10 +36,10 @@ const Images: FC<TImages> = ({order}) => {
                 </div>
             ))}
 
-            {length > 6 && (
+            {length > 5 && (
                 <div className={styles.orders__img__box}>
                     <div className={styles.orders__count__container}>
-                        <p className='text text_type_main-default'>{`+${order.ingredients.slice(6, length).length}`}</p>
+                        <p className='text text_type_main-default'>{`+${order.ingredients.slice(5, length).length}`}</p>
                     </div>
                     <div className={`${styles.orders__img__container} mr-4`}>
                         <img
@@ -54,14 +56,16 @@ const Images: FC<TImages> = ({order}) => {
 
 const OrdersList: FC<IOrdersList> = ({type, order}) => {
     const storeIngredients = useSelector((store: any) => store.burgerIngredients.ingredients);
+    const [status, setStatus] = useState<'' | 'Выполнен' | 'Готовится' | 'Создан'>('');
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const location = useLocation();
 
     const handleOrderClick = () => {
-        // type === 'feed' ? navigate(`/feed/${order._id}`) : navigate('/profile/123131');
         dispatch(openFeedModal(order));
-        navigate(`/feed/${order._id}`, {state: { background: location }});
+        type === 'feed' 
+        ? navigate(`/feed/${order._id}`, {state: { background: location }}) 
+        : navigate(`/profile/orders/${order._id}`, {state: { background: location }});
     };
 
     const getTotalPrice = (): number => {
@@ -74,16 +78,43 @@ const OrdersList: FC<IOrdersList> = ({type, order}) => {
         return total;
     };
 
+    const getStatus = (status: string) => {
+        switch (status) {
+          case 'done': {
+            setStatus('Выполнен');
+            break;
+          }
+          case 'pending': {
+            setStatus('Готовится');
+            break;
+          }
+          default: {
+            setStatus('Создан');
+            break;
+          }
+        }
+    };
+
+    useEffect(() => {
+        getStatus(order.status);
+    }, []);
+
     return (
         <div className={styles.orders__card} onClick={handleOrderClick}>
             <div className={`${styles.orders__info}`}>
                 <h3 className="text text_type_digits-default">#{order.number}</h3>
-                <p className="text text_type_main-default text_color_inactive">Сегодня, 16:20 i-GMT+3</p>
+                <p className="text text_type_main-default text_color_inactive">{formatDate(new Date(order.createdAt))}</p>
             </div>
 
             <div className={`${styles.orders__title} ${styles.type}`}>
                 <h2 className={`text text_type_main-medium ${type === 'profile' ? 'mb-2': ''}`}>{order.name}</h2>
-                {type === 'profile' && <p className={`${styles.orders__status} text text_type_main-default`}>Создан</p>}
+                {type === 'profile' && (
+                    <p 
+                        className={`${status === 'Выполнен' ? styles.orders__text__ready : ''} text text_type_main-default`}
+                    >
+                        {status}
+                    </p>
+                )}
             </div>
 
             <div className={styles.orders__list}>

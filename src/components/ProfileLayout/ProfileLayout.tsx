@@ -1,10 +1,12 @@
-import React, {FormEvent, useState} from "react";
+import React, {FormEvent, useEffect, useState} from "react";
 import styles from './ProfileLeyout.module.css';
 import {useSelector} from "react-redux";
 import { getCookie } from "../../utils/cookies";
 import { useAuth } from "../../services/authProvider";
 import { TAuth } from "../../types";
 import {Outlet, useNavigate} from "react-router-dom";
+import { useParams } from "react-router";
+import { useLocation } from "react-router";
 
 declare module 'react' {
     interface FunctionComponent<P = {}> {
@@ -14,14 +16,21 @@ declare module 'react' {
 
 export const ProfileLayout = () => {
     const data = useSelector((store: any) => store.auth);
-    const [activeTab, setActiveTab] = useState('profile');
+    const [activeTab, setActiveTab] = useState<'profile' | 'orders'>('profile');
     const navigate = useNavigate();
+    const location = useLocation();
 
     const requestAuth = useAuth();
     let auth: TAuth;
     if (requestAuth) {
         auth = requestAuth;
     }
+
+    useEffect(() => {
+        if (location.pathname === '/profile/orders') {
+            setActiveTab('orders')
+        }
+    }, []);
 
     const onLogoutHandler = (e: FormEvent) => {
         e.preventDefault();
@@ -37,13 +46,13 @@ export const ProfileLayout = () => {
 
     const handleProfileClick = () => {
         if (activeTab !== 'profile') {
-            navigate(-1);
+            navigate('/profile');
             setActiveTab('profile');
         }
     }
 
     const handleOrdersClick = () => {
-        navigate('orders');
+        navigate('/profile/orders');
         setActiveTab('orders');
     }
 
@@ -92,7 +101,6 @@ export const ProfileLayout = () => {
                                 </div>
                             )
                         }
-
                 </section>
             )}
         </>

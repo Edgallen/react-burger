@@ -7,12 +7,14 @@ import {
     GET_ORDER_MODAL_SUCCESS,
     OPEN_FEED_MODAL,
     OPEN_INGREDIENT_MODAL,
+    SELECT_FEED_INGREDIENT,
     SELECT_INGREDIENT,
     UPDATE_ORDER_MODAL,
 } from '../constants/modalTypes';
 import { TModalResponse } from '../types/data';
 import { TItem, TOrder } from '../../types';
 import { AppDispatch, AppThunk } from '../types';
+import { getCookie } from '../../utils/cookies';
 
 export interface IOrderModalRequest {
     readonly type: typeof GET_ORDER_MODAL_REQUEST;
@@ -51,6 +53,11 @@ export interface IOpenFeedModal {
     readonly payload: TOrder;
 };
 
+export interface ISelectFeedIngredient {
+    readonly type: typeof SELECT_FEED_INGREDIENT;
+    readonly payload: TOrder;
+};
+
 export type TModalActions = 
     | IOrderModalRequest
     | IOrderModalSuccess
@@ -59,7 +66,8 @@ export type TModalActions =
     | ISelectIngredient
     | ICloseModal
     | IUpdateOrderModal
-    | IOpenFeedModal;
+    | IOpenFeedModal
+    | ISelectFeedIngredient;
 
 export const orderModalRequest = (): IOrderModalRequest => {
     return {
@@ -114,13 +122,21 @@ export const openFeedModal = (feed: TOrder): IOpenFeedModal => {
     };
 };
 
-export const getOrderId: AppThunk = (body: string) => (dispatch: AppDispatch) => {
+export const selectFeedIngredient = (feed: TOrder): ISelectFeedIngredient => {
+    return {
+        type: SELECT_FEED_INGREDIENT,
+        payload: feed
+    };
+};
+
+export const getOrderId: AppThunk = (body: Array<string>) => (dispatch: AppDispatch) => {
     dispatch(orderModalRequest());
 
     fetch(`${baseUrl}/orders`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + getCookie('token'),
         },
         body: JSON.stringify(body)
     })
