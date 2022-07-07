@@ -9,7 +9,7 @@ import {
 
 type TWSState = {
   wsConnected: boolean;
-  feedMessages: Array<IFeedWSMessage> | [];
+  feedMessages: Array<IFeedWSMessage>;
 
   error?: boolean;
 };

@@ -1,17 +1,16 @@
 import React, { useEffect } from 'react';
 import styles from './feed.module.css';
 import OrdersList from "../components/OrdersList/OrdersList";
-import { useDispatch, useSelector } from 'react-redux';
+import {useAppDispatch, useAppSelector} from "../utils/hooks";
 import { wsFeedInit, wsFeedClose } from '../services/actions/wsActions';
 import { WSUrl } from '../utils/fetchData';
 import { TOrder } from '../types'
-import { RootState } from '../services/types';
 import { Outlet } from "react-router-dom";
 import { v4 as uuid } from 'uuid';
 
 export const FeedPage = () => {
-  const dispatch = useDispatch();
-  const messages = useSelector((store: RootState) => store.webSocket.feedMessages);
+  const dispatch = useAppDispatch();
+  const messages = useAppSelector((store) => store.webSocket.feedMessages);
   const length = messages.length;
 
   useEffect(() => {

@@ -18,6 +18,6 @@ export type TApplicationActions = TAuthActions
 export type AppThunk<ReturnType = void> = ActionCreator<
   ThunkAction<ReturnType, Action, RootState, TApplicationActions>
 >;
-export type AppDispatch = Dispatch<TApplicationActions>
+export type AppDispatch = Dispatch<TApplicationActions> | AppThunk;
 
-export type TestDispatch = typeof store.dispatch & ThunkDispatch<RootState, null, AnyAction>;
+export type AppDispatchActions = Dispatch<TApplicationActions>;

@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import styles from './FeedDetails.module.css';
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector } from 'react-redux';
+import {useAppSelector} from "../../utils/hooks";
 import { TItem } from '../../types';
 import { v4 as uuid } from 'uuid';
 import { TFeedDetails } from '../../services/types/data';
@@ -12,19 +12,26 @@ type TIngredientList = {
 }
 
 const IngredientList: FC<TIngredientList> = ({feedIngredients}) => {
-  const storeIngredients = useSelector((store: any) => store.burgerIngredients.ingredients);
-  const [ingredients, setIngredients] = useState<Array<TItem> | []>([]); 
+  const storeIngredients = useAppSelector((store: any) => store.burgerIngredients.ingredients);
+  const [ingredients, setIngredients] = useState<Array<TItem> | []>([]);
 
   useEffect(() => {
     const newIngredientsArr: Array<TItem> = [];
 
     feedIngredients.forEach((ingredient: string) => {
-      const ingredientObj: Array<TItem> = storeIngredients.filter((storeIngredient: TItem) => storeIngredient._id === ingredient);
+      const ingredientObj: Array<TItem> = storeIngredients.filter((storeIngredient: TItem) => 
+        storeIngredient._id === ingredient
+      );
+
       newIngredientsArr.push(ingredientObj[0]);
     });
 
     setIngredients(newIngredientsArr);
   }, [])
+
+  useEffect(() => {
+    console.log(ingredients);
+  }, [ingredients])
 
   
   return (
@@ -53,8 +60,8 @@ const IngredientList: FC<TIngredientList> = ({feedIngredients}) => {
 };
 
 const FeedDetails: FC<TFeedDetails> = ({type}) => {
-  const storeIngredients = useSelector((store: any) => store.burgerIngredients.ingredients);
-  const feed = useSelector((store: any) => store.modal.feedModal.selectedFeed);
+  const storeIngredients = useAppSelector((store) => store.burgerIngredients.ingredients);
+  const feed = useAppSelector((store: any) => store.modal.feedModal.selectedFeed);
 
   const getStatus = (status: string): string => {
     switch (status) {

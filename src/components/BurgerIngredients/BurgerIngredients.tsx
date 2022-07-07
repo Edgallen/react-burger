@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from "react";
 import styles from "./BurgerIngredients.module.css"
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
-import {useSelector} from "react-redux";
+import {useAppSelector} from "../../utils/hooks";
 import { Menu } from '../Menu/Menu';
 import { Outlet } from "react-router-dom";
 import { TItem } from "../../types";
@@ -14,7 +14,7 @@ interface IState {
 }
 
 const BurgerIngredients = () => {
-    const data = useSelector((store: any) => store.burgerIngredients.ingredients);
+    const data = useAppSelector((store) => store.burgerIngredients);
     const [state, setState] = useState<IState>({
         bun: {
             ingredients: [],
@@ -52,15 +52,15 @@ const BurgerIngredients = () => {
             ...state,
             bun: {
                 ...state.bun,
-                ingredients: data.filter((element: TItem) => element.type === 'bun')
+                ingredients: data.ingredients.filter((element: TItem) => element.type === 'bun')
             },
             sauce: {
                 ...state.sauce,
-                ingredients: data.filter((element: TItem) => element.type === 'sauce')
+                ingredients: data.ingredients.filter((element: TItem) => element.type === 'sauce')
             },
             main: {
                 ...state.main,
-                ingredients: data.filter((element: TItem) => element.type === 'main')
+                ingredients: data.ingredients.filter((element: TItem) => element.type === 'main')
             }
         })
     }, [data, state]);
@@ -90,7 +90,7 @@ const BurgerIngredients = () => {
                 })
             };
     
-            if (data.length > 0) {
+            if (data.ingredients.length > 0) {
                 if (container.current) {
                     container.current.addEventListener('scroll', scrollHandler);
                 }

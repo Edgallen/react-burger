@@ -1,4 +1,4 @@
-import { TItem } from "../../types";
+import { TItem, TItemEmpty } from "../../types";
 import { TBurgerConstructorActions } from "../actions/burgerConstructor";
 import {
     ADD_TO_CART,
@@ -10,7 +10,7 @@ import {
 
 type TBurgerConstructorState = {
     cart: Array<TItem>;
-    bun: TItem | {};
+    bun: TItem | TItemEmpty;
     isLoading: boolean;
 }
 

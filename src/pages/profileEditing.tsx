@@ -1,26 +1,20 @@
 import React, {FormEvent, useEffect, useState} from "react";
 import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useDispatch, useSelector} from "react-redux";
+import {useAppDispatch, useAppSelector} from "../utils/hooks";
 import {updateUser} from "../services/actions/auth";
 import {TAuthBody} from "../types";
 
-declare module 'react' {
-    interface FunctionComponent<P = {}> {
-        (props: PropsWithChildren<P>, context?: any): ReactElement<any, any> | null;
-    }
-}
-
 type TInputs = {
-    name: string;
-    login: string;
+    name: string | undefined;
+    login: string | undefined;
     password: string;
     editing: boolean;
 };
 
 export const ProfileEditingPage = () => {
-    const user = useSelector((store: any) => store.auth.user);
-    const dispatch = useDispatch();
+    const user = useAppSelector((store) => store.auth.user);
+    const dispatch = useAppDispatch();
 
     const [nameEdit, setNameEdit] = useState(true)
     const [loginEdit, setLoginEdit] = useState(true)
@@ -78,7 +72,7 @@ export const ProfileEditingPage = () => {
             };
         }
 
-        dispatch(updateUser(body) as any);
+        dispatch(updateUser(body));
         defaultEdits();
     };
     return (
@@ -92,7 +86,7 @@ export const ProfileEditingPage = () => {
                     name: e.target.value
                 })}
                 error={false}
-                value={inputs.name}
+                value={inputs.name!}
                 onIconClick={() => {
                     setNameEdit(!nameEdit);
                     setInputs({...inputs, editing: true});
@@ -112,7 +106,7 @@ export const ProfileEditingPage = () => {
                     login: e.target.value
                 })}
                 error={false}
-                value={inputs.login}
+                value={inputs.login!}
                 onIconClick={() => {
                     setLoginEdit(!loginEdit);
                     setInputs({...inputs, editing: true});

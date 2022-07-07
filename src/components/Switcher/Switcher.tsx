@@ -22,18 +22,18 @@ import {
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import AppHeader from "../AppHeader/AppHeader";
 import {AuthProvider, RequireAuth, RequireLogIn, RequireReset} from "../../services/authProvider";
-import { useDispatch, useSelector } from "react-redux";
+import {useAppDispatch, useAppSelector} from "../../utils/hooks";
 import Modal from "../Modal/Modal";
 import { closeModal } from "../../services/actions/modal";
 import { ProfileLayout } from "../ProfileLayout/ProfileLayout";
 import FeedDetails from "../FeedDetails/FeedDetails";
 
 const Switcher = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location: any = useLocation();
   const background = location.state && location.state.background;
-  const modals = useSelector((store: any) => store.modal)
+  const modals = useAppSelector((store) => store.modal)
 
   const closeIngredientModal = () => {
     dispatch(closeModal());

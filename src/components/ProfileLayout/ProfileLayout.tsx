@@ -1,21 +1,14 @@
 import React, {FormEvent, useEffect, useState} from "react";
 import styles from './ProfileLeyout.module.css';
-import {useSelector} from "react-redux";
+import {useAppSelector} from "../../utils/hooks";
 import { getCookie } from "../../utils/cookies";
 import { useAuth } from "../../services/authProvider";
 import { TAuth } from "../../types";
 import {Outlet, useNavigate} from "react-router-dom";
-import { useParams } from "react-router";
 import { useLocation } from "react-router";
 
-declare module 'react' {
-    interface FunctionComponent<P = {}> {
-        (props: PropsWithChildren<P>, context?: any): ReactElement<any, any> | null;
-    }
-}
-
 export const ProfileLayout = () => {
-    const data = useSelector((store: any) => store.auth);
+    const data = useAppSelector((store) => store.auth);
     const [activeTab, setActiveTab] = useState<'profile' | 'orders'>('profile');
     const navigate = useNavigate();
     const location = useLocation();

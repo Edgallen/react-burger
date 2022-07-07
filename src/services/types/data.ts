@@ -1,8 +1,13 @@
-import { TItem, TOrder } from "../../types";
+import { TItem } from "../../types";
 
 export type TUser = {
   email: string;
   name: string;
+};
+
+export type TUserEmpty= {
+  email?: string;
+  name?: string;
 };
 
 export type TChangeUser = {

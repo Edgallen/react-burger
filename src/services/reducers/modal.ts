@@ -1,4 +1,4 @@
-import { TItem, TOrder } from "../../types";
+import { TItem, TItemEmpty, TOrder } from "../../types";
 import { TModalActions } from "../actions/modal";
 import {
     CLOSE_MODAL,
@@ -18,7 +18,7 @@ export type TCartItem = {
 
 export type TModalState = {
     ingredientModal: {
-        selectedIngredient: TItem | {};
+        selectedIngredient: TItem | TItemEmpty;
         isVisible: boolean;
     };
     orderModal: {

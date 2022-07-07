@@ -5,7 +5,7 @@ import {
     GET_INGREDIENTS_REQUEST,
     GET_INGREDIENTS_SUCCESS,
 } from '../constants/burgerIngredientsTypes';
-import { AppDispatch, AppThunk } from '../types';
+import { AppThunk } from '../types';
 import { TIngredientsResponse } from '../types/data';
 
 export interface IGetIngredientsRequest {
@@ -41,11 +41,11 @@ export const getIngredientsSuccess = (data: TIngredientsResponse): IGetIngredien
 
 export const getIngredientsFailed = (): IGetIngredientsFailed => {
     return {
-        type: GET_INGREDIENTS_FAILED
+        type: GET_INGREDIENTS_FAILED,
     }
 };
 
-export const getIngredients: AppThunk = () => (dispatch: AppDispatch) => {
+export const getIngredients: AppThunk = () => (dispatch) => {
     dispatch(getIngredientsRequest());
 
     fetch(`${baseUrl}/ingredients`)

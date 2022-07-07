@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
-import styles from './pages.module.css'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect } from 'react';
+import styles from './pages.module.css';
+import {useAppDispatch, useAppSelector} from "../utils/hooks";
 import OrdersList from '../components/OrdersList/OrdersList'
 import { wsFeedClose, wsFeedInit } from '../services/actions/wsActions';
 import { TOrder } from '../types';
@@ -10,8 +10,8 @@ import { Outlet } from 'react-router';
 import { v4 as uuid } from 'uuid';
 
 export const ProfileFeedPage = () => {
-  const dispatch = useDispatch();
-  const messages = useSelector((store: any) => store.webSocket.feedMessages);
+  const dispatch = useAppDispatch();
+  const messages = useAppSelector((store) => store.webSocket.feedMessages);
   const length = messages.length;
 
   useEffect(() => {

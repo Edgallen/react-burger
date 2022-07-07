@@ -2,8 +2,7 @@ import React, {useEffect, FormEvent, useState, FC} from "react";
 import styles from "./Menu.module.css";
 import {useDrag} from "react-dnd";
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useSelector} from "react-redux";
-import { useDispatch } from "react-redux";
+import {useAppDispatch, useAppSelector} from "../../utils/hooks";
 import { openModal } from '../../services/actions/modal'
 import { useLocation, useNavigate } from "react-router-dom";
 import { TItem, IMenu, IMenuIngredient } from "../../types";
@@ -12,8 +11,8 @@ const Ingredient: FC<IMenuIngredient> = ({ingredient}) => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const dispatch = useDispatch();
-    const burgerConstructor = useSelector((store: any) => store.burgerConstructor)
+    const dispatch = useAppDispatch();
+    const burgerConstructor = useAppSelector((store) => store.burgerConstructor)
     const [counter, setCounter] = useState<{ count: number }>({
         count: 0
     });

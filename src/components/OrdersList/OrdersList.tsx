@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useAppDispatch, useAppSelector} from "../../utils/hooks";
 import styles from "./OrdersList.module.css";
 import {IOrdersList, TItem, TOrder} from "../../types";
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
@@ -13,7 +13,7 @@ type TImages = {
 }
 
 const Images: FC<TImages> = ({order}) => {
-    const storeIngredients = useSelector((store: any) => store.burgerIngredients.ingredients);
+    const storeIngredients = useAppSelector((store) => store.burgerIngredients.ingredients);
     const length = order.ingredients.length;
     const slicedImages = order.ingredients.length < 4 ? order.ingredients : order.ingredients.slice(0, 5);
 
@@ -55,10 +55,10 @@ const Images: FC<TImages> = ({order}) => {
 }
 
 const OrdersList: FC<IOrdersList> = ({type, order}) => {
-    const storeIngredients = useSelector((store: any) => store.burgerIngredients.ingredients);
+    const storeIngredients = useAppSelector((store) => store.burgerIngredients.ingredients);
     const [status, setStatus] = useState<'' | 'Выполнен' | 'Готовится' | 'Создан'>('');
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const location = useLocation();
 
     const handleOrderClick = () => {
@@ -72,7 +72,8 @@ const OrdersList: FC<IOrdersList> = ({type, order}) => {
         let total: number = 0;
 
         order.ingredients.forEach((ingredient: string) => {
-            total += storeIngredients.filter((storeIngredient: TItem) => storeIngredient._id === ingredient)[0].price;
+            total += storeIngredients.filter((storeIngredient: TItem) => 
+            storeIngredient._id === ingredient)[0].price;
         })
 
         return total;

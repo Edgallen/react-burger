@@ -1,7 +1,7 @@
 import React, {useMemo, useEffect} from "react";
 import styles from './BurgerConstructor.module.css';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import {useDispatch, useSelector} from "react-redux";
+import {useAppDispatch, useAppSelector} from "../../utils/hooks";
 import {closeModal, getOrderId, updateOrderModal} from "../../services/actions/modal";
 import {addToCart, addBun, setCart} from "../../services/actions/burgerConstructor";
 import IngredientsConstructor from '../IngredientsConstructor/IngredientsConstructor';
@@ -11,7 +11,6 @@ import { useDrop } from "react-dnd";
 import { v4 as uuid } from 'uuid';
 import {useNavigate} from "react-router-dom";
 import { TItem } from "../../types";
-import {AppThunk} from '../../services/types'
 
 declare module 'react' {
     interface FunctionComponent<P = {}> {
@@ -20,12 +19,12 @@ declare module 'react' {
 }
 
 const BurgerConstructor = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const data = useSelector((store: any) => store.burgerConstructor);
-    const isAuth = useSelector((store: any) => store.auth.isAuth);
-    const orderModal = useSelector((store: any) => store.modal.orderModal);
+    const data = useAppSelector((store: any) => store.burgerConstructor);
+    const isAuth = useAppSelector((store) => store.auth.isAuth);
+    const orderModal = useAppSelector((store) => store.modal.orderModal);
 
     const [, dropContainer] = useDrop({
         accept: 'ingredient',
@@ -59,7 +58,7 @@ const BurgerConstructor = () => {
             cartId.push(ingredient._id)
         });
 
-        if (data.bun.type) {
+        if (data.bun.type && data.bun._id) {
             cartId.push(data.bun._id, data.bun._id)
         };
 
@@ -82,7 +81,7 @@ const BurgerConstructor = () => {
             'ingredients': orderModal.cartId
         };
 
-        dispatch(getOrderId(body) as any);
+        dispatch(getOrderId(body));
     };
 
     const closeOrderModal = (): void => {

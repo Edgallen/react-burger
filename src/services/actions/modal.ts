@@ -129,7 +129,7 @@ export const selectFeedIngredient = (feed: TOrder): ISelectFeedIngredient => {
     };
 };
 
-export const getOrderId: AppThunk = (body: Array<string>) => (dispatch: AppDispatch) => {
+export const getOrderId: AppThunk = (body: Array<string>) => (dispatch) => {
     dispatch(orderModalRequest());
 
     fetch(`${baseUrl}/orders`, {

@@ -1,9 +1,9 @@
 import React from "react";
 import styles from './IngredientDetails.module.css';
-import {useSelector} from "react-redux";
+import {useAppSelector} from "../../utils/hooks";
 
 const IngredientDetails = () => {
-    const ingredient = useSelector((store: any) => store.modal.ingredientModal.selectedIngredient);
+    const ingredient = useAppSelector((store) => store.modal.ingredientModal.selectedIngredient);
 
     return (
         <div className={styles.module__container}>

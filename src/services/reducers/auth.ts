@@ -9,7 +9,7 @@ import {
     SET_USER
 } from "../constants/authTypes";
 import { TAuthActions } from '../actions/auth'
-import { TUser } from "../types/data";
+import { TUser, TUserEmpty } from "../types/data";
 
 export type TAuthState = {
     isAuth: boolean;
@@ -17,7 +17,7 @@ export type TAuthState = {
     isForgot: boolean;
     recoveryRequest: boolean;
     recoverIsFailed: boolean;
-    user: TUser | { }
+    user: TUser | TUserEmpty
 }
 
 const initialState: TAuthState = {
@@ -28,7 +28,7 @@ const initialState: TAuthState = {
     recoveryRequest: false,
     recoverIsFailed: false,
 
-    user: { }
+    user: {}
 };
 
 export const authReducer = (state = initialState, action: TAuthActions): TAuthState => {

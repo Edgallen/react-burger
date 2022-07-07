@@ -137,35 +137,33 @@ const setUser = (data: TChangeUser): IsetUser => {
     };
 };
 
-export function loginUser(body: any) {
-    return (dispatch: any) => {
-        fetch(`${baseUrl}/auth/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        })
-        .then(checkResponse)
-        .then(data => {
-            const accessToken = data.accessToken.split('Bearer ')[1];
-            const refreshToken = data.refreshToken;
-            if (accessToken) {
-                setCookie('token', accessToken);
-            }
-            if (refreshToken) {
-                setCookie('refreshToken', refreshToken);
-            }
+export const loginUser: AppThunk = (body: string) => (dispatch) => {
+    fetch(`${baseUrl}/auth/login`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    })
+    .then(checkResponse)
+    .then(data => {
+        const accessToken = data.accessToken.split('Bearer ')[1];
+        const refreshToken = data.refreshToken;
+        if (accessToken) {
+            setCookie('token', accessToken);
+        }
+        if (refreshToken) {
+            setCookie('refreshToken', refreshToken);
+        }
 
-            dispatch(signIn({ ...data.user }));
-        })
-        .catch(e => {
-            console.log(`Что-то пошло не так ${e}`);
-        })
-    };
+        dispatch(signIn({ ...data.user }));
+    })
+    .catch(e => {
+        console.log(`Что-то пошло не так ${e}`);
+    })
 }
 
-export const logoutUser: AppThunk = (body: string) => (dispatch: AppDispatch) => {
+export const logoutUser: AppThunk = (body: string) => (dispatch) => {
         fetch(`${baseUrl}/auth/logout`, {
             method: 'POST',
             headers: {
@@ -184,7 +182,7 @@ export const logoutUser: AppThunk = (body: string) => (dispatch: AppDispatch) =>
         })
 }
 
-export const registerUser: AppThunk = (body: string) => (dispatch: AppDispatch) => {
+export const registerUser: AppThunk = (body: string) => (dispatch) => {
     fetch(`${baseUrl}/auth/register`, {
         method: 'POST',
         headers: {
@@ -210,7 +208,7 @@ export const registerUser: AppThunk = (body: string) => (dispatch: AppDispatch) 
     })
 }
 
-export const updateToken: AppThunk = () => (dispatch: AppDispatch) => {
+export const updateToken: AppThunk = () => (dispatch) => {
     fetch(`${baseUrl}/auth/token`, {
         method: 'POST',
         headers: {
@@ -237,7 +235,7 @@ export const updateToken: AppThunk = () => (dispatch: AppDispatch) => {
 }
 
 export const requestRecovery: AppThunk = (body: {email: string}) =>
-    (dispatch: AppDispatch) => {
+    (dispatch) => {
         fetch(`${baseUrl}/password-reset`, {
             method: 'POST',
             headers: {
@@ -256,7 +254,7 @@ export const requestRecovery: AppThunk = (body: {email: string}) =>
 }
 
 export const resetPassword: AppThunk = (body: {password: string; token: string;}) =>
-    (dispatch: AppDispatch) => {
+    (dispatch) => {
         fetch(`${baseUrl}/password-reset/reset`, {
             method: 'POST',
             headers: {
@@ -296,7 +294,7 @@ export const getUser: AppThunk = () => (dispatch) => {
     })
 }
 
-export const updateUser: AppThunk = (body: TAuthBody) => (dispatch: AppDispatch) => {
+export const updateUser: AppThunk = (body: TAuthBody) => (dispatch) => {
     fetch(`${baseUrl}/auth/user`, {
         method: 'PATCH',
         headers: {
