@@ -24,10 +24,6 @@ const BunConstructor: FC<IBunConstructor> = ({position, positionText, bun}) => {
 const ConstructorElements: FC<IConstructorElements> = ({ingredient, index, moveCard}) => {
     const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        console.log(ingredient)
-    }, [ingredient])
-
     const id = ingredient._id;
     const ref = useRef<HTMLLIElement>(null);
     const [, drag] = useDrag({

@@ -12,6 +12,7 @@ export type TItem = {
   image_large: string;
   __v: number;
   id?: string;
+  amount?: number;
 };
 
 export type TItemEmpty = {
@@ -28,6 +29,7 @@ export type TItemEmpty = {
   image_large?: string;
   __v?: number;
   id?: string;
+  amount?: number;
 };
 
 export type TBurgerConstructor = {

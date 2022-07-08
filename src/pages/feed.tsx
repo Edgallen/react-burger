@@ -43,11 +43,13 @@ export const FeedPage = () => {
                 <div className={styles.stats__card}>
                   <h3 className='text text_type_main-medium mb-6'>Готовы:</h3>
                   <div className={styles.stats__list}>
-                    {length > 0 && (
-                      messages[length - 1].orders.map((order: TOrder) => (
-                          order.status === 'done' && <p className={`${styles.stats__list__ready} text text_type_digits-default`} key={uuid()}>{order.number}</p>
-                      ))
-                    )}
+                    <div>
+                      {length > 0 && (
+                        messages[length - 1].orders.map((order: TOrder) => (
+                            order.status === 'done' && <p className={`${styles.stats__list__ready} text text_type_digits-default`} key={uuid()}>{order.number}</p>
+                        ))
+                      )}
+                    </div>
                   </div>
                 </div>
 

@@ -11,32 +11,55 @@ type TIngredientList = {
   feedIngredients: Array<string>;
 }
 
+type TAmount = {
+  [key: string]: number
+}
+
 const IngredientList: FC<TIngredientList> = ({feedIngredients}) => {
-  const storeIngredients = useAppSelector((store: any) => store.burgerIngredients.ingredients);
+  const storeIngredients = useAppSelector((store) => store.burgerIngredients.ingredients);
   const [ingredients, setIngredients] = useState<Array<TItem> | []>([]);
+  const [amount, setAmount] = useState<TAmount>({})
 
   useEffect(() => {
-    const newIngredientsArr: Array<TItem> = [];
+    const newIngredientsArr: Array<TItem> = getIngredients(feedIngredients);
+    const uniqeIngredientsArr: Array<TItem> = deleteDuplicates(newIngredientsArr);
 
-    feedIngredients.forEach((ingredient: string) => {
+    countAmount(newIngredientsArr);
+    setIngredients(uniqeIngredientsArr);
+  }, []);
+
+  const getIngredients = (arr: Array<string>) => {
+    const ingredientsArr: Array<TItem> = []
+
+    arr.forEach((ingredient: string) => {
       const ingredientObj: Array<TItem> = storeIngredients.filter((storeIngredient: TItem) => 
         storeIngredient._id === ingredient
       );
 
-      newIngredientsArr.push(ingredientObj[0]);
+      ingredientsArr.push(ingredientObj[0]);
     });
 
-    setIngredients(newIngredientsArr);
-  }, [])
+    return ingredientsArr;
+  };
 
-  useEffect(() => {
-    console.log(ingredients);
-  }, [ingredients])
+  const deleteDuplicates = (arr: Array<TItem>) => {
+    const uniqeIngredientsArr = arr.filter(function(item, index) {
+      return arr.indexOf(item) === index;
+    });
+    return uniqeIngredientsArr;
+  }
 
+  const countAmount = (arr: Array<TItem>) => {
+    const counts: TAmount = {};
+    arr.forEach(function (x, index) {
+      counts[x._id] = (counts[x._id] || 0) + 1;
+    });
+    setAmount(counts);
+  };
   
   return (
     <>
-      {ingredients.map((storeIngredient: TItem) => (
+      {ingredients.map((storeIngredient: TItem, index: number) => (
         <div className={styles.order__card} key={uuid()}>
           <div className={styles.order__card__title}>
             <div className={`${styles.order__img__container} mr-4`}>
@@ -50,6 +73,7 @@ const IngredientList: FC<TIngredientList> = ({feedIngredients}) => {
           </div>
 
           <div className={styles.order__price}>
+            <h2 className="text text_type_digits-default">{amount[storeIngredient._id]} x </h2>
             <h2 className="text text_type_digits-default">{storeIngredient.price}</h2>
             <CurrencyIcon type="primary"/>
           </div>
