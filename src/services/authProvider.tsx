@@ -1,7 +1,7 @@
-import React, {ReactElement, FC} from "react";
+import React, {FC} from "react";
 import {createContext, useContext} from "react";
 import {Navigate, useLocation} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import { useAppDispatch, useAppSelector } from "../utils/hooks";
 import {loginUser, logoutUser} from "./actions/auth";
 import {
     TAuthBody,
@@ -12,15 +12,15 @@ import {
 const AuthContext = createContext<IAppContextInterface | null>(null);
 
 export const AuthProvider: FC<IAuthProvider> = ({ children }) => {
-    const dispatch = useDispatch();
-    const isAuth = useSelector((store: any) => store.auth.isAuth);
+    const dispatch = useAppDispatch();
+    const isAuth = useAppSelector((store) => store.auth.isAuth);
 
     const logIn = (body: TAuthBody) => {
-        dispatch(loginUser(body) as any);
+        dispatch(loginUser(body));
     };
 
     const logOut = (body: TAuthBody) => {
-        dispatch(logoutUser(body) as any);
+        dispatch(logoutUser(body));
     };
 
     return (
@@ -35,7 +35,7 @@ export const useAuth = () => {
 }
 
 export const RequireAuth: ({children}: { children: JSX.Element }) => (JSX.Element) = ({ children }) => {
-    const isAuth = useSelector((store: any) => store.auth.isAuth);
+    const isAuth = useAppSelector((store) => store.auth.isAuth);
     const location = useLocation();
 
     if (!isAuth) {
@@ -46,7 +46,7 @@ export const RequireAuth: ({children}: { children: JSX.Element }) => (JSX.Elemen
 }
 
 export const RequireLogIn: ({children}: { children: JSX.Element }) => (JSX.Element) = ({ children }) => {
-    const isAuth = useSelector((store: any) => store.auth.isAuth);
+    const isAuth = useAppSelector((store) => store.auth.isAuth);
     const location = useLocation();
 
     if (isAuth) {
@@ -57,7 +57,7 @@ export const RequireLogIn: ({children}: { children: JSX.Element }) => (JSX.Eleme
 }
 
 export const RequireReset: ({children}: { children: JSX.Element }) => (JSX.Element) = ({ children }) => {
-    const data = useSelector((store: any) => store.auth);
+    const data = useAppSelector((store) => store.auth);
     const location = useLocation();
 
     if (!data.isForgot) {

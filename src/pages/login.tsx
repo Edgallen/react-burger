@@ -2,7 +2,7 @@ import React, {FormEvent, useState} from "react";
 import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import {useAppDispatch, useAppSelector} from "../utils/hooks";
 import {recoveryRequest} from "../services/actions/auth";
 import {useAuth} from "../services/authProvider";
 import {TAuth, TAuthBody} from "../types";
@@ -15,10 +15,10 @@ type TInputs = {
 }
 
 export const LoginPage = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const location: any = useLocation();
-    const data = useSelector((store: any) => store.auth);
+    const data = useAppSelector((store) => store.auth);
 
     const requestAuth = useAuth();
     let auth: TAuth;

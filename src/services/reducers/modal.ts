@@ -1,3 +1,5 @@
+import { TItem, TItemEmpty, TOrder } from "../../types";
+import { TModalActions } from "../actions/modal";
 import {
     CLOSE_MODAL,
     UPDATE_ORDER_MODAL,
@@ -5,10 +7,34 @@ import {
     GET_ORDER_MODAL_REQUEST,
     GET_ORDER_MODAL_SUCCESS,
     OPEN_INGREDIENT_MODAL,
-    SELECT_INGREDIENT
-} from "../actions/modal";
+    SELECT_INGREDIENT,
+    OPEN_FEED_MODAL,
+    SELECT_FEED_INGREDIENT
+} from "../constants/modalTypes";
 
-const initialState = {
+export type TCartItem = {
+    [key: string]: string
+}
+
+export type TModalState = {
+    ingredientModal: {
+        selectedIngredient: TItem | TItemEmpty;
+        isVisible: boolean;
+    };
+    orderModal: {
+        orderId: number;
+        cartId: Array<string>;
+        isLoading: boolean;
+        isFailed: boolean;
+        isVisible: boolean;
+    };
+    feedModal: {
+        selectedFeed: TOrder | {};
+        isVisible: boolean;
+    }
+}
+
+const initialState: TModalState = {
     ingredientModal: {
         selectedIngredient: {},
         isVisible: false
@@ -16,26 +42,32 @@ const initialState = {
 
     orderModal: {
         orderId: 0,
-        cartId: 0,
+        cartId: [],
         isLoading: false,
         isFailed: false,
+        isVisible: false
+    },
+
+    feedModal: {
+        selectedFeed: {},
         isVisible: false
     }
 };
 
-export const modalReducer = (state = initialState, action: any) => {
+export const modalReducer = (state = initialState, action: TModalActions): TModalState => {
     switch (action.type) {
         case CLOSE_MODAL: {
             return {
                 ...state,
                 ingredientModal: {...state.ingredientModal, isVisible: false},
-                orderModal: {...state.orderModal, isVisible: false}
+                orderModal: {...state.orderModal, isVisible: false},
+                feedModal: {...state.feedModal, isVisible: false}
             };
         }
         case UPDATE_ORDER_MODAL: {
             return {
                 ...state,
-                orderModal: {...state.orderModal, cartId: [action.payload]}
+                orderModal: {...state.orderModal, cartId: action.payload}
             }
         }
         case OPEN_INGREDIENT_MODAL: {
@@ -86,6 +118,25 @@ export const modalReducer = (state = initialState, action: any) => {
                 ingredientModal: {
                     ...state.ingredientModal,
                     selectedIngredient: action.payload
+                }
+            };
+        }
+        case OPEN_FEED_MODAL: {
+            return {
+                ...state,
+                feedModal: {
+                    ...state.feedModal,
+                    isVisible: true,
+                    selectedFeed: action.payload
+                }
+            };
+        }
+        case SELECT_FEED_INGREDIENT: {
+            return {
+                ...state,
+                feedModal: {
+                    ...state.feedModal,
+                    selectedFeed: action.payload
                 }
             };
         }

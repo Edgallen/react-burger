@@ -1,0 +1,43 @@
+.profile {
+  display: flex;
+}
+
+.profile__selector {
+  display: flex;
+  flex-direction: column;
+  margin-top: 180px;
+}
+
+.profile__tabs {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile__tab {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 64px;
+  cursor: pointer;
+  transition: .4s;
+}
+
+.profile__tab:hover {
+  color:#ffffff;
+}
+
+.profile__description {
+  max-width: 320px;
+}
+
+.profile__edits {
+  width: 850px;
+  margin-top: 180px;
+}
+
+.profile__orders {
+  width: 850px;
+  margin-top: 40px;
+  max-height: 85vh;
+  overflow: auto;
+}

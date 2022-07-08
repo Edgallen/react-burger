@@ -1,0 +1,70 @@
+.feed {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 60px;
+  z-index: 0;
+}
+
+.feed_loading {
+  margin-top: 40vh;
+}
+
+.info {
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.stats {
+  display: flex;
+  gap: 36px;
+}
+
+.stats__card {
+  width: 272px;
+}
+
+.stats__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: calc(206px - 54px);
+  min-height: calc(206px - 54px);
+  overflow: auto;
+}
+
+.stats__list__ready {
+  color: #00CCCC;
+}
+
+.stats__count {
+  text-shadow: 0 0 16px rgba(51, 51, 255, 0.25), 0 0 8px rgba(51, 51, 255, 0.25), 0 4px 32px rgba(51, 51, 255, 0.5);
+}
+
+.orders {
+  width: 600px;
+}
+
+.orders__container {
+  max-height: 75vh;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-right: 12px;
+}
+
+.orders__card__container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-right: 12px;
+}
+
+.order {
+  margin-top: 122px;
+  display: flex;
+  align-items: center;
+}

@@ -2,13 +2,13 @@ import React, {FormEvent, useEffect, useState} from "react";
 import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useNavigate } from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {useAppDispatch, useAppSelector} from "../utils/hooks";
 import {requestRecovery} from "../services/actions/auth";
 
 export const ForgotPasswordPage = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const data = useSelector((store: any) => store.auth);
+    const data = useAppSelector((store) => store.auth);
     const [inputs, setInputs] = useState({
         email: ''
     })
@@ -20,7 +20,7 @@ export const ForgotPasswordPage = () => {
             "email": inputs.email
         }
 
-        dispatch(requestRecovery(body) as any);
+        dispatch(requestRecovery(body));
         navigate(`/reset-password`);
     };
 

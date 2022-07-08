@@ -36,42 +36,21 @@
     color: #ffffff;
 }
 
-.profile {
-    display: flex;
-    margin-top: 180px;
-}
-
 .profile__buttons {
     display: flex;
     justify-content: center;
     gap: 2rem;
 }
 
-.profile__selector {
+.profile_feed_container {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
+    gap: 24px;
 }
 
-.profile__tabs {
-    display: flex;
-    flex-direction: column;
-}
-
-.profile__tab {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    min-height: 64px;
-    cursor: pointer;
-    transition: .4s;
-}
-
-.profile__tab:hover {
-    color:#ffffff;
-}
-
-.profile__description {
-    max-width: 320px;
+.profile_feed_loading {
+    text-align: center;
+    margin-top: 22vh;
 }
 
 .ingredients {

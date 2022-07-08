@@ -1,18 +1,26 @@
+import { TItem, TItemEmpty } from "../../types";
+import { TBurgerConstructorActions } from "../actions/burgerConstructor";
 import {
     ADD_TO_CART,
     ADD_BUN,
     SET_CART,
     REMOVE_FROM_CART,
     RESET_CART
-} from "../actions/burgerConstructor";
+} from "../constants/burgerConstructorTypes";
 
-const initialState = {
+type TBurgerConstructorState = {
+    cart: Array<TItem>;
+    bun: TItem | TItemEmpty;
+    isLoading: boolean;
+}
+
+const initialState: TBurgerConstructorState = {
     cart: [],
     bun: {},
     isLoading: true
 };
 
-export const constructorReducer = (state = initialState, action: any) => {
+export const constructorReducer = (state = initialState, action: TBurgerConstructorActions): TBurgerConstructorState => {
     switch (action.type) {
         case ADD_TO_CART: {
             return {
@@ -44,7 +52,6 @@ export const constructorReducer = (state = initialState, action: any) => {
             return {
                 ...state,
                     cart: [],
-                    cartIds: [],
                     bun: {},
                     isLoading: true
             }

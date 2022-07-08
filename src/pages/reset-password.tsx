@@ -3,7 +3,7 @@ import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
 import {resetPassword} from "../services/actions/auth";
-import { useDispatch } from "react-redux";
+import {useAppDispatch} from "../utils/hooks";
 
 type TInputs = {
     token: string;
@@ -13,7 +13,7 @@ type TInputs = {
 }
 
 export const ResetPasswordPage = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const [inputs, setInputs] = useState<TInputs>({
         token: '',
@@ -35,7 +35,7 @@ export const ResetPasswordPage = () => {
             'token': inputs.token
         }
 
-        dispatch(resetPassword(body) as any);
+        dispatch(resetPassword(body));
     };
 
     return (

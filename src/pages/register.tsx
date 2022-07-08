@@ -1,7 +1,7 @@
 import React, {useState, FormEvent} from "react";
 import styles from './pages.module.css';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useDispatch} from "react-redux";
+import {useAppDispatch} from "../utils/hooks";
 import {registerUser} from "../services/actions/auth";
 import { Link } from "react-router-dom";
 import {TAuthBody} from "../types";
@@ -15,7 +15,7 @@ type TInputs = {
 }
 
 export const RegisterPage = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const [inputs, setInputs] = useState<TInputs>({
         name: '',
@@ -40,7 +40,7 @@ export const RegisterPage = () => {
             'name': inputs.name,
         }
 
-        dispatch(registerUser(body) as any);
+        dispatch(registerUser(body));
     };
 
     return (

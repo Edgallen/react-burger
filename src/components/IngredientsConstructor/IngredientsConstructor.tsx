@@ -1,10 +1,11 @@
-import React, {useRef, FC} from "react";
+import React, {useRef, FC, useEffect} from "react";
 import styles from './IngredientsConstructor.module.css';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop } from "react-dnd";
-import { useDispatch } from "react-redux";
+import {useAppDispatch} from "../../utils/hooks";
 import { removeFromCart } from '../../services/actions/burgerConstructor';
 import { IBunConstructor, IConstructorElements, IIngredientsConstructor } from "../../types";
+import { v4 as uuid } from 'uuid';
 
 const BunConstructor: FC<IBunConstructor> = ({position, positionText, bun}) => {
     return (
@@ -21,7 +22,7 @@ const BunConstructor: FC<IBunConstructor> = ({position, positionText, bun}) => {
 };
 
 const ConstructorElements: FC<IConstructorElements> = ({ingredient, index, moveCard}) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const id = ingredient._id;
     const ref = useRef<HTMLLIElement>(null);
@@ -91,7 +92,7 @@ const IngredientsConstructor: FC<IIngredientsConstructor> = ({state, moveCard}) 
                         ingredient={ingredient}
                         index={index}
                         moveCard={moveCard}
-                        key={ingredient._id}
+                        key={uuid()}
                     />
                 ))}
             </div>
@@ -102,4 +103,4 @@ const IngredientsConstructor: FC<IIngredientsConstructor> = ({state, moveCard}) 
     );
 };
 
-export default IngredientsConstructor
+export default IngredientsConstructor;

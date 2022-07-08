@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
-
-import {useDispatch} from "react-redux";
+import { useAppDispatch } from '../../utils/hooks';
 import {getIngredients} from "../../services/actions/burgerIngredients";
 import { BrowserRouter } from "react-router-dom";
 import Switcher from '../Switcher/Switcher'
@@ -8,14 +7,14 @@ import { getUser } from '../../services/actions/auth';
 import { getCookie } from '../../utils/cookies';
 
 const App = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const refreshToken = getCookie('refreshToken');
-    dispatch(getIngredients() as any);
+    dispatch(getIngredients());
 
     if (refreshToken) {
-      dispatch(getUser() as any);
+      dispatch(getUser());
     }
   }, []);
 

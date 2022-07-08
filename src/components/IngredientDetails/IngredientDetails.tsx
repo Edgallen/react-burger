@@ -1,14 +1,17 @@
 import React from "react";
 import styles from './IngredientDetails.module.css';
-import {useSelector} from "react-redux";
+import {useAppSelector} from "../../utils/hooks";
 
 const IngredientDetails = () => {
-    const ingredient = useSelector((store: any) => store.modal.ingredientModal.selectedIngredient);
+    const ingredient = useAppSelector((store) => store.modal.ingredientModal.selectedIngredient);
 
     return (
         <div className={styles.module__container}>
-            <img className={styles.module__img + ' mb-4'} src={ingredient.image_large}
-                 alt={ingredient.name}/>
+            <img 
+                className={styles.module__img + ' mb-4'} 
+                src={ingredient.image_large}
+                alt={ingredient.name}
+            />
 
             <h2 className={'className="text text_type_main-medium" mb-8'}>{ingredient.name}</h2>
 

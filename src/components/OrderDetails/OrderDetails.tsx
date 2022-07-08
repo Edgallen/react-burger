@@ -1,11 +1,10 @@
 import React from "react"
-
 import DoneTick from '../../images/graphics.svg'
 import styles from './OrderDetails.module.css'
-import {useSelector} from "react-redux";
+import {useAppSelector} from "../../utils/hooks";
 
 const OrderDetails = () => {
-    const orderModal = useSelector((store: any) => store.modal.orderModal)
+    const orderModal = useAppSelector((store) => store.modal.orderModal)
 
     return (
         <div className={styles.module__container}>
