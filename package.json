@@ -56,6 +56,8 @@
   "devDependencies": {
     "@types/redux-logger": "^3.0.9",
     "@types/uuid": "^8.3.4",
+    "cypress": "^10.3.0",
+    "eslint-plugin-cypress": "^2.12.1",
     "terser-brunch": "^4.1.0"
   }
 }
