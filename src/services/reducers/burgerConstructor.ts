@@ -51,9 +51,9 @@ export const constructorReducer = (state = initialState, action: TBurgerConstruc
         case RESET_CART: {
             return {
                 ...state,
-                    cart: [],
-                    bun: {},
-                    isLoading: true
+                cart: [],
+                bun: {},
+                isLoading: true
             }
         }
         default: {
