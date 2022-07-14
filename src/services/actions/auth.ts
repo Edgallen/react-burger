@@ -14,7 +14,7 @@ import {
  } from "../constants/authTypes";
 import { TChangeUser, TUser } from "../types/data";
 import { TAuthBody } from "../../types";
-import { AppDispatch, AppThunk } from "../types";
+import { AppThunk } from "../types";
 
 export interface IsignIn {
     readonly type: typeof SIGN_IN_USER;
@@ -56,11 +56,6 @@ export interface IresetFailed {
 export interface IsetUser {
     readonly type: typeof SET_USER;
     readonly payload: TChangeUser;
-}
-
-export interface IloginUser {
-    readonly type: typeof SET_USER;
-
 }
 
 export type TAuthActions = 

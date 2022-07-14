@@ -13,50 +13,50 @@ import {
 } from '../constants/modalTypes';
 import { TModalResponse } from '../types/data';
 import { TItem, TOrder } from '../../types';
-import { AppDispatch, AppThunk } from '../types';
+import { AppThunk } from '../types';
 import { getCookie } from '../../utils/cookies';
 
 export interface IOrderModalRequest {
     readonly type: typeof GET_ORDER_MODAL_REQUEST;
-};
+}
 
 export interface IOrderModalSuccess {
     readonly type: typeof GET_ORDER_MODAL_SUCCESS;
     readonly payload: number;
-};
+}
 
 export interface IOrderModalFailed {
     readonly type: typeof GET_ORDER_MODAL_FAILED;
-};
+}
 
 export interface IOpenModal {
     readonly type: typeof OPEN_INGREDIENT_MODAL;
     readonly payload: TItem;
-};
+}
 
 export interface ISelectIngredient {
     readonly type: typeof SELECT_INGREDIENT;
     readonly payload: TItem;
-};
+}
 
 export interface ICloseModal {
     readonly type: typeof CLOSE_MODAL;
-};
+}
 
 export interface IUpdateOrderModal {
     readonly type: typeof UPDATE_ORDER_MODAL;
     readonly payload: Array<string>;
-};
+}
 
 export interface IOpenFeedModal {
     readonly type: typeof OPEN_FEED_MODAL;
     readonly payload: TOrder;
-};
+}
 
 export interface ISelectFeedIngredient {
     readonly type: typeof SELECT_FEED_INGREDIENT;
     readonly payload: TOrder;
-};
+}
 
 export type TModalActions = 
     | IOrderModalRequest

@@ -65,11 +65,37 @@ describe('burger constructor is working', function () {
       cy.get('[class^=Menu_card__]').as('menu');
       cy.get('[class^=IngredientsConstructor_constructor__]').as('constructor');
 
-      cy.get('[class^=BurgerIngredients_menu__filter__]')
-        .find('span')
-        .contains('Начинки')
-      //   cy.get('[class^=Menu_menu__type__]').first.trigger('dragstart')
-      // cy.get('@constructor').trigger('drop')
+      cy.get('[class^=BurgerIngredients_menu__ingredients__]')
+        .children()
+        .contains('Мясо бессмертных моллюсков Protostomia')
+        .trigger('dragstart')
+      cy.get('@constructor')
+        .first()
+        .trigger('drop');
+
+      cy.get('[class^=BurgerIngredients_menu__ingredients__]')
+        .children()
+        .contains('Биокотлета из марсианской Магнолии')
+        .trigger('dragstart')
+      cy.get('@constructor')
+        .first()
+        .trigger('drop');
+    });
+  });
+
+  describe('check if you can order', () => {
+    it('order button should work', function() {
+      cy.get('[class^=BurgerConstructor_price__]')
+          .contains('Оформить заказ')
+          .as('orderButton');
+
+      cy.get('@orderButton', {timeout: 20000}).click();
+    });
+
+    it('order id appeared', () => {
+      cy.get('[class^=OrderDetails_module__id__]', {
+        timeout: 20000,
+      }).contains('идентификатор заказа');
     });
   });
 
