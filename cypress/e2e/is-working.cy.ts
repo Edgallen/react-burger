@@ -3,14 +3,6 @@ describe('burger constructor is working', function () {
     cy.visit('http://localhost:3000');
   });
 
-  beforeEach(() => {
-    Cypress.Cookies.preserveOnce('accessToken', 'refreshToken');
-  });
-
-  after(() => {
-    cy.clearCookies();
-  });
-
   describe('ingredient modal is working', () => {
     it('opens and closes ingredient modal', function() {
       cy.get('[class^=Menu_card__]').first().as('ingredient');
@@ -38,14 +30,39 @@ describe('burger constructor is working', function () {
         }
       cy.contains('Профиль');
       cy.url().should('contain', '/profile');
-      });
+    });
+
+    // it('sign in is working', function() {
+    //   cy.session(() => {
+    //     cy.visit('/login')
+    //     cy.get('input[type="email"]').type('1@yandex.ru')
+    //     cy.get('input[type="password"]').type('1')
+    //     cy.get('button').contains('Войти').click()
+
+    //     cy.contains('Профиль');
+    //     cy.url().should('contain', '/profile');
+    //   });
+    });
+
+    it('you shouldn`t be able to send order without ingredients', function() {
+      cy.get('[class^=AppHeader_li__]').contains('Конструктор').click();
+  
+      cy.get('[class^=BurgerConstructor_price__]')
+        .find('button')
+        .click();
+  
+      cy.get('[class^=BurgerConstructor_popup__]')
+        .should('exist');
+
+      cy.wait(6000)
+  
+      cy.get('[class^=BurgerConstructor_popup__]')
+        .should('not.exist');
     });
   });
 
   describe('it`s possible to add bun to burger constructor', () => {
     it('adding bun to constructor', function() {
-      cy.get('[class^=AppHeader_li__]').contains('Конструктор').click();
-
       cy.get('[class^=Menu_card__]').first().as('menuIngredient');
       cy.get('[class^=BurgerConstructor_constructor__isLoading__]').as('constructor');
 
@@ -53,11 +70,22 @@ describe('burger constructor is working', function () {
       cy.get('@menuIngredient').trigger('dragstart');
       cy.get('@constructor').trigger('drop');
     });
-  });
 
-  it('you can`t be able to send order only with bun', function() {
-    cy.get('[class^=BurgerConstructor_price__]').find('button').contains('Оформить заказ').click();
-    // Доделать !!!
+    it('you shouldn`t be able to send order only with bun', function() {
+      cy.get('[class^=AppHeader_li__]').contains('Конструктор').click();
+  
+      cy.get('[class^=BurgerConstructor_price__]')
+        .find('button')
+        .click();
+  
+      cy.get('[class^=BurgerConstructor_popup__]')
+        .should('exist');
+
+      cy.wait(6000)
+  
+      cy.get('[class^=BurgerConstructor_popup__]')
+        .should('not.exist');
+    });
   });
 
   describe('it`s possible to add ingredient to burger constructor', () => {
