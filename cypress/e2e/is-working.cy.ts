@@ -31,31 +31,20 @@ describe('burger constructor is working', function () {
       cy.contains('Профиль');
       cy.url().should('contain', '/profile');
     });
-
-    // it('sign in is working', function() {
-    //   cy.session(() => {
-    //     cy.visit('/login')
-    //     cy.get('input[type="email"]').type('1@yandex.ru')
-    //     cy.get('input[type="password"]').type('1')
-    //     cy.get('button').contains('Войти').click()
-
-    //     cy.contains('Профиль');
-    //     cy.url().should('contain', '/profile');
-    //   });
     });
 
     it('you shouldn`t be able to send order without ingredients', function() {
       cy.get('[class^=AppHeader_li__]').contains('Конструктор').click();
-  
+
       cy.get('[class^=BurgerConstructor_price__]')
         .find('button')
         .click();
-  
+
       cy.get('[class^=BurgerConstructor_popup__]')
         .should('exist');
 
       cy.wait(6000)
-  
+
       cy.get('[class^=BurgerConstructor_popup__]')
         .should('not.exist');
     });
@@ -73,16 +62,16 @@ describe('burger constructor is working', function () {
 
     it('you shouldn`t be able to send order only with bun', function() {
       cy.get('[class^=AppHeader_li__]').contains('Конструктор').click();
-  
+
       cy.get('[class^=BurgerConstructor_price__]')
         .find('button')
         .click();
-  
+
       cy.get('[class^=BurgerConstructor_popup__]')
         .should('exist');
 
       cy.wait(6000)
-  
+
       cy.get('[class^=BurgerConstructor_popup__]')
         .should('not.exist');
     });
@@ -90,6 +79,7 @@ describe('burger constructor is working', function () {
 
   describe('it`s possible to add ingredient to burger constructor', () => {
     it('adding ingredient to constructor', function() {
+
       cy.get('[class^=Menu_card__]').as('menu');
       cy.get('[class^=IngredientsConstructor_constructor__]').as('constructor');
 
@@ -113,6 +103,25 @@ describe('burger constructor is working', function () {
 
   describe('check if you can order', () => {
     it('order button should work', function() {
+      cy.request({
+        method: 'POST',
+        url: 'https://norma.nomoreparties.space/api/auth/login',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: {
+          'email': '1@yandex.ru',
+          'password': '1'
+        }
+      })
+      .then((data: any) => {
+        const accessToken = data.body.accessToken.split('Bearer ')[1];
+        const refreshToken = data.body.refreshToken;
+
+        cy.setCookie('token', accessToken);
+        cy.setCookie('refreshToken', refreshToken);
+      });
+
       cy.get('[class^=BurgerConstructor_price__]')
           .contains('Оформить заказ')
           .as('orderButton');
