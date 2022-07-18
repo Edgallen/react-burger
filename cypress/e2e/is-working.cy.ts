@@ -163,7 +163,7 @@ describe('burger constructor is working', function () {
       cy.get('[class^=AppHeader_li__]').contains('Личный кабинет').click();
       cy.contains('Профиль');
       cy.url().should('contain', '/profile');
-      cy.get('[class^=ProfileLeyout_profile__tab__]').contains('Выход').click()
+      cy.get('[class^=ProfileLayout_profile__tab__]').contains('Выход').click()
 
       cy.url().should('contain', '/login');
     });
