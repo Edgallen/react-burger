@@ -126,22 +126,46 @@ describe('burger constructor is working', function () {
           .contains('Оформить заказ')
           .as('orderButton');
 
-      cy.get('@orderButton', {timeout: 20000}).click();
+      cy.get('@orderButton').click();
+
+      cy.wait(16000);
+
+      cy.get('[class^=OrderDetails_module__container__]')
+        .contains('идентификатор заказа');
     });
 
-    it('order id appeared', () => {
-      cy.get('[class^=OrderDetails_module__id__]', {
-        timeout: 20000,
-      }).contains('идентификатор заказа');
+    it('orderId modal is closing correctly', function() {
+      cy.get('body').type('{esc}');
     });
   });
 
   describe('log out is working', () => {
     it('successfully log out', function() {
+      cy.request({
+        method: 'POST',
+        url: 'https://norma.nomoreparties.space/api/auth/login',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: {
+          'email': '1@yandex.ru',
+          'password': '1'
+        }
+      })
+      .then((data: any) => {
+        const accessToken = data.body.accessToken.split('Bearer ')[1];
+        const refreshToken = data.body.refreshToken;
+
+        cy.setCookie('token', accessToken);
+        cy.setCookie('refreshToken', refreshToken);
+      });
+
       cy.get('[class^=AppHeader_li__]').contains('Личный кабинет').click();
       cy.contains('Профиль');
       cy.url().should('contain', '/profile');
       cy.get('[class^=ProfileLeyout_profile__tab__]').contains('Выход').click()
-    })
+
+      cy.url().should('contain', '/login');
+    });
   });
 });
