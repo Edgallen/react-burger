@@ -1,5 +1,6 @@
 {
   "name": "react-burger",
+  "homepage": "./",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -33,7 +34,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "deploy-script": "npm run build && scp -r ./build/* edgallen@51.250.22.98:~/praktikum/stellar-frontend"
   },
   "eslintConfig": {
     "extends": [
@@ -59,6 +63,7 @@
     "cypress": "^10.3.0",
     "eslint-plugin-cypress": "^2.12.1",
     "fetch-mock": "^9.11.0",
+    "gh-pages": "^4.0.0",
     "jest": "^28.1.2",
     "redux-mock-store": "^1.5.4",
     "terser-brunch": "^4.1.0"
