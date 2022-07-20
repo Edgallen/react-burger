@@ -9,6 +9,7 @@ import { TOrder } from '../types';
 import { selectFeedIngredient } from '../services/actions/modal';
 import { useLocation } from 'react-router';
 import { getCookie } from '../utils/cookies';
+import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 
 export const OrderPage = () => {
   const dispatch = useAppDispatch();
@@ -20,14 +21,12 @@ export const OrderPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(auth);
-    console.log(length > 0);
     if (location.pathname.slice(1, 5) === 'feed') {
       dispatch(wsFeedInit(`${WSUrl}/all`));
     }
 
     if (location.pathname.slice(1, 8) === 'profile') {
-      !auth ? dispatch(wsFeedInit(`${WSUrl}?token=${getCookie('token')}`)) : navigate('/login', { replace: true });
+      dispatch(wsFeedInit(`${WSUrl}?token=${getCookie('token')}`));
     }
 
     return () => {
@@ -35,19 +34,34 @@ export const OrderPage = () => {
     }
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   if(length) {
-  //     if (length > 0 && length < 2) {
-  //       console.log(feedMessages);
-  //       const orderObj = feedMessages[length - 1].orders.filter((order: TOrder) => order._id === params.id);
-  //       dispatch(selectFeedIngredient(orderObj[0]));
-  //     }
-  //   }
-  // }, [length])
+  useEffect(() => {
+    const check = location.pathname.slice(1, 8) === 'profile' && !auth;
+
+    if(!check) {
+      if (length > 0 && length < 2) {
+        const orderObj = feedMessages[length - 1].orders.filter((order: TOrder) => order._id === params.id);
+        dispatch(selectFeedIngredient(orderObj[0]));
+      }
+    }
+  }, [length]);
+
+  const returnHomeClick = () => {
+    navigate('/login');
+  };
 
   return (
     <section className={styles.order}>
-      <FeedDetails type='page' />
+      {location.pathname.slice(1, 8) === 'profile' && !auth
+      ? (
+        <div className={styles.order__notAuthorized}>
+          <h1 className="text text_type_main-medium text_color_inactive">Нужно авторизироваться</h1>
+          <Button onClick={returnHomeClick}>
+            Авторизоваться
+          </Button>
+        </div>
+      ) 
+      : (<FeedDetails type='page' />)
+    }
     </section>
   )
 };
