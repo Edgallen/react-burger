@@ -128,10 +128,6 @@ const FeedDetails: FC<TFeedDetails> = ({type}) => {
     return total;
   };
 
-  useEffect(() => {
-    console.log(feed)
-  }, [feed]);
-
   return (
     <>
       {feed.ingredients
