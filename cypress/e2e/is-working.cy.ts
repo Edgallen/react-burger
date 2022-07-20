@@ -1,3 +1,5 @@
+import {baseUrl} from '../../src/utils/fetchData';
+
 describe('burger constructor is working', function () {
   before(function () {
     cy.visit('http://localhost:3000');
@@ -105,7 +107,7 @@ describe('burger constructor is working', function () {
     it('order button should work', function() {
       cy.request({
         method: 'POST',
-        url: 'https://norma.nomoreparties.space/api/auth/login',
+        url: `${baseUrl}/auth/login`,
         headers: {
           'Content-Type': 'application/json'
         },
@@ -114,7 +116,7 @@ describe('burger constructor is working', function () {
           'password': '1'
         }
       })
-      .then((data: any) => {
+      .then((data) => {
         const accessToken = data.body.accessToken.split('Bearer ')[1];
         const refreshToken = data.body.refreshToken;
 
@@ -143,7 +145,7 @@ describe('burger constructor is working', function () {
     it('successfully log out', function() {
       cy.request({
         method: 'POST',
-        url: 'https://norma.nomoreparties.space/api/auth/login',
+        url: `${baseUrl}/auth/login`,
         headers: {
           'Content-Type': 'application/json'
         },
@@ -152,7 +154,7 @@ describe('burger constructor is working', function () {
           'password': '1'
         }
       })
-      .then((data: any) => {
+      .then((data) => {
         const accessToken = data.body.accessToken.split('Bearer ')[1];
         const refreshToken = data.body.refreshToken;
 

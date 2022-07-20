@@ -35,6 +35,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "cypress:open": "cypress open cache clear",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "deploy-script": "npm run build && scp -r ./build/* edgallen@158.160.3.176:/home/praktikum/stellar-frontend"
