@@ -43,7 +43,7 @@ export const OrderPage = () => {
         dispatch(selectFeedIngredient(orderObj[0]));
       }
     }
-  }, [length]);
+  }, [feedMessages]);
 
   const returnHomeClick = () => {
     navigate('/login');
