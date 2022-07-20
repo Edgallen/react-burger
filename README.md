@@ -14,7 +14,7 @@
 
 Чтобы установкить все зависимости и запустить проект, нужно выполнить следующие действия:
 
-1. Склонировать репозиторий
+1. Клонировать репозиторий
    ```sh
    git clone https://github.com/Edgallen/react-burger
    ```
@@ -26,6 +26,8 @@
    ```sh
    npm start
    ```
+   
+--[К оглавлению](#Оглавление)--
 
 ### Использованные библиотеки
 
@@ -36,6 +38,8 @@ This section should list any major frameworks/libraries used to bootstrap your p
 * React-Router
 * React-DnD
 * TypeScript
+
+--[К оглавлению](#Оглавление)--
 
 ### Тесты
 
@@ -49,6 +53,8 @@ This section should list any major frameworks/libraries used to bootstrap your p
 ```sh
    npm run cypress:open
 ```
+
+--[К оглавлению](#Оглавление)--
 
 ### Деплой
 
@@ -65,3 +71,5 @@ This section should list any major frameworks/libraries used to bootstrap your p
   <script defer="defer" src="/static/js/main.b0e01c43.js"></script>
   <link href="/static/css/main.fd6b3806.css" rel="stylesheet">
 ```
+
+--[К оглавлению](#Оглавление)--
