@@ -47,6 +47,13 @@
   width: 600px;
 }
 
+.order__notAuthorized {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+}
+
 .orders__container {
   max-height: 75vh;
   overflow: auto;

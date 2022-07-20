@@ -1,5 +1,5 @@
 import React, {FormEvent, useEffect, useState} from "react";
-import styles from './ProfileLeyout.module.css';
+import styles from './ProfileLayout.module.css';
 import {useAppSelector} from "../../utils/hooks";
 import { getCookie } from "../../utils/cookies";
 import { useAuth } from "../../services/authProvider";

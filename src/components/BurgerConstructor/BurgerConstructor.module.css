@@ -3,6 +3,7 @@
 }
 
 .price {
+    position: relative;
     display: flex;
     align-items: center;
     width: 570px;
@@ -21,4 +22,29 @@
     align-items: center;
     background-color: #1C1C21;
     border-radius: 1rem;
+}
+
+.popup {
+    display:  flex;
+    gap: 25px;
+    position: absolute;
+    bottom: 5rem;
+    max-width: 380px;
+    border-radius: 1rem;
+    border: 1px #4c4cff solid;
+    background-color: #1C1C21;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 25px;
+    padding-left: 25px;
+}
+
+.popup__text {
+    max-width: 250px;
+}
+
+.popup__closeButton {
+    background-color: transparent;
+    border: transparent;
+    cursor: pointer;
 }

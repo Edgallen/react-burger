@@ -1,6 +1,6 @@
-import React, {useMemo, useEffect} from "react";
+import React, {useMemo, useEffect, useState} from "react";
 import styles from './BurgerConstructor.module.css';
-import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import {CurrencyIcon, Button, CloseIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import {useAppDispatch, useAppSelector} from "../../utils/hooks";
 import {closeModal, getOrderId, updateOrderModal} from "../../services/actions/modal";
 import {addToCart, addBun, setCart} from "../../services/actions/burgerConstructor";
@@ -18,6 +18,11 @@ declare module 'react' {
     }
 }
 
+interface IPopupMessage {
+    isVisible: boolean;
+    text: string;
+}
+
 const BurgerConstructor = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -25,6 +30,10 @@ const BurgerConstructor = () => {
     const data = useAppSelector((store: any) => store.burgerConstructor);
     const isAuth = useAppSelector((store) => store.auth.isAuth);
     const orderModal = useAppSelector((store) => store.modal.orderModal);
+    const [popupMessage, setPopupMessage] = useState<IPopupMessage>({
+        isVisible: false,
+        text: 'Нельзя оформить заказ без булки'
+    });
 
     const [, dropContainer] = useDrop({
         accept: 'ingredient',
@@ -60,21 +69,46 @@ const BurgerConstructor = () => {
 
         if (data.bun.type && data.bun._id) {
             cartId.push(data.bun._id, data.bun._id)
-        };
+        }
 
         dispatch(updateOrderModal(cartId));
     }, [data.bun, data.cart]);
 
 
+
     const handleSubmit = (): void => {
 
+        if (data.bun.type && data.cart.length === 0) {
+            setPopupMessage({
+                isVisible: true,
+                text: 'Нельзя заказать только булки, необходимо добавить ингредиентов'
+            })
+            setTimeout(() => {
+                setPopupMessage({
+                    isVisible: false,
+                    text: ''
+                })
+            }, 6000)
+            return;
+        }
+
         if (!data.bun.type || data.cart.length === 0) {
-            return
+            setPopupMessage({
+                isVisible: true,
+                text: 'Нельзя оформить заказ без булки'
+            })
+            setTimeout(() => {
+                setPopupMessage({
+                    isVisible: false,
+                    text: ''
+                })
+            }, 6000)
+            return;
         }
 
         if (!isAuth) {
             navigate('/login');
-            return
+            return;
         }
 
         const body: {'ingredients': Array<string>} = {
@@ -96,6 +130,13 @@ const BurgerConstructor = () => {
 
         dispatch(setCart(newCart));
     };
+
+    const closeMessage = (): void => {
+        setPopupMessage({
+            isVisible: false,
+            text: ''
+        })
+    }
 
     return (
         <>
@@ -120,6 +161,13 @@ const BurgerConstructor = () => {
                         <h1 className='text text_type_digits-medium mr-2'>{`${totalPrice}`}</h1>
                         <CurrencyIcon type="primary" />
                     </div>
+
+                    {popupMessage.isVisible && (<div className={styles.popup}>
+                        <h2 className={`${styles.popup__text} text text_type_main-default`}>{popupMessage.text}</h2>
+                        <button className={styles.popup__closeButton} onClick={closeMessage}>
+                            <CloseIcon type="primary" />
+                        </button>
+                    </div>)}
                     <Button 
                         type="primary" 
                         size="large" 

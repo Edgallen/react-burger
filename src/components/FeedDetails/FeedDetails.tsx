@@ -52,7 +52,9 @@ const IngredientList: FC<TIngredientList> = ({feedIngredients}) => {
   const countAmount = (arr: Array<TItem>) => {
     const counts: TAmount = {};
     arr.forEach(function (x, index) {
-      counts[x._id] = (counts[x._id] || 0) + 1;
+      if (x) {
+        counts[x._id] = (counts[x._id] || 0) + 1;
+      }
     });
     setAmount(counts);
   };
@@ -63,20 +65,22 @@ const IngredientList: FC<TIngredientList> = ({feedIngredients}) => {
         <div className={styles.order__card} key={uuid()}>
           <div className={styles.order__card__title}>
             <div className={`${styles.order__img__container} mr-4`}>
-              <img 
+              {storeIngredient && (<img 
                 src={storeIngredient.image} 
                 className={`${styles.order__card__img} mr-4`} 
                 alt="ingredient_image" 
-              />
+              />)}
             </div>
-            <p className='text text_type_main-default'>{storeIngredient.name}</p>
+            <p className='text text_type_main-default'>{storeIngredient ? storeIngredient.name : 'Не найден'}</p>
           </div>
 
-          <div className={styles.order__price}>
-            <h2 className="text text_type_digits-default">{amount[storeIngredient._id]} x </h2>
-            <h2 className="text text_type_digits-default">{storeIngredient.price}</h2>
-            <CurrencyIcon type="primary"/>
-          </div>
+          {storeIngredient && (
+            <div className={styles.order__price}>
+              <h2 className="text text_type_digits-default">{amount[storeIngredient._id]} x </h2>
+              <h2 className="text text_type_digits-default">{storeIngredient.price}</h2>
+              <CurrencyIcon type="primary"/>
+            </div>
+          )}
         </div>
       ))}
     </>
@@ -101,19 +105,32 @@ const FeedDetails: FC<TFeedDetails> = ({type}) => {
     }
   };
 
-  const getTotalPrice = (): number => {
+  const getTotalPrice = (): number | string => {
     let total: number = 0;
+    let error: boolean = false;
 
-    feed.ingredients.forEach((ingredient: string) => {
-        total += storeIngredients.filter((storeIngredient: TItem) => storeIngredient._id === ingredient)[0].price;
-    })
+    if (storeIngredients.length > 0 && feed.ingredients.length > 0) {
+      feed.ingredients.forEach((ingredient: string) => {
+            if (ingredient) {
+                total += storeIngredients.filter((storeIngredient: TItem) =>
+                storeIngredient._id === ingredient)[0].price;
+            }
+            if (!ingredient) {
+                error = true;
+            }
+        });
+    }
+
+    if (error) {
+        return 'Ошибка'
+    }
 
     return total;
-};
+  };
 
   return (
     <>
-      {feed.ingredients 
+      {feed.ingredients
         ? (
           <div className={`${styles.order} ${type === 'modal' ? 'ml-10' : ''} mb-10`}>
             <h2 className={`text text_type_digits-default mb-10 ${type === 'page' ? styles.text_center : ''}`}>#{feed.number}</h2>
